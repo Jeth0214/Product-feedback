@@ -19,4 +19,12 @@ import { RoadmapComponent } from '../roadmap/roadmap.component';
 })
 export class ProductFeedbackComponent {
   title = 'Frontend Mentor';
+  isOpen = false;
+  menuIcon = '../assets/shared/mobile/icon-hamburger.svg';
+
+  toggleMenu() {
+    this.isOpen = !this.isOpen;
+    console.log(this.isOpen);
+   this.menuIcon =  !this.isOpen ? '../assets/shared/mobile/icon-hamburger.svg' : '../assets/shared/mobile/icon-close.svg';
+  }
 }
