@@ -13,7 +13,7 @@
   right: -16.9rem;
   position: absolute;
   z-index: 10;
-  top: 95px;
+  top: 5.9rem;
   bottom: 0;
   padding: 1.5rem;
   -webkit-transition: all .6s ease-in-out;
@@ -35,7 +35,7 @@
   right: -100vh;
   position: absolute;
   z-index: 10;
-  top: 95px;
+  top: 5.9rem;
 }
 
 .menu-background.show {
@@ -44,3 +44,5 @@
   -webkit-transition: all .6s ease-in-out;
   transition: all .6s ease-in-out;
 }
+
+
