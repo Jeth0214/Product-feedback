@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { ProductFeedbackComponent } from './product-feedback/product-feedback.component';
+import { SuggestionsComponent } from './suggestions/suggestions.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/product-feedback', pathMatch: 'full'},
-  { path: 'product-feedback', component: ProductFeedbackComponent }
+  { path: '', redirectTo: '/suggestions', pathMatch: 'full'},
+  { path: 'suggestions', loadComponent: () => import('./suggestions/suggestions.component').then( m => m.SuggestionsComponent) }
 ];
