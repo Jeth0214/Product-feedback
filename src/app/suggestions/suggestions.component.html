@@ -1,4 +1,4 @@
-<main class="main md:container md:px-6 mx-auto md:my-10 md:flex md:flex-col lg:flex-row gap-8 relative ">
+<main class="main md:container md:px-6 mx-auto md:my-10 md:flex md:flex-col lg:flex-row gap-8 relative overflow-hidden">
   <header class="lg:basis-64 md:flex md:flex-row lg:flex-col md:justify-between lg:justify-start gap-8 ">
     <div
       class="header  text-light flex justify-between items-center md:items-end md:rounded-lg shadow-md  p-6 bg-cover bg-purple bg-center bg-no-repeat bg-mobile sm:bg-tablet md:bg-desktop">
@@ -23,8 +23,8 @@
     </div>
 
     <!-- Show on mobile devices -->
-    <div class="block md:hidden">
-      <div class="menu-background" [class.show]="isOpen"></div>
+    <div >
+      <div class="menu-background" [class.show]="isOpen" ></div>
       <div class="menu-panel text-center" [class.show]="isOpen">
         <div class=" bg-white  rounded-lg shadow-md  p-6">
           <app-category></app-category>
