@@ -9,7 +9,7 @@
 // mobile side
 
 .menu-panel {
-  width: 16.9rem;
+  width: 0;
   right: -16.9rem;
   position: absolute;
   z-index: 10;
@@ -22,6 +22,7 @@
 }
 
 .menu-panel.show {
+    width: 16.9rem;
   right: 0px;
   background-color: white;
   -webkit-transition: all .6s ease-in-out;
@@ -29,7 +30,7 @@
 }
 
 .menu-background {
-  width: 100vw;
+  width: 0;
   top: 0;
   bottom: 0;
   right: -100vh;
@@ -39,6 +40,7 @@
 }
 
 .menu-background.show {
+  width: 100vw;
   right: 0px;
   background-color: rgba(0, 0, 0, 0.5);
   -webkit-transition: all .6s ease-in-out;
