@@ -3,13 +3,11 @@ import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { CategoryComponent } from "../category/category.component";
 import { RoadmapComponent } from '../roadmap/roadmap.component';
 import { FeedbacksComponent } from '../feedbacks/feedbacks.component';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-suggestions',
   standalone: true,
   imports: [
-    NgClass,
     ToolbarComponent,
     RoadmapComponent,
     CategoryComponent,
