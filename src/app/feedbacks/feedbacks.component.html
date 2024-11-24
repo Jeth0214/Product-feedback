@@ -2,12 +2,17 @@
   <div class="feedBack flex justify-between items-center bg-white rounded-lg shadow-md px-8 py-7 my-5">
     <div class="feedBack_card flex gap-x-10">
       <div class="feedBack_upvotes">
-        <button>{{feedBack.upvotes}}</button>
+        <button class="group flex flex-row items-center  md:flex-col px-2 py-3 font-bold min-w-12 bg-light-500 rounded-10 hover:bg-blue hover:text-white transition">
+          <!-- <img class="w-2 h-1" src="./assets/shared/icon-arrow-up.svg" alt="upvote" loading="lazy"> -->
+          <fa-icon class="font-bold text-blue group-hover:text-white" [icon]="upVoteIcon"></fa-icon>
+          <span class="text-sm">{{feedBack.upvotes}}</span>
+          <!-- <span class="text-sm">25000</span> -->
+        </button>
       </div>
       <div class="feedBack_descriptions">
-        <h3>{{feedBack.title}}</h3>
-        <p>{{feedBack.description}}</p>
-        <p>{{feedBack.category}}</p>
+        <h3 class="text-lg  font-bold">{{feedBack.title}}</h3>
+        <p class="my-2">{{feedBack.description}}</p>
+        <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">{{feedBack.category}}</p>
       </div>
     </div>
     <div class="feedback_comment_count">

@@ -27,6 +27,9 @@ module.exports = {
         'tablet': "url('/assets/suggestions/tablet/background-header.png')",
         'desktop': "url('/assets/suggestions/desktop/background-header.png')",
 
+      },
+      borderRadius: {
+        '10': '0.625rem'
       }
     },
   },
