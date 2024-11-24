@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { IFeedBack } from '../shared/models/feedbacks.model';
 
@@ -15,6 +15,7 @@ export class FeedbacksComponent {
  
   // properties
   plusIcon = faPlus;
+  upVoteIcon = faChevronUp;
   feedBacks: IFeedBack[] = [];
   
   // Injections
