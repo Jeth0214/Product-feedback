@@ -7,17 +7,18 @@ module.exports = {
         'purple': "#AD1FEA",
         'purple-500': "#C75AF6",
         'blue': "#4661E6",
-        'blue-800': "#7C91F9",
         'blue-500': "#62BCFA",
+        'blue-800': "#7C91F9",
         'red': "#D73737",
-        'red-800': "#E98888",
         'red-500': "#F49F85",
+        'red-800': "#E98888",
         'dark': '#373F68',
-        'dark-800': '#3A4374',
         'dark-500': '#647196',
+        'dark-800': '#3A4374',
         'light': '#FFFFFF',
+        'light-300': '#CFD7FF',
+        'light-500': '#F2F4FF',
         'light-800': '#F7F8FD',
-        'light-500': '#F2F4FF'
       },
       fontFamily: {
         jost: ['Jost']
