@@ -1,46 +1,62 @@
-@for( feedBack of feedBacks; track feedBack.id) {
-
-  <div class="feedBack mx-4 md:mx-0 cursor-pointer group/card hover:shadow-2xl hover:transition-all  md:flex justify-between items-center shadow-md bg-white rounded-lg px-8 py-7 my-5">
-
+@if(isLoading) {
+  <div class=" bg-white rounded-lg shadow-md mx-6 md:mx-0 p-6 my-5 h-screen grid place-items-center text-center">
+    <div>
+      <div
+        class="inline-block h-10 w-10 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] "
+        role="status">
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
+      </div>
+      <h2 class="text-2xl font-bold">...Loading</h2>
+    </div>
+  </div>
+} 
+@else {
+  @for( feedBack of feedBacks; track feedBack.id) {  
+  <div
+    class="feedBack mx-4 md:mx-0 cursor-pointer group/card hover:shadow-2xl hover:transition-all  md:flex justify-between items-center shadow-md bg-white rounded-lg px-8 py-7 my-5">
+  
     <div class=" flex gap-x-10 gap-y-4 flex-col md:flex-row ">
       <div class="feedBack_upvotes order-2 md:order-1 flex justify-between md:block">
-
-        <button class="group/upvote flex gap-x-2 flex-row items-center  md:flex-col px-2 py-3 font-bold min-w-12 bg-light-500 rounded-10 hover:bg-light-300  active:bg-blue active:text-white transition">
+  
+        <button
+          class="group/upvote flex gap-x-2 flex-row items-center  md:flex-col px-2 py-3 font-bold min-w-12 bg-light-500 rounded-10 hover:bg-light-300  active:bg-blue active:text-white transition">
           <!-- <img class="w-2 h-1" src="./assets/shared/icon-arrow-up.svg" alt="upvote" loading="lazy"> -->
           <fa-icon class="font-bold text-blue group-active/upvote:text-white" [icon]="upVoteIcon"></fa-icon>
           <span class="text-sm">{{feedBack.upvotes}}</span>
           <!-- <span class="text-sm">25000</span> -->
         </button>
-
-          @if(feedBack.comments) {
-          <div class=" feedback_comment_count flex  md:hidden items-center gap-2">
-            <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
-            <!-- <fa-icon class="text-light-500" [icon]="commentIcon"></fa-icon> -->
-            <p class="font-bold">{{feedBack.comments.length}}</p>
-          </div>
-          }
-
-
+  
+        @if(feedBack.comments) {
+        <div class=" feedback_comment_count flex  md:hidden items-center gap-2">
+          <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
+          <!-- <fa-icon class="text-light-500" [icon]="commentIcon"></fa-icon> -->
+          <p class="font-bold">{{feedBack.comments.length}}</p>
+        </div>
+        }
+  
+  
       </div>
-
+  
       <div class="feedBack_descriptions order-1 md:order-2">
         <h3 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack.title}}</h3>
         <p class="my-2">{{feedBack.description}}</p>
-        <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">{{feedBack.category}}</p>
+        <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">
+          {{feedBack.category}}</p>
       </div>
-
+  
     </div>
-
+  
     @if(feedBack.comments) {
-      <div class="feedback_comment_count hidden md:flex  items-center gap-2">
-        <img   src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
-        <!-- <fa-icon class="text-light-500" [icon]="commentIcon"></fa-icon> -->
-        <p class="font-bold">{{feedBack.comments.length}}</p>
-      </div>
+    <div class="feedback_comment_count hidden md:flex  items-center gap-2">
+      <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
+      <!-- <fa-icon class="text-light-500" [icon]="commentIcon"></fa-icon> -->
+      <p class="font-bold">{{feedBack.comments.length}}</p>
+    </div>
     }
   </div>
-
-} @empty () {
+  
+  } @empty () {
   <div class=" bg-white rounded-lg shadow-md mx-6 md:mx-0 p-6 my-5 h-screen grid place-items-center text-center">
     <div>
       <img class="mx-auto mb-12" src="./assets/suggestions/illustration-empty.svg" alt="Man with magnifying glass">
@@ -58,8 +74,12 @@
       </button>
     </div>
   </div>
-
+  
+  }
 }
+
+
+
 
 
 
