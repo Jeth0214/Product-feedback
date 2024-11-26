@@ -35,7 +35,7 @@ export class FeedbacksComponent {
     ).subscribe(
       {
         next: feedBacks => this.feedBacks = feedBacks,
-        error: error => console.error(error)
+        error: error => { console.error(error); this.feedBacks = []; }
        }
      );
   }
