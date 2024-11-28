@@ -19,6 +19,7 @@ module.exports = {
         'light-300': '#CFD7FF',
         'light-500': '#F2F4FF',
         'light-800': '#F7F8FD',
+        'planned': '#F49F85',
       },
       fontFamily: {
         jost: ['Jost']
