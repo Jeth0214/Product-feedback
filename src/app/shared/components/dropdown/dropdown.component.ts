@@ -9,4 +9,10 @@ import { Component } from '@angular/core';
 })
 export class DropdownComponent {
 
+
+  isDropdownOpen = false;
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
 }
