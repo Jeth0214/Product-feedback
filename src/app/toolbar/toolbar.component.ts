@@ -15,4 +15,6 @@ export class ToolbarComponent {
   suggestionsCount: number = 6;
 
   faPlus = faPlus;
+
+  dropDownOptions: string[] = [ 'Most Upvotes', 'Least Upvotes', 'Most Comments', 'Least Comments'];;
 }
