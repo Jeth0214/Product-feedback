@@ -1,24 +1,35 @@
+<div class="md:container px-0 md:px-6  md:mt-10">
+  <!-- Toolbar -->
+  <app-toolbar [title]="title" [isSuggestionPage]="false"></app-toolbar>
 
-  <div class="flex justify-between items-end">
-    <h2 class="text-xl font-bold">{{title}}</h2>
-    <a routerLink="/roadmap" routerLinkActive="active" ariaCurrentWhenActive="page"  class=" font-semibold underline text-blue cursor-pointer hover:text-dark-500 transition-colors">
-      View
-    </a>
+  <!-- Button Group on Mobile -->
+  <div class="flex justify-evenly gap-0  md:hidden border border-b-gray-200">
+    <button (click)="onSelectRoadMap('planned')"
+      [ngClass]="selectedRoadMap == 'planned' ? 'border-b-planned border-b-4  font-bold !text-dark-800' : ''"
+      class="flex-1 cursor py-5  text-sm text-gray-400 ">Planned ({{planned().length}}) </button>
+    <button (click)="onSelectRoadMap('in-progress')"
+      [ngClass]="selectedRoadMap == 'in-progress' ? 'border-b-in-progress border-b-4  font-bold !text-dark-800' : ''"
+      class="flex-1 cursor py-5 text-sm text-gray-400 ">In Progress ({{inProgress().length}}) </button>
+    <button (click)="onSelectRoadMap('live')"
+      [ngClass]="selectedRoadMap == 'live' ? 'border-b-live border-b-4  font-bold !text-dark-800' : ''"
+      class="flex-1 cursor py-5 text-sm text-gray-400">Live ({{live().length}}) </button>
   </div>
+</div>
 
-  <ul class="text-dark-500  mt-6">
-    <li class="flex justify-between items-end ">
-      <div> <fa-icon class="text-planned text-sm me-4" [icon]="circleIcon"></fa-icon> Planned</div>
-      <div class="font-bold">2</div>
-    </li>
-    <li class="flex justify-between items-end my-2">
-      <div> <fa-icon class="text-purple text-sm me-4" [icon]="circleIcon"></fa-icon> In-Progress</div>
-      <div class="font-bold">3</div>
-    </li>
-    <li class="flex justify-between items-end ">
-      <div> <fa-icon class="text-blue-500 text-sm me-4" [icon]="circleIcon"></fa-icon> Live </div>
-      <div class="font-bold">1</div>
-    </li>
-  </ul>
- 
+
+@if(feedBacks().length) {
+  
+  <div class="container px-6">
+    <div class="grid gap-3 md:grid-cols-3">
+
+        <app-roadmap-list-card [feedBacks]="inProgress()" [title]="'in-progress'"  [description]="'Features currently being developed'"/>
+    </div>
+
+  </div>
+} 
+@else {
+  <app-empty />
+}
+
+
 
