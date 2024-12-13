@@ -1,5 +1,5 @@
 <div class="my-6">
-  <h2 class="text-lg text-dark-800 font-bold capitalize"> {{ title }} </h2>
+  <h2 class="text-lg text-dark-800 font-bold capitalize"> {{ title }} ({{feedBacks().length}})</h2>
   <p> {{ description }} </p>
 </div>
 
@@ -8,14 +8,12 @@
   <div ngClass="border-t-{{title}}"
     class="feedBack mx-4 md:mx-0 cursor-pointer border-t-4 group/card hover:shadow-2xl hover:transition-all shadow-md bg-white rounded-lg px-8 py-7 my-5">
   
-    <div class=" flex gap-x-10 gap-y-4 flex-col ">
-      <div class="feedBack_descriptions order-1 ">
-        <h3 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack.title}}</h3>
-        <p class="my-2">{{feedBack.description}}</p>
-        <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">
-          {{feedBack.category}}</p>
-      </div>
-  
+    <div class="feedBack_descriptions">
+      <div class="mb-3.5"> <fa-icon ngClass="text-{{title}}" class=" me-4 " [icon]="circleIcon"></fa-icon> In Progress</div>
+      <h3 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack.title}}</h3>
+      <p class="my-2">{{feedBack.description}}</p>
+      <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">
+        {{feedBack.category}}</p>
     </div>
 
     <div class="feedBack_upvotes flex justify-between mt-4 ">
@@ -26,13 +24,11 @@
           <span class="text-sm">{{feedBack.upvotes}}</span>
         </button>
 
-            @if(feedBack.comments) {
-            <div class="feedback_comment_count hidden md:flex  items-center gap-2">
-              <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
-              <!-- <fa-icon class="text-light-500" [icon]="commentIcon"></fa-icon> -->
-              <p class="font-bold">{{feedBack.comments.length}}</p>
-            </div>
-            }
+          <div class="feedback_comment_count hidden md:flex  items-center gap-2">
+            <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
+            <!-- <fa-icon class="text-light-500" [icon]="commentIcon"></fa-icon> -->
+            <p class="font-bold">{{feedBack.comments?.length}}</p>
+          </div>
       </div>
   </div>
 }
