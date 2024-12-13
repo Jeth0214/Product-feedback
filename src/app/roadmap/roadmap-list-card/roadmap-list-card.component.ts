@@ -1,6 +1,6 @@
 import { Component, Input, input } from '@angular/core';
 import { IFeedBack } from '../../shared/models/feedbacks.model';
-import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgClass } from '@angular/common';
 
@@ -15,7 +15,8 @@ export class RoadmapListCardComponent {
 
 
   // properties
-    upVoteIcon = faChevronUp;
+  upVoteIcon = faChevronUp;
+   circleIcon = faCircle;
 
   // signals
   feedBacks = input.required<IFeedBack[]>()
