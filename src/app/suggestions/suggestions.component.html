@@ -1,4 +1,4 @@
-<main class="main md:container md:px-6 mx-auto md:my-10 md:flex md:flex-col lg:flex-row gap-8 relative overflow-hidden">
+<main class="main md:container md:px-6  md:my-10 md:flex md:flex-col lg:flex-row gap-8 relative overflow-hidden">
   <header class="lg:basis-64 md:flex md:flex-row lg:flex-col md:justify-between lg:justify-start gap-8 ">
     <div
       class="header  text-light flex justify-between items-center md:items-end md:rounded-lg shadow-md  p-6 bg-cover bg-purple bg-center bg-no-repeat bg-mobile sm:bg-tablet md:bg-desktop flex-1 lg:flex-none">
@@ -15,11 +15,15 @@
 
     <!-- show on medium devices -->
     <div class=" hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
-      <app-category></app-category>
+
+      <app-category />
+
     </div>
 
     <div class="hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
-      <app-roadmap></app-roadmap>
+
+      <app-roadmap-main-card />
+
     </div>
 
     <!-- Show on mobile devices -->
@@ -28,10 +32,12 @@
       <div class="menu-panel text-center" [class.show]="isOpen">
           <div class="bg-white  rounded-lg shadow-md  p-6">
 
-            <app-category></app-category>
+            <app-category />
+
           </div>
           <div class="bg-white  rounded-lg shadow-md  p-6  mt-6 md:mt-0">
-            <app-roadmap></app-roadmap>
+
+            <app-roadmap-main-card />
 
           </div>
         
@@ -44,7 +50,10 @@
   </header>
 
   <div class="flex-auto">
-    <app-toolbar></app-toolbar>
-    <app-feedbacks></app-feedbacks>
+
+    <app-toolbar [isSuggestionPage]="true" [title]="title" />
+
+    <app-feedbacks />
+    
   </div>
 </main>

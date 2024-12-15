@@ -1,6 +1,6 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { IFeedBack } from "../models/feedbacks.model";
 
 @Injectable({
@@ -16,7 +16,16 @@ export class FeedBackService {
   // innjections
   _http = inject(HttpClient);
 
+  // signals
+  feedBacks = signal<IFeedBack[]>([])
+
   getFeedBacks(): Observable<IFeedBack[]> {
     return this._http.get<IFeedBack[]>(this.api);
+  }
+
+  getAllFeedBacks(): Promise<IFeedBack[]>{ 
+    const response$ = this._http.get<IFeedBack[]>(this.api);
+    const feedBacks = firstValueFrom(response$)
+    return  feedBacks;
   }
 }

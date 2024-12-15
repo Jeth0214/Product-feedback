@@ -23,6 +23,8 @@ module.exports = {
         'light-500': '#F2F4FF',
         'light-800': '#F7F8FD',
         'planned': '#F49F85',
+        'in-progress': '#AD1FEA',
+        'live': '#62BCFA'
       },
       fontFamily: {
         jost: ['Jost']
@@ -37,6 +39,12 @@ module.exports = {
         '10': '0.625rem'
       }
     },
+    container: {
+      center: true,
+      screens: {
+        'md': '1100px'
+      },
+    }
   },
   plugins: [
     require('flowbite/plugin')

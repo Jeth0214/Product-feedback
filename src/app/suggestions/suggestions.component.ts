@@ -3,13 +3,14 @@ import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { CategoryComponent } from "../category/category.component";
 import { RoadmapComponent } from '../roadmap/roadmap.component';
 import { FeedbacksComponent } from '../feedbacks/feedbacks.component';
+import { RoadmapMainCardComponent } from '../roadmap/roadmap-main-card/roadmap-main-card.component';
 
 @Component({
   selector: 'app-suggestions',
   standalone: true,
   imports: [
     ToolbarComponent,
-    RoadmapComponent,
+    RoadmapMainCardComponent,
     CategoryComponent,
     FeedbacksComponent
   ],

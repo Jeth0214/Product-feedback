@@ -4,11 +4,12 @@ import { faChevronUp, faComment, faPlus } from '@fortawesome/free-solid-svg-icon
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { IFeedBack } from '../shared/models/feedbacks.model';
 import { finalize } from 'rxjs';
+import { EmptyComponent } from '../shared/components/empty/empty.component';
 
 @Component({
   selector: 'app-feedbacks',
   standalone: true,
-  imports: [    FontAwesomeModule],
+  imports: [EmptyComponent ,   FontAwesomeModule],
   templateUrl: './feedbacks.component.html',
   styleUrl: './feedbacks.component.scss'
 })
