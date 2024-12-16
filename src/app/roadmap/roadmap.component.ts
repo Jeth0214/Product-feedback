@@ -5,13 +5,14 @@ import { IFeedBack } from '../shared/models/feedbacks.model';
 import { NgClass } from '@angular/common';
 import { EmptyComponent } from '../shared/components/empty/empty.component';
 import { RoadmapListCardComponent } from './roadmap-list-card/roadmap-list-card.component';
+import { LoadingComponent } from '../shared/components/loading/loading.component';
 
 
 
 @Component({
   selector: 'app-roadmap',
   standalone: true,
-  imports: [ToolbarComponent , NgClass, EmptyComponent , RoadmapListCardComponent],
+  imports: [ToolbarComponent , NgClass, EmptyComponent , RoadmapListCardComponent , LoadingComponent],
   templateUrl: './roadmap.component.html',
   styleUrl: './roadmap.component.scss'
 })
@@ -34,8 +35,7 @@ export class RoadmapComponent {
 
 
   constructor() {
-    this.loadFeedBacks().then(() => console.log('FeedBacks', this.feedBacks()));
-    effect(() => console.log('planned', this.planned()) )
+    this.loadFeedBacks();
   }
 
   async loadFeedBacks() {
