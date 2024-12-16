@@ -3,13 +3,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronUp, faComment, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { IFeedBack } from '../shared/models/feedbacks.model';
-import { finalize } from 'rxjs';
 import { EmptyComponent } from '../shared/components/empty/empty.component';
+import { LoadingComponent } from '../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-feedbacks',
   standalone: true,
-  imports: [EmptyComponent ,   FontAwesomeModule],
+  imports: [EmptyComponent ,   FontAwesomeModule , LoadingComponent],
   templateUrl: './feedbacks.component.html',
   styleUrl: './feedbacks.component.scss'
 })
@@ -20,7 +20,6 @@ export class FeedbacksComponent {
   upVoteIcon = faChevronUp;
   commentIcon = faComment;
   feedBacks: IFeedBack[] = [];
-  isLoading = false;
   // Injections
   _feedBackService = inject(FeedBackService);
 
@@ -29,11 +28,8 @@ export class FeedbacksComponent {
   }
 
   getFeedBacks() {
-    this.isLoading = true;
     
-    this._feedBackService.getFeedBacks().pipe(
-       finalize(() => {this.isLoading = false})
-    ).subscribe(
+    this._feedBackService.getFeedBacks().subscribe(
       {
         next: feedBacks => this.feedBacks = feedBacks,
         error: error => { console.error(error); this.feedBacks = []; }
