@@ -25,9 +25,9 @@
   <div class="container px-6">
     <div class="grid gap-3 md:grid-cols-3">
 
-        <app-roadmap-list-card [feedBacks]="planned()" [title]="'planned'"  [description]="'Ideas prioritized for research'"/>
-        <app-roadmap-list-card [feedBacks]="inProgress()" [title]="'in-progress'"  [description]="'Features currently being developed'"/>
-        <app-roadmap-list-card [feedBacks]="live()" [title]="'live'"  [description]="'Released features'"/>
+        <app-roadmap-list-card [feedBacks]="planned()" title="planned"  description="Ideas prioritized for research"/>
+        <app-roadmap-list-card [feedBacks]="inProgress()" title="in-progress"  description="Features currently being developed"/>
+        <app-roadmap-list-card [feedBacks]="live()" title="live"  description="Released features"/>
     </div>
 
   </div>

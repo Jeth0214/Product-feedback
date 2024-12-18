@@ -23,9 +23,9 @@ export class FeedBackService {
     return this._http.get<IFeedBack[]>(this.api);
   }
 
-  getAllFeedBacks(): Promise<IFeedBack[]>{ 
-    const response$ = this._http.get<IFeedBack[]>(this.api);
-    const feedBacks = firstValueFrom(response$)
+ async getAllFeedBacks(): Promise<IFeedBack[]>{ 
+    const response$ = await this._http.get<IFeedBack[]>(this.api);
+    const feedBacks = await firstValueFrom(response$)
     return  feedBacks;
   }
 }

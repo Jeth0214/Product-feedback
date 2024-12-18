@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronUp, faComment, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FeedBackService } from '../shared/services/feedbacks.service';
@@ -19,7 +19,7 @@ export class FeedbacksComponent {
   plusIcon = faPlus;
   upVoteIcon = faChevronUp;
   commentIcon = faComment;
-  feedBacks: IFeedBack[] = [];
+  feedBacks = signal<IFeedBack[]>([]);
   // Injections
   _feedBackService = inject(FeedBackService);
 
@@ -27,14 +27,13 @@ export class FeedbacksComponent {
    this.getFeedBacks();
   }
 
-  getFeedBacks() {
-    
-    this._feedBackService.getFeedBacks().subscribe(
-      {
-        next: feedBacks => this.feedBacks = feedBacks,
-        error: error => { console.error(error); this.feedBacks = []; }
-       }
-     );
+  async getFeedBacks() {
+    try {
+      const feedBacks = await this._feedBackService.getAllFeedBacks();
+      this.feedBacks.set(feedBacks);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 
