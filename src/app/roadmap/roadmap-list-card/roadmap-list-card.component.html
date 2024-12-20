@@ -4,7 +4,7 @@
 
   @for( feedBack  of feedBacks(); track feedBack.id) {
   <div  ngClass="border-{{title}}"
-    class="feedBack mx-4 md:mx-0 cursor-pointer border-t-4 group/card hover:shadow-2xl hover:transition-all shadow-md bg-white rounded-lg px-8 py-7 my-5">
+    class="feedBack mx-4 md:mx-0 cursor-pointer border-t-4  group/card hover:shadow-2xl hover:transition-all shadow-md bg-white rounded-lg px-8 py-7 my-5">
   
     <div class="feedBack_descriptions">
       <div class="mb-3.5"> <fa-icon ngClass="text-{{title}}" class=" me-4 " [icon]="circleIcon"></fa-icon> In Progress</div>
@@ -17,14 +17,12 @@
     <div class="feedBack_upvotes flex justify-between mt-4 ">
         <button
           class="group/upvote flex gap-x-2 flex-row items-center py-2 px-4 font-bold bg-light-500 rounded-10 hover:bg-light-300  active:bg-blue active:text-white transition">
-          <!-- <fa-icon class=" w-2 h-2 font-bold text-blue group-active/upvote:text-white" [icon]="upVoteIcon"></fa-icon> -->
           <img src="./assets/shared/icon-arrow-up.svg" alt="comments" loading="lazy">
           <span class="text-sm">{{feedBack.upvotes}}</span>
         </button>
 
           <div class="feedback_comment_count hidden md:flex  items-center gap-2">
             <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
-            <!-- <fa-icon class="text-light-500" [icon]="commentIcon"></fa-icon> -->
             <p class="font-bold">{{feedBack.comments?.length}}</p>
           </div>
       </div>
