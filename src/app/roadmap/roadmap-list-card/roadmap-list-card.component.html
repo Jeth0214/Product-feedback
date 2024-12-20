@@ -3,8 +3,8 @@
   <p> {{ description }} </p>
 
   @for( feedBack  of feedBacks(); track feedBack.id) {
-  <div  ngClass="border-{{title}}"
-    class="feedBack mx-4 md:mx-0 cursor-pointer border-t-4  group/card hover:shadow-2xl hover:transition-all shadow-md bg-white rounded-lg px-8 py-7 my-5">
+  <div   [ngClass]="borderClass"
+    class="feedBack mx-4 md:mx-0 cursor-pointer border-t-4 group/card hover:shadow-2xl hover:transition-all shadow-md bg-white rounded-lg px-8 py-7 my-5">
   
     <div class="feedBack_descriptions">
       <div class="mb-3.5"> <fa-icon ngClass="text-{{title}}" class=" me-4 " [icon]="circleIcon"></fa-icon> In Progress</div>
@@ -23,6 +23,7 @@
 
           <div class="feedback_comment_count hidden md:flex  items-center gap-2">
             <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
+
             <p class="font-bold">{{feedBack.comments?.length}}</p>
           </div>
       </div>

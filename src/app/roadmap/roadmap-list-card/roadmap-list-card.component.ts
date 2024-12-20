@@ -23,5 +23,8 @@ export class RoadmapListCardComponent {
 
   // Normal Input
   @Input() title : string = '';
-  @Input() description : string = '';
+  @Input() description: string = '';
+  @Input()  borderClass = '';
+  
+ 
 }
