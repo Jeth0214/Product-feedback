@@ -1,7 +1,7 @@
   <app-loading />
 
   @for( feedBack of feedBacks(); track feedBack.id) {  
-  <div
+  <div [routerLink]="['/feedbacks', feedBack.id]"
     class="feedBack mx-4 md:mx-0 cursor-pointer group/card hover:shadow-2xl hover:transition-all  md:flex justify-between items-center shadow-md bg-white rounded-lg px-8 py-7 my-5">
   
     <div class=" flex gap-x-10 gap-y-4 flex-col md:flex-row ">
