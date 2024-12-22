@@ -19,7 +19,7 @@ import { RoadmapMainCardComponent } from '../roadmap/roadmap-main-card/roadmap-m
 })
 export class SuggestionsComponent {
 
-    title = 'Frontend Mentor';
+  title = 'Frontend Mentor';
   isOpen = false;
   menuIcon = './assets/shared/mobile/icon-hamburger.svg';
 
