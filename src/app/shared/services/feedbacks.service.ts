@@ -1,7 +1,8 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { firstValueFrom, Observable } from 'rxjs';
+import { catchError, firstValueFrom, Observable } from 'rxjs';
 import { IFeedBack } from "../models/feedbacks.model";
+import { ToastrService } from "ngx-toastr";
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class FeedBackService {
  
   // innjections
   _http = inject(HttpClient);
+  _toastrService = inject(ToastrService);
 
   // signals
   feedBacks = signal<IFeedBack[]>([])
@@ -26,7 +28,19 @@ export class FeedBackService {
  async getAllFeedBacks(): Promise<IFeedBack[]>{ 
     const response$ = await this._http.get<IFeedBack[]>(this.api);
     const feedBacks = await firstValueFrom(response$)
-    return  feedBacks;
+    return  feedBacks ?? [];
+  }
+
+
+  async getFeedBackById(id: number): Promise<IFeedBack> {
+    const response$ = await this._http.get<IFeedBack>(`${this.api}/${id}`).pipe(
+      catchError(err => {
+        this._toastrService.error(err.body.error);
+        return [];
+      })
+    );
+    const feedBack = await firstValueFrom(response$);
+    return feedBack;
   }
 
   

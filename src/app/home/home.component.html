@@ -27,20 +27,20 @@
     </div>
 
     <!-- Show on mobile devices -->
-    <div  class="md:hidden">
-      <div class="menu-background" [class.show]="isOpen" ></div>
+    <div class="md:hidden">
+      <div class="menu-background" [class.show]="isOpen"></div>
       <div class="menu-panel text-center" [class.show]="isOpen">
-          <div class="bg-white  rounded-lg shadow-md  p-6">
+        <div class="bg-white  rounded-lg shadow-md  p-6">
 
-            <app-category />
+          <app-category />
 
-          </div>
-          <div class="bg-white  rounded-lg shadow-md  p-6  mt-6 md:mt-0">
+        </div>
+        <div class="bg-white  rounded-lg shadow-md  p-6  mt-6 md:mt-0">
 
-            <app-roadmap-main-card />
+          <app-roadmap-main-card />
 
-          </div>
-        
+        </div>
+
       </div>
     </div>
 
@@ -54,6 +54,6 @@
     <app-toolbar [isSuggestionPage]="true" [title]="title" />
 
     <app-feedbacks />
-    
+
   </div>
 </main>
