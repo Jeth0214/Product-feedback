@@ -1,12 +1,33 @@
-import { Component } from '@angular/core';
+import { Component,  effect,  inject, signal } from '@angular/core';
+import { IFeedBack } from '../../shared/models/feedbacks.model';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-feedback-details',
   standalone: true,
-  imports: [],
+  imports: [RouterLink,  FontAwesomeModule],
   templateUrl: './feedback-details.component.html',
   styleUrl: './feedback-details.component.scss'
 })
 export class FeedbackDetailsComponent {
 
+  // properties
+  title: string = 'Feedback Details';
+  feedBack = signal<IFeedBack | null>(null);
+    upVoteIcon = faChevronUp;
+
+
+  // Injections
+  _activatedRoute = inject(ActivatedRoute)
+
+  constructor() {
+    this.feedBack.set(this._activatedRoute.snapshot.data["feedBackDetails"]);
+    effect( () => console.log(this.feedBack()) );
+  }
+
+
+
 }
+
