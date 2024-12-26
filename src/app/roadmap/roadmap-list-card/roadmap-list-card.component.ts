@@ -5,11 +5,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-roadmap-list-card',
-  standalone: true,
-  imports: [FontAwesomeModule, NgClass],
-  templateUrl: './roadmap-list-card.component.html',
-  styleUrl: './roadmap-list-card.component.scss'
+    selector: 'app-roadmap-list-card',
+    imports: [FontAwesomeModule, NgClass],
+    templateUrl: './roadmap-list-card.component.html',
+    styleUrl: './roadmap-list-card.component.scss'
 })
 export class RoadmapListCardComponent {
 

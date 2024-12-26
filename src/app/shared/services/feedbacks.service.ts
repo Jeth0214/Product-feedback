@@ -28,8 +28,11 @@ export class FeedBackService {
   }
 
  async getAllFeedBacks(): Promise<IFeedBack[]>{ 
-    const response$ = await this._http.get<IFeedBack[]>(this.api);
-    const feedBacks = await firstValueFrom(response$)
+    const response$ = await this._http.get<IFeedBack[]>(this.api).pipe(
+      catchError(
+        this.handleError<IFeedBack[]>('Get All Feedbacks', [] as IFeedBack[])
+    ));;
+   const feedBacks = await firstValueFrom(response$);
     return  feedBacks ?? [];
   }
 

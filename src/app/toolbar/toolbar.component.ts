@@ -5,11 +5,10 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-toolbar',
-  standalone: true,
-  imports: [DropdownComponent, FontAwesomeModule, RouterLink],
-  templateUrl: './toolbar.component.html',
-  styleUrl: './toolbar.component.scss',
+    selector: 'app-toolbar',
+    imports: [DropdownComponent, FontAwesomeModule, RouterLink],
+    templateUrl: './toolbar.component.html',
+    styleUrl: './toolbar.component.scss'
 })
 export class ToolbarComponent {
 
