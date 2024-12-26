@@ -3,13 +3,13 @@ import { IFeedBack } from '../../shared/models/feedbacks.model';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { FeedbackCommentsComponent } from './feedback-comments/feedback-comments.component';
 
 @Component({
-  selector: 'app-feedback-details',
-  standalone: true,
-  imports: [RouterLink,  FontAwesomeModule],
-  templateUrl: './feedback-details.component.html',
-  styleUrl: './feedback-details.component.scss'
+    selector: 'app-feedback-details',
+    imports: [RouterLink, FontAwesomeModule, FeedbackCommentsComponent],
+    templateUrl: './feedback-details.component.html',
+    styleUrl: './feedback-details.component.scss'
 })
 export class FeedbackDetailsComponent {
 

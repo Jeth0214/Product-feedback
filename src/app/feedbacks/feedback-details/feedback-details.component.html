@@ -11,10 +11,11 @@
         Edit Feedback
       </button>
    </div>
+   
 
    <!-- Feedback -->
     <div 
-      class="feedBack md:flex justify-between items-center bg-white rounded-lg px-8 py-7 my-5">
+      class="feedBack md:flex justify-between items-center shadow-sm bg-white rounded-lg px-8 py-7 my-5">
     
       <div class=" flex gap-x-10 gap-y-4 flex-col md:flex-row ">
         <div class="feedBack_upvotes order-2 md:order-1 flex justify-between md:block">
@@ -36,7 +37,7 @@
         </div>
     
         <div class="feedBack_descriptions order-1 md:order-2">
-          <h3 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack()?.title}}</h3>
+          <h1 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack()?.title}}</h1>
           <p class="my-2">{{feedBack()?.description}}</p>
           <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">
             {{feedBack()?.category}}</p>
@@ -51,5 +52,9 @@
       </div>
       }
     </div>
+
+    <!-- Feedback Comments -->
+     <app-feedback-comments [comments]="comments()"/>
+
 
 </div>

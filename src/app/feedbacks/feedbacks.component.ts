@@ -13,9 +13,9 @@ import { LoadingService } from '../shared/services/loading.service';
 @Component({
   selector: 'app-feedbacks',
   standalone: true,
-  imports: [EmptyComponent ,   FontAwesomeModule , LoadingComponent, RouterLink],
-  templateUrl: './feedbacks.component.html',
-  styleUrl: './feedbacks.component.scss'
+    imports: [EmptyComponent, FontAwesomeModule, LoadingComponent, RouterLink],
+    templateUrl: './feedbacks.component.html',
+    styleUrl: './feedbacks.component.scss'
 })
 export class FeedbacksComponent {
  
