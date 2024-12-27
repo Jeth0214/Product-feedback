@@ -1,34 +1,22 @@
-<div class="rounded overflow-hidden shadow-sm bg-white p-6">
-  @if(comments().length) {
-    <h2 class="font-bold text-lg">{{ comments().length}} Comment{{ comments().length > 0 ?  's' : ''}}</h2>
 
-    <!-- Comments -->
-    @for(comment of comments(); track comment.id) {
-      <div class="border-b border-gray-200 py-6 ">
+
+    <!-- Comment-->
+
+      <div [ngClass]="commentBorder()"  class=" border-gray-200 py-8">
         <div class="flex items-center justify-between">
           <div class="flex gap-4">
-            <img class="h-10 w-10 rounded-full " [src]="comment.user.image" [alt]="comment.user.name">
+            <img class="h-10 w-10 rounded-full " [src]="comment().user.image" [alt]="comment().user.name">
             <div>
-              <h3 class="font-bold text-dark-800">{{ comment.user.name }}</h3>
-              <p>  {{ comment.user.username }}</p>
+              <h3 class="font-bold text-dark-800">{{ comment().user.name }}</h3>
+              <p> &commat;{{ comment().user.username }}</p>
             </div>
           </div>
 
           <button class="font-semibold text-blue cursor-pointer hover:underline transition-all ease-in-out"> Reply </button>
         </div>
 
-        <div >
-          <p class="mt-4">  {{ comment.content }} </p>
+        <div class="ps-0 md:ps-14 mt-3" >
+          <p>  {{ comment().content }} </p>
         </div>
-      
       </div>
-    }
-
-  }
-  @else {
-    <div>
-      <img class="mx-auto mb-12" src="./assets/suggestions/illustration-empty.svg" alt="Man with magnifying glass">
-      <h3 class="font-bold text-3xl mb-4 text-center">No Comments</h3>
-    </div>
-  }
-</div>
+    
