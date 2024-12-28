@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, Input, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -11,9 +11,9 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 export class FeedbackCommentFormComponent {
 
   // properties
-  title = 'Add Comment';
   maxCharacters = 250;
   remainingCharacters = this.maxCharacters;
+  @Input() isReply: boolean = false;
 
   // form
   commentForm: FormGroup;
