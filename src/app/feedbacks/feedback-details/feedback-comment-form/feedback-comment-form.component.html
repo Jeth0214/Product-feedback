@@ -1,30 +1,32 @@
-<div class="shadow-sm bg-white rounded-lg p-6 my-6">
-  <h2 class="font-bold text-lg text-dark-800">{{title}}</h2>
-
-  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-
-    <div class="mb-4 mt-6">
-
-      <textarea formControlName="comment" ngClass="{{ commentForm.get('comment')?.invalid && (commentForm.get('comment')?.dirty || commentForm.get('comment')?.touched) ? 'border-red' : 'border-0' }}"
-        class=" min-h-10 w-full resize-none rounded  bg-light-500 placeholder:text-dark-500 text-dark-800 text-sm  p-4 px-6 focus:border-blue" placeholder="Type your comment here"></textarea>
-
-        <!-- Validation -->
-        @if (commentForm.get('comment')?.invalid && (commentForm.get('comment')?.dirty || commentForm.get('comment')?.touched)) {
-          <div class="text-red text-sm">
-            @if (commentForm.get('comment')?.errors?.['required']) {
-              <div>Comment is required.</div>
-            }
-            @if (commentForm.get('comment')?.errors?.['maxlength']) {
-              <div>Comment cannot exceed {{ maxCharacters }} characters.</div>
-            }
-          </div>
+<form [formGroup]="commentForm" (ngSubmit)="onSubmit()" [ngClass]="isReply ? 'flex items-start gap-4' : ''">
+  
+    <div class="mb-4 flex-1">
+  
+      <textarea formControlName="comment"
+        ngClass="{{ commentForm.get('comment')?.invalid && (commentForm.get('comment')?.dirty || commentForm.get('comment')?.touched) ? 'border-red' : 'border-0' }}"
+        class=" min-h-10 w-full resize-none rounded  bg-light-500 placeholder:text-dark-500 text-dark-800 text-sm  p-4 px-6 focus:border-blue"
+        placeholder="Type your comment here"></textarea>
+  
+      <!-- Validation -->
+      @if (commentForm.get('comment')?.invalid && (commentForm.get('comment')?.dirty ||
+      commentForm.get('comment')?.touched)) {
+      <div class="text-red text-sm">
+        @if (commentForm.get('comment')?.errors?.['required']) {
+        <div>Comment is required.</div>
         }
-          
+        @if (commentForm.get('comment')?.errors?.['maxlength']) {
+        <div>Comment cannot exceed {{ maxCharacters }} characters.</div>
+        }
+      </div>
+      }
+  
     </div>
-
+  
     <div class="flex justify-between items-center">
-      <p>{{ remainingCharacters }} Characters left</p>
-      <button type="submit" class="bg-purple rounded-10 font-bold text-sm text-light-500 py-3 px-6 hover:bg-purple-500 transition-colors ease-in-out">Post Comment</button>
+      @if(!isReply) { <p>{{ remainingCharacters }} Characters left</p> }
+
+      <button type="submit"
+        class="bg-purple rounded-10 font-bold text-sm text-light-500 py-3 px-6 hover:bg-purple-500 transition-colors ease-in-out">Post
+        Comment</button>
     </div>
-  </form>
-</div>
+</form>
