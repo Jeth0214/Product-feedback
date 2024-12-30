@@ -1,1 +1,0 @@
-import{W as a,db as n,eb as o,qb as s,ub as i}from"./chunk-U7SXPUJH.js";var c=class t{static \u0275fac=function(e){return new(e||t)};static \u0275cmp=a({type:t,selectors:[["app-feedback-details"]],standalone:!0,features:[i],decls:2,vars:0,template:function(e,l){e&1&&(n(0,"p"),s(1,"feedback-details works!"),o())}})};export{c as FeedbackDetailsComponent};
