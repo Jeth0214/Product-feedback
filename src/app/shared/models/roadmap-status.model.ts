@@ -1,0 +1,1 @@
+export type RoadMapStatus = 'all' | 'suggestion' | 'planned' | 'in-progress' | 'live';

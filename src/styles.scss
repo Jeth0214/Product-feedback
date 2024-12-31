@@ -1,1 +1,58 @@
 /* You can add global styles to this file, and also import other style files */
+@use  'ngx-toastr/toastr';
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+
+// mobile side
+
+.menu-panel {
+  width: 0;
+  right: -16.9rem;
+  position: absolute;
+  z-index: 10;
+  top: 5.9rem;
+  bottom: 0;
+  padding: 1.5rem;
+  -webkit-transition: all .6s ease-in-out;
+  transition: all .6s ease-in-out;
+  z-index: 10000;
+}
+
+.menu-panel.show {
+    width: 16.9rem;
+  right: 0px;
+  background-color: white;
+  -webkit-transition: all .6s ease-in-out;
+  transition: all .6s ease-in-out;
+}
+
+.menu-background {
+  width: 0;
+  top: 0;
+  bottom: 0;
+  right: -100vh;
+  position: absolute;
+  z-index: 10;
+  top: 5.9rem;
+}
+
+.menu-background.show {
+  width: 100vw;
+  right: 0px;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-transition: all .6s ease-in-out;
+  transition: all .6s ease-in-out;
+}
+
+
+
+

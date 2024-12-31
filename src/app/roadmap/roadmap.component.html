@@ -1,0 +1,46 @@
+<div class="md:container px-0 md:px-6  md:mt-10">
+  <!-- Toolbar -->
+  <app-toolbar [title]="title" [isSuggestionPage]="false"></app-toolbar>
+
+  <!-- loadingSpinner -->
+  <app-loading />
+
+  <!-- Button Group on Mobile -->
+  <div class="flex justify-evenly gap-0  md:hidden border border-b-gray-200">
+    <button (click)="onSelectRoadMapStatus('planned')"
+      [ngClass]="selectedRoadMapStatus == 'planned' ? 'border-b-planned border-b-4  font-bold !text-dark-800' : ''"
+      class="flex-1 cursor py-5  text-sm text-gray-400 ">Planned ({{planned().length}}) </button>
+    <button (click)="onSelectRoadMapStatus('in-progress')"
+      [ngClass]="selectedRoadMapStatus == 'in-progress' ? 'border-b-in-progress border-b-4  font-bold !text-dark-800' : ''"
+      class="flex-1 cursor py-5 text-sm text-gray-400 ">In Progress ({{inProgress().length}}) </button>
+    <button (click)="onSelectRoadMapStatus('live')"
+      [ngClass]="selectedRoadMapStatus == 'live' ? 'border-b-live border-b-4  font-bold !text-dark-800' : ''"
+      class="flex-1 cursor py-5 text-sm text-gray-400">Live ({{live().length}}) </button>
+  </div>
+</div>
+
+@if(feedBacks().length > 0) {
+  <div class="container px-6">
+    <div class="grid gap-3 md:grid-cols-3">
+      <!-- Display all cards on larger screens -->
+       @if(selectedRoadMapStatus == 'planned' || isLargeScreen){
+         <app-roadmap-list-card  [feedBacks]="planned()" borderClass="border-planned" title="planned"
+           description="Ideas prioritized for research" />
+       }
+        @if(selectedRoadMapStatus == 'in-progress' || isLargeScreen){
+
+          <app-roadmap-list-card [feedBacks]="inProgress()" borderClass="border-in-progress" title="in-progress"
+            description="Features currently being developed" />
+        }
+        @if(selectedRoadMapStatus == 'live' || isLargeScreen){
+          <app-roadmap-list-card  [feedBacks]="live()" borderClass="border-live" title="live" description="Released features" />
+        }
+    </div>
+  </div>
+} 
+@else {
+  <app-empty />
+}
+
+
+
