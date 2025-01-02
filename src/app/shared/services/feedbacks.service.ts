@@ -47,7 +47,7 @@ async getFeedBackById(id: number): Promise<IFeedBack> {
   }
 
   // Adds a new feedback to the API and updates the feedbacks signal
-async addFeedback(feedback: IFeedBack): Promise<IFeedBack> {
+async addFeedback(feedback: Partial<IFeedBack>): Promise<IFeedBack> {
   const response$ = await this._http.post<IFeedBack>(this.api, feedback).pipe(
     catchError(
       this.handleError<IFeedBack>('Add Feedback', {} as IFeedBack)

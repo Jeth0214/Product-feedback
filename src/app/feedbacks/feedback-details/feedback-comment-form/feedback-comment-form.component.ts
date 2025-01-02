@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, inject, Input, signal } from '@angular/core';
+import { Component, computed, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -14,6 +14,8 @@ export class FeedbackCommentFormComponent {
   maxCharacters = 250;
   remainingCharacters = this.maxCharacters;
   @Input() isReply: boolean = false;
+  @Input() buttonText: string = 'Post Comment';
+  @Output() comment = new EventEmitter();
 
   // form
   commentForm: FormGroup;
@@ -43,8 +45,11 @@ export class FeedbackCommentFormComponent {
     if (this.commentForm.invalid) {
       return;
     }
+    const commentData = this.commentForm.value.comment.trim();
      // Log the trimmed comment value to the console
-    console.log("onSubmit", this.commentForm.value.comment.trim());
+    console.log("onSubmit", commentData);
+    this.comment.emit(commentData);
+    this.commentForm.setValue({ comment: '' });
   }
 
 }

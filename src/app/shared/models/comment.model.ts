@@ -5,5 +5,6 @@ export interface IComment {
   id: number,
   content: string,
   user: IUser,
-  replies?: IReply[]
+  replies?: IReply[];
+  replyingTo?: string;
 }
