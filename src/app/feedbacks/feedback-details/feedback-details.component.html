@@ -61,12 +61,12 @@
           @for(comment of comments(); track comment.id) {
             <div  class="border-b last:border-b-0 border-gray-200 pt-8 last:pb-0">
                   <!-- Comments -->
-                  <app-feedback-comments [comment]="comment" commentStatus="firstComment"/>
+                  <app-feedback-comments [comment]="comment" />
                   
                   <!-- REPLIES -->
                   @if(comment.replies?.length) {
                     @for(reply of comment.replies; track reply.replyingTo) {
-                    <app-feedback-comments [comment]="reply" commentStatus="reply" [isLast]="$last"/>
+                    <app-feedback-comments [comment]="reply"  [isLast]="$last"/>
                     }
                   }
             </div>
@@ -85,7 +85,7 @@
      <!-- Comment Form -->
     <div class="shadow-sm bg-white rounded-lg p-6 my-6">
       <h2 class="font-bold text-lg text-dark-800 mb-6">Add Comment</h2>
-      <app-feedback-comment-form  />
+      <app-feedback-comment-form  buttonText="Post Comment" />
     </div>
 
 

@@ -1,10 +1,10 @@
 <div [ngClass]="replyBorder()" >
   <div class="flex items-center justify-between">
     <div class="flex gap-4">
-      <img class="h-10 w-10 rounded-full " [src]="comment().user.image" [alt]="comment().user.name">
+      <img class="h-10 w-10 rounded-full " [src]="comment().user?.image" [alt]="comment().user?.name">
       <div>
-        <h3 class="font-bold text-dark-800">{{ comment().user.name }}</h3>
-        <p> &commat;{{ comment().user.username }}</p>
+        <h3 class="font-bold text-dark-800">{{ comment().user?.name }}</h3>
+        <p> &commat;{{ comment().user?.username }}</p>
       </div>
     </div>
 
@@ -12,13 +12,13 @@
   </div>
 
   <div class="ps-0 md:ps-14 mt-3"  [ngClass]="isLast()  ? 'pb-0' : 'pb-8'" >
-    <p>  {{ comment().content }} </p>
+    <p> <span class="text-purple font-bold" *ngIf="comment().replyingTo">&commat;{{ comment()?.replyingTo }}</span> {{ comment().content }} </p>
   </div>
 
   @if(showCommentForm) {
     <div class="ps-0 md:ps-14 mt-3 ">
 
-      <app-feedback-comment-form [isReply]="true" />
+      <app-feedback-comment-form [isReply]="true" buttonText="Post Reply" />
     </div>
   }
 </div>
