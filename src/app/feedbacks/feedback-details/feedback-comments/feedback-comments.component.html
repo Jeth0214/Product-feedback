@@ -8,11 +8,11 @@
       </div>
     </div>
 
-    <button (click)="onReply()" class="font-semibold text-blue cursor-pointer hover:underline transition-all ease-in-out"> Reply </button>
+    <button (click)="onShowCommentForm()" class="font-semibold text-blue cursor-pointer hover:underline transition-all ease-in-out"> Reply </button>
   </div>
 
   <div class="ps-0 md:ps-14 mt-3"  [ngClass]="isLast()  ? 'pb-0' : 'pb-8'" >
-    <p> <span class="text-purple font-bold" *ngIf="comment().replyingTo">&commat;{{ comment()?.replyingTo }}</span> {{ comment().content }} </p>
+    <p> <span class="text-purple font-bold" *ngIf="comment().replyingTo">&commat;{{ comment().replyingTo }}</span> {{ comment().content }} </p>
   </div>
 
   @if(showCommentForm) {

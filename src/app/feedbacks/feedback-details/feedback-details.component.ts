@@ -17,7 +17,7 @@ import { FeedBackService } from '../../shared/services/feedbacks.service';
 })
 export class FeedbackDetailsComponent {
    // Injections
-    _activatedRoute = inject(ActivatedRoute);
+  _activatedRoute = inject(ActivatedRoute);
   _authService = inject(AuthService);
   _feedbackService = inject(FeedBackService);
 
@@ -28,30 +28,31 @@ export class FeedbackDetailsComponent {
   feedBack = signal<IFeedBack | undefined>(undefined);
   comments = computed(() => this.feedBack()?.comments ?? []);
   title = computed(() => { return `${this.comments().length} Comment${this.comments().length > 1 ? 's' : ''}` });
-  
-  currentUser = this._authService.user();
+
 
 
    
 
   constructor() {
     this.feedBack.set(this._activatedRoute.snapshot.data["feedBackDetails"]);
-    effect( () => console.log(this.comments()) );
-    effect(() => console.log('user', this.currentUser));
-    this.addComment();
+    // effect( () => console.log(this.comments()) );
+    // effect(() => console.log('user', this.currentUser));
+    // this.addComment();
+    this.addFeedback();
   }
 
- async addComment() {
+  async addComment() {
+    const currentUser = this._authService!.user();
+    if (!currentUser) {
+        console.error('Current user is null');
+        return;
+    }
+
     let comment: IComment = {
       id: this.comments.length + 1,
       content: 'Hello',
-      user: {
-        image: "./assets/user-images/image-zena.jpg",
-        name: "Zena Kelley",
-        username: "velvetround"
-      }
+      user: currentUser,
    }
-   
 
     this.feedBack.update((current) => {
       if (current) {
@@ -60,11 +61,59 @@ export class FeedbackDetailsComponent {
       }
       return current;
     });
+   const updateFeedback = this.feedBack();
+    console.log('Feedback updated:', updateFeedback);
+      if (updateFeedback) {
+        try {
+          const feedback = await this._feedbackService.updateFeedback(updateFeedback.id, updateFeedback);
+          console.log('Feedback updated:', feedback);
+            this.feedBack.set(feedback);
+        } catch (error) {
+            console.error('Error updating feedback:', error);
+        }
+    } else {
+        console.error('Feedback is undefined');
+    }
+   
+  }
 
-    const updateFeedback = this.feedBack();
+ addFeedback() {
+  //   let data = {
+  //           id: 13,
+  //     title: "test",
+  //     category: "enhancement",
+  //     upvotes: 112,
+  //     status: "suggestion",
+  //     description: "Easier to search for solutions based on a specific stack.",
+  //   }
 
-  //  ! TODO: this
-    // this._feedbackService.updateFeedback(this.feedBack()!.id, updateFeedback());
+  //  this._feedbackService.addFeedBackObservable(data).subscribe({
+  //     next: (feedback) => {
+  //       console.log('Feedback added:', feedback);
+  //       this.feedBack.set(feedback);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error adding feedback:', error);
+  //     }
+   //   });
+   
+    // try {
+    //       const feedback = await this._feedbackService.addPOst();
+    //       console.log('Feedback updated:', feedback);
+    //         // this.feedBack.set(feedback);
+    //     } catch (error) {
+    //         console.error('Error updating feedback:', error);
+   //     }
+   
+      this._feedbackService.addPostObservable().subscribe({
+      next: (feedback) => {
+        console.log('Feedback added:', feedback);
+        this.feedBack.set(feedback);
+      },
+      error: (error) => {
+        console.error('Error adding feedback:', error);
+      }
+     });
   }
 
 

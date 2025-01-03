@@ -39,15 +39,16 @@ export class FeedbackCommentFormComponent {
 
   }
 
-  // Handle form submission 
+  /**
+ * Handles the form submission.
+ * If the form is invalid, it does nothing.
+ * Otherwise, it emits the trimmed comment data and resets the form.
+ */
   onSubmit() {
-    // If the form is invalid, do nothing
     if (this.commentForm.invalid) {
       return;
     }
     const commentData = this.commentForm.value.comment.trim();
-     // Log the trimmed comment value to the console
-    console.log("onSubmit", commentData);
     this.comment.emit(commentData);
     this.commentForm.setValue({ comment: '' });
   }
