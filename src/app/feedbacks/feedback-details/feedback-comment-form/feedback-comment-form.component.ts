@@ -33,7 +33,7 @@ export class FeedbackCommentFormComponent {
 
     // Listen to user input and update remainingCharacters based on the length of the input
     this.commentForm.get('comment')?.valueChanges.subscribe((value) => {
-      this.remainingCharacters = this.maxCharacters - value.length;
+      this.remainingCharacters = this.maxCharacters - value?.length;
       this.remainingCharacters = this.remainingCharacters < 0 ? 0 : this.remainingCharacters;
     });
 
@@ -50,7 +50,7 @@ export class FeedbackCommentFormComponent {
     }
     const commentData = this.commentForm.value.comment.trim();
     this.comment.emit(commentData);
-    this.commentForm.setValue({ comment: '' });
+    this.commentForm.reset();
   }
 
 }
