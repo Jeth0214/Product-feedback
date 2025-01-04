@@ -85,7 +85,7 @@
      <!-- Comment Form -->
     <div class="shadow-sm bg-white rounded-lg p-6 my-6">
       <h2 class="font-bold text-lg text-dark-800 mb-6">Add Comment</h2>
-      <app-feedback-comment-form  buttonText="Post Comment" />
+      <app-feedback-comment-form  buttonText="Post Comment" (comment)="addComment($event)" />
     </div>
 
 

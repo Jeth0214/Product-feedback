@@ -27,7 +27,7 @@ export class FeedbackCommentsComponent {
 
   
   constructor() {
-    effect(() => console.log('comment', this.comment()));
+    // effect(() => console.log('comment', this.comment()));
    }
 
   onShowCommentForm() {
