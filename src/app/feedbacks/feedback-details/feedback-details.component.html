@@ -1,21 +1,25 @@
 <div class="max-w-3xl mx-auto px-6 py-6 md:py-14 lg:py-20">
- 
+
   <!-- Toolbar -->
-   <section class="flex justify-between items-center">
-      <a routerLink="/" class="text-sm flex items-center gap-3 cursor-pointer transition hover:font-bold hover:underline">
-        <img loading="lazy" src="./assets/shared/icon-arrow-left.svg" alt="arrow left">
-        <span>Go Back</span>
-      </a>
+  <section class="flex justify-between items-center">
+    <a routerLink="/" class="text-sm flex items-center gap-3 cursor-pointer transition hover:font-bold hover:underline">
+      <img loading="lazy" src="./assets/shared/icon-arrow-left.svg" alt="arrow left">
+      <span>Go Back</span>
+    </a>
 
-      <button class="bg-blue text-white px-6 py-3 rounded-xl font-bold   hover:bg-blue-800 hover:text-light-500 transition ease-in-out">
-        Edit Feedback
-      </button>
-   </section>
-   
+      @if (feedBack()) {
+        <button
+          class="bg-blue text-white px-6 py-3 rounded-xl font-bold   hover:bg-blue-800 hover:text-light-500 transition ease-in-out">
+          Edit Feedback
+        </button>
+      }
+  </section>
 
-   <!-- Feedback -->
-    <section 
-      class="feedBack md:flex justify-between items-center shadow-sm bg-white rounded-lg px-8 py-7 my-5">
+
+
+  @if (feedBack()) {
+    <!-- Feedback -->
+    <section class="feedBack md:flex justify-between items-center shadow-sm bg-white rounded-lg px-8 py-7 my-5">
     
       <div class=" flex gap-x-10 gap-y-4 flex-col md:flex-row ">
         <div class="feedBack_upvotes order-2 md:order-1 flex justify-between md:block">
@@ -52,26 +56,26 @@
       </div>
       }
     </section>
-
-
+    
+    
     <!-- Feedback Comments -->
     <section class="rounded overflow-hidden shadow-sm bg-white p-6">
       @if(comments().length) {
-         <h2 class="font-bold text-lg text-dark-800">{{ title()}}</h2>
-          @for(comment of comments(); track comment.id) {
-            <div  class="border-b last:border-b-0 border-gray-200 pt-8 last:pb-0">
-                  <!-- Comments -->
-                  <app-feedback-comments [comment]="comment" />
-                  
-                  <!-- REPLIES -->
-                  @if(comment.replies?.length) {
-                    @for(reply of comment.replies; track reply.replyingTo) {
-                    <app-feedback-comments [comment]="reply"  [isLast]="$last"/>
-                    }
-                  }
-            </div>
-          }
-      } 
+      <h2 class="font-bold text-lg text-dark-800">{{ title()}}</h2>
+      @for(comment of comments(); track comment.id) {
+      <div class="border-b last:border-b-0 border-gray-200 pt-8 last:pb-0">
+        <!-- Comments -->
+        <app-feedback-comments [comment]="comment" />
+    
+        <!-- REPLIES -->
+        @if(comment.replies?.length) {
+        @for(reply of comment.replies; track reply.replyingTo) {
+        <app-feedback-comments [comment]="reply" [isLast]="$last" />
+        }
+        }
+      </div>
+      }
+      }
       @else {
       <div class="my-10">
         <img class="mx-auto mb-6" src="./assets/suggestions/illustration-empty.svg" alt="Man with magnifying glass">
@@ -79,14 +83,26 @@
       </div>
       }
     </section>
-
     
-
-     <!-- Comment Form -->
+    
+    
+    <!-- Comment Form -->
     <div class="shadow-sm bg-white rounded-lg p-6 my-6">
       <h2 class="font-bold text-lg text-dark-800 mb-6">Add Comment</h2>
-      <app-feedback-comment-form  buttonText="Post Comment" (comment)="addComment($event)" />
+      <app-feedback-comment-form [isLoading]="isLoading" buttonText="Post Comment" (comment)="addComment($event)" />
     </div>
+  }
+  @else {
+    <div class="h-screen grid items-center ">
+      <div>
+        <img class="mx-auto mb-6" src="./assets/suggestions/illustration-empty.svg" alt="Man with magnifying glass">
+        <h3 class="font-bold text-3xl text-center">Feedback Not Found </h3>
+      </div>
+    </div>
+  }
+
+
+   
 
 
 </div>
