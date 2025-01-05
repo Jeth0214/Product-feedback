@@ -1,10 +1,11 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-feedback-comment-form',
-  imports: [ReactiveFormsModule, NgClass],
+  imports: [ReactiveFormsModule, NgClass, LoadingComponent],
   templateUrl: './feedback-comment-form.component.html',
   styleUrl: './feedback-comment-form.component.scss'
 })
@@ -15,6 +16,7 @@ export class FeedbackCommentFormComponent {
   remainingCharacters = this.maxCharacters;
   @Input() isReply: boolean = false;
   @Input() buttonText: string = 'Post Comment';
+  @Input() isLoading: boolean = false;
   @Output() comment = new EventEmitter();
 
   // form
@@ -22,6 +24,7 @@ export class FeedbackCommentFormComponent {
 
   // injections
   _fb = inject(FormBuilder);
+
   
   constructor() {
 

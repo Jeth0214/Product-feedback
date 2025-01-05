@@ -9,6 +9,8 @@ import { AuthService } from '../../shared/services/auth.service';
 import { IComment } from '../../shared/models/comment.model';
 import { FeedBackService } from '../../shared/services/feedbacks.service';
 import { IUser } from '../../shared/models/user.model';
+import { LoadingService } from '../../shared/services/loading.service';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
 
 @Component({
     selector: 'app-feedback-details',
@@ -17,14 +19,17 @@ import { IUser } from '../../shared/models/user.model';
     styleUrl: './feedback-details.component.scss'
 })
 export class FeedbackDetailsComponent {
+
    // Injections
   _activatedRoute = inject(ActivatedRoute);
   _authService = inject(AuthService);
   _feedbackService = inject(FeedBackService);
   _router = inject(Router);
+  _loadingService = inject(LoadingService);
 
   // properties
   upVoteIcon = faChevronUp;
+  isLoading: boolean = false;
 
   // signals
   feedBack = signal<IFeedBack | undefined>(undefined);
@@ -37,17 +42,18 @@ export class FeedbackDetailsComponent {
 
   constructor() {
     this.feedBack.set(this._activatedRoute.snapshot.data["feedBackDetails"]);
-    // this.updateFeedback();
+
   }
 
   async addComment(commentdata: string) {
-    const currentUser = this._authService!.user() as IUser;
+    const currentUser = this._authService.user() as IUser;
     let comment: IComment = {
       id: this.comments.length + 1,
       content: commentdata,
       user: currentUser,
    }
 
+    // since we don have a comment endpoint, we will update the feedback with the new or added comment 
     this.feedBack.update((current) => {
       if (current) {
         current.comments = current.comments ?? [];
@@ -55,10 +61,9 @@ export class FeedbackDetailsComponent {
       }
       return current;
     });
-      
-    const updatedFeedBack = this.feedBack() as IFeedBack;
+   const updatedFeedBack = this.feedBack() as IFeedBack;
 
-    this.updateFeedBack(updatedFeedBack); 
+   await this.updateFeedBack(updatedFeedBack); 
     
    
   }
@@ -68,12 +73,17 @@ export class FeedbackDetailsComponent {
 
 
   async updateFeedBack(feedBack: IFeedBack) {
-      try {
-        const updatedFeedbackFromService = await this._feedbackService.updateFeedback(feedBack);
-        this.feedBack.set(updatedFeedbackFromService);
-      } catch (error) {
-        console.error('Error updating feedback:', error);
-      }
+    this._loadingService.loadingOn();
+    this.isLoading = true;
+    try {
+      const updatedFeedbackFromService = await this._feedbackService.updateFeedback(feedBack);
+      this.feedBack.set(updatedFeedbackFromService);
+    } catch (error) {
+      console.error('Error updating feedback:', error);
+    } finally { 
+      this._loadingService.loadingOff();
+      this.isLoading = false;
+    }
   }
    
   

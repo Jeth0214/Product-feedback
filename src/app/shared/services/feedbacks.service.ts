@@ -28,7 +28,8 @@ export class FeedBackService {
 
 
   // signals
-  feedBacks = signal<IFeedBack[]>([])
+  #feedBacks = signal<IFeedBack[]>([]);
+  feedBacksSignal = this.#feedBacks.asReadonly();
 
 // Fetches all feedbacks from the API
  async getAllFeedBacks(): Promise<IFeedBack[]> { 
@@ -37,7 +38,9 @@ export class FeedBackService {
         this.handleError<IFeedBack[]>('Get All Feedbacks', [] as IFeedBack[])
     ));;
    const feedBacks = await firstValueFrom(response$);
-    return  feedBacks ?? [];
+
+    this.#feedBacks.set(feedBacks);
+    return  feedBacks;
   }
 
 // Fetches a specific feedback by its ID from the API
@@ -57,7 +60,7 @@ async addFeedback(feedback: Partial<IFeedBack>): Promise<IFeedBack> {
       this.handleError<IFeedBack>('Add Feedback', {} as IFeedBack)
   ));
   const newFeedback = await firstValueFrom(response$);
-  this.feedBacks.update((current) => [...current, newFeedback]);
+  this.#feedBacks.update((current) => [...current, newFeedback]);
   return newFeedback;
 }
   
@@ -68,14 +71,14 @@ async addFeedback(feedback: Partial<IFeedBack>): Promise<IFeedBack> {
   async updateFeedback(feedback: IFeedBack): Promise<IFeedBack> {
     const response$ = await this._http.put<IFeedBack>(this.api, feedback).pipe(
     // I console.log the response to see the updated object , no return value either no error or success
-    tap((response) => console.log('Feedback updated response', response)), 
+    tap((response) => console.log('Feedback updated response from observable', response)), 
     catchError(
       this.handleError<IFeedBack>('Update Feedback', {} as IFeedBack)
   ));
     const updatedFeedback = await firstValueFrom(response$);
     // I console.log the response to see the updated object , no return value either no error or success
   console.log('Updated FeedBack from service', updatedFeedback);
-  this.feedBacks.update((current) => current.map(fb => fb.id === feedback.id ? feedback : fb));
+  this.#feedBacks.update((current) => current.map(fb => fb.id === feedback.id ? feedback : fb));
   return feedback;
   }
   
@@ -88,7 +91,7 @@ async deleteFeedback(id: number): Promise<void> {
       this.handleError<void>('Delete Feedback')
   ));
   await firstValueFrom(response$);
-  this.feedBacks.update((current) => current.filter(fb => fb.id !== id));
+  this.#feedBacks.update((current) => current.filter(fb => fb.id !== id));
   }
   
 
