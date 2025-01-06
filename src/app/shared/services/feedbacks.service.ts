@@ -76,7 +76,7 @@ async addFeedback(feedback: Partial<IFeedBack>): Promise<IFeedBack> {
       this.handleError<IFeedBack>('Update Feedback', {} as IFeedBack)
   ));
     const updatedFeedback = await firstValueFrom(response$);
-    // I console.log the response to see the updated object , no return value either no error or success
+    // I console.log the response to see the updated object , no return value neither error nor success
   console.log('Updated FeedBack from service', updatedFeedback);
   this.#feedBacks.update((current) => current.map(fb => fb.id === feedback.id ? feedback : fb));
   return feedback;
@@ -105,7 +105,7 @@ async deleteFeedback(id: number): Promise<void> {
     // show error alert message
     this._toastrService.error(`${operation} failed: ${error.body.error}`, 'Error');
 
-    // this._router.navigate(['/']);
+    this._router.navigate(['/']);
     // Let the app keep running by returning an empty result.
     return of(result as T);
   };
