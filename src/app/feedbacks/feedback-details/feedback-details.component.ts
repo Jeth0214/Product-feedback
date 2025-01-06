@@ -1,8 +1,8 @@
 import { Component,  computed,  effect,  inject, signal } from '@angular/core';
 import { IFeedBack } from '../../shared/models/feedbacks.model';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faChevronUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FeedbackCommentsComponent } from './feedback-comments/feedback-comments.component';
 import { FeedbackCommentFormComponent } from './feedback-comment-form/feedback-comment-form.component';
 import { AuthService } from '../../shared/services/auth.service';
@@ -11,10 +11,11 @@ import { FeedBackService } from '../../shared/services/feedbacks.service';
 import { IUser } from '../../shared/models/user.model';
 import { LoadingService } from '../../shared/services/loading.service';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'app-feedback-details',
-    imports: [RouterLink, FontAwesomeModule, FeedbackCommentsComponent, FeedbackCommentFormComponent],
+    imports: [RouterLink, FontAwesomeModule, FeedbackCommentsComponent, FeedbackCommentFormComponent, LoadingComponent],
     templateUrl: './feedback-details.component.html',
     styleUrl: './feedback-details.component.scss'
 })
@@ -26,9 +27,12 @@ export class FeedbackDetailsComponent {
   _feedbackService = inject(FeedBackService);
   _router = inject(Router);
   _loadingService = inject(LoadingService);
+  _toastrService = inject(ToastrService);
+
 
   // properties
-  upVoteIcon = faChevronUp;
+  upVoteIcon:IconDefinition = faChevronUp;
+  id: number = 0;
   isLoading: boolean = false;
 
   // signals
@@ -41,8 +45,44 @@ export class FeedbackDetailsComponent {
    
 
   constructor() {
-    this.feedBack.set(this._activatedRoute.snapshot.data["feedBackDetails"]);
+    // Get feedback details using resolver
+    // has issue if user manually type the id in the search bar
+    // this.feedBack.set(this._activatedRoute.snapshot.data["feedBackDetails"]);
+    
 
+    // use paramMap to get feedback id dynamically
+    this.getRouteId();
+
+
+  }
+
+  getRouteId() {
+      this._activatedRoute.paramMap.subscribe( (param: ParamMap) => { 
+      const feedBackID = param.get('feedBackId');
+      if (feedBackID) {
+        this.id = +feedBackID;
+        this.getFeedBackById(this.id);
+      } else {
+        this._toastrService.error('No id provided');
+        this._router.navigate(['/home']);
+      }
+    })
+  }
+
+  async getFeedBackById(id: number) {
+    this._loadingService.loadingOn();
+    try {
+      const feedBackFromApi = await this._feedbackService.getFeedBackById(id);
+
+      this.feedBack.set(feedBackFromApi);
+    }
+    catch (error) {
+      console.error(error);
+      this._router.navigate(['/home']);
+    }
+    finally {
+       this._loadingService.loadingOff();
+    }
   }
 
   async addComment(commentdata: string) {
@@ -73,7 +113,6 @@ export class FeedbackDetailsComponent {
 
 
   async updateFeedBack(feedBack: IFeedBack) {
-    this._loadingService.loadingOn();
     this.isLoading = true;
     try {
       const updatedFeedbackFromService = await this._feedbackService.updateFeedback(feedBack);
@@ -81,7 +120,6 @@ export class FeedbackDetailsComponent {
     } catch (error) {
       console.error('Error updating feedback:', error);
     } finally { 
-      this._loadingService.loadingOff();
       this.isLoading = false;
     }
   }

@@ -5,7 +5,7 @@ import { LoadingComponent } from '../../../shared/components/loading/loading.com
 
 @Component({
   selector: 'app-feedback-comment-form',
-  imports: [ReactiveFormsModule, NgClass, LoadingComponent],
+  imports: [ReactiveFormsModule, NgClass],
   templateUrl: './feedback-comment-form.component.html',
   styleUrl: './feedback-comment-form.component.scss'
 })
@@ -51,7 +51,9 @@ export class FeedbackCommentFormComponent {
     if (this.commentForm.invalid) {
       return;
     }
+
     const commentData = this.commentForm.value.comment.trim();
+    console.log(commentData);
     this.comment.emit(commentData);
     this.commentForm.reset();
   }
