@@ -1,6 +1,7 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, inject, Input, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-feedback-comment-form',
@@ -14,12 +15,16 @@ export class FeedbackCommentFormComponent {
   maxCharacters = 250;
   remainingCharacters = this.maxCharacters;
   @Input() isReply: boolean = false;
+  @Input() buttonText: string = 'Post Comment';
+  @Input() isLoading: boolean = false;
+  @Output() comment = new EventEmitter();
 
   // form
   commentForm: FormGroup;
 
   // injections
   _fb = inject(FormBuilder);
+
   
   constructor() {
 
@@ -31,20 +36,26 @@ export class FeedbackCommentFormComponent {
 
     // Listen to user input and update remainingCharacters based on the length of the input
     this.commentForm.get('comment')?.valueChanges.subscribe((value) => {
-      this.remainingCharacters = this.maxCharacters - value.length;
+      this.remainingCharacters = this.maxCharacters - value?.length;
       this.remainingCharacters = this.remainingCharacters < 0 ? 0 : this.remainingCharacters;
     });
 
   }
 
-  // Handle form submission 
+  /**
+ * Handles the form submission.
+ * If the form is invalid, it does nothing.
+ * Otherwise, it emits the trimmed comment data and resets the form.
+ */
   onSubmit() {
-    // If the form is invalid, do nothing
     if (this.commentForm.invalid) {
       return;
     }
-     // Log the trimmed comment value to the console
-    console.log("onSubmit", this.commentForm.value.comment.trim());
+
+    const commentData = this.commentForm.value.comment.trim();
+    console.log(commentData);
+    this.comment.emit(commentData);
+    this.commentForm.reset();
   }
 
 }

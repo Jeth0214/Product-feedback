@@ -1,13 +1,13 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { provideInMemoryDataService } from './shared/services/in-memory-data.service';
-import { loadingInterceptor } from './shared/services/loading.interceptor';
+import { provideHttpClient, withFetch} from '@angular/common/http';
+import { InMemoryDataService, provideInMemoryDataService } from './shared/services/in-memory-data.service';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,8 +15,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideHttpClient(withFetch()),
-    provideInMemoryDataService({ dataEncapsulation: false }),
+    // provideInMemoryDataService({ dataEncapsulation: false }),
     provideAnimations(),
-    provideToastr()
+    provideToastr(),
+    importProvidersFrom(HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService))
   ]
 };
