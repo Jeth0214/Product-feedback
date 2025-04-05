@@ -1,8 +1,8 @@
   @if(feedBacks()) {
       <app-loading [full]="true" />
       @for( feedBack of feedBacks(); track feedBack.id) {
-      <div [routerLink]="['/feedbacks', feedBack.id]"
-        class="feedBack mx-4 md:mx-0 cursor-pointer group/card hover:shadow-2xl hover:transition-all  md:flex justify-between items-center shadow-md bg-white rounded-lg px-8 py-7 my-5">
+      <div 
+        class="feedBack mx-4 md:mx-0  group/card hover:shadow-2xl hover:transition-all  md:flex justify-between items-center shadow-md bg-white rounded-lg px-8 py-7 my-5">
       
         <div class=" flex gap-x-10 gap-y-4 flex-col md:flex-row ">
           <div class="feedBack_upvotes order-2 md:order-1 flex justify-between md:block">
@@ -24,7 +24,7 @@
           </div>
       
           <div class="feedBack_descriptions order-1 md:order-2">
-            <h3 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack.title}}</h3>
+            <h3 [routerLink]="['/feedbacks', feedBack.id]" class="text-lg cursor-pointer font-bold group-hover/card:text-blue">{{feedBack.title}}</h3>
             <p class="my-2">{{feedBack.description}}</p>
             <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">
               {{feedBack.category}}</p>
