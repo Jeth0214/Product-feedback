@@ -9,11 +9,24 @@ import { LoadingComponent } from '../shared/components/loading/loading.component
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { LoadingService } from '../shared/services/loading.service';
+import { RoadmapMainCardComponent } from '../roadmap/roadmap-main-card/roadmap-main-card.component';
+import { CategoryComponent } from './category/category.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { FeedbackBoardComponent } from "./feedback-board/feedback-board.component";
 
 @Component({
   selector: 'app-feedbacks',
   standalone: true,
-    imports: [EmptyComponent, FontAwesomeModule, LoadingComponent, RouterLink],
+  imports: [
+    // EmptyComponent,
+    // FontAwesomeModule,
+    // LoadingComponent,
+    // RouterLink,
+    // ToolbarComponent,
+    RoadmapMainCardComponent,
+    CategoryComponent,
+    FeedbackBoardComponent
+],
     templateUrl: './feedbacks.component.html',
     styleUrl: './feedbacks.component.scss'
 })

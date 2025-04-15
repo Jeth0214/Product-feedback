@@ -1,4 +1,4 @@
-  @if(feedBacks()) {
+  <!-- @if(feedBacks()) {
       <app-loading [full]="true" />
       @for( feedBack of feedBacks(); track feedBack.id) {
       <div 
@@ -44,9 +44,57 @@
    } 
   @else {
     <app-empty />
-  }
+  } -->
   
+  <header class="lg:basis-64 md:flex md:flex-row lg:flex-col md:justify-between lg:justify-start gap-8 ">
 
+    <app-feedback-board></app-feedback-board>
+
+    <!-- show on medium devices -->
+    <div class=" hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
+  
+      <app-category />
+  
+    </div>
+  
+    <div class="hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
+  
+      <app-roadmap-main-card />
+  
+    </div>
+  
+    <!-- Show on mobile devices -->
+    <div class="block md:hidden">
+      <!-- <div class="menu-background" [class.show]="isOpen"></div> -->
+      <div class="menu-background"></div>
+      <!-- <div class="menu-panel text-center" [class.show]="isOpen"> -->
+      <div class="menu-panel text-center">
+        <div class="bg-white  rounded-lg shadow-md  p-6">
+  
+          <app-category />
+  
+        </div>
+        <div class="bg-white  rounded-lg shadow-md  p-6  mt-6 md:mt-0">
+  
+          <app-roadmap-main-card />
+  
+        </div>
+  
+      </div>
+    </div>
+  
+  
+  
+  
+  </header>
+  
+  <div class="flex-auto">
+  
+    <!-- <app-toolbar [isSuggestionPage]="true" [title]="'Suggestions'" /> -->
+  
+    <!-- <app-feedbacks /> -->
+  
+  </div>
 
 
 

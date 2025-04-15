@@ -1,10 +1,12 @@
 import { Component , Input} from '@angular/core';
-import { DropdownComponent } from '../shared/components/dropdown/dropdown.component';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { RouterLink } from '@angular/router';
+import { DropdownComponent } from '../../shared/components/dropdown/dropdown.component';
 
 @Component({
+  standalone: true,
     selector: 'app-toolbar',
     imports: [DropdownComponent, FontAwesomeModule, RouterLink],
     templateUrl: './toolbar.component.html',

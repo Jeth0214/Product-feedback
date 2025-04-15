@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from "@angular/router";
-import { IFeedBack } from "../../shared/models/feedbacks.model";
-import { FeedBackService } from "../../shared/services/feedbacks.service";
+import { IFeedBack } from "../shared/models/feedbacks.model";
+import { FeedBackService } from "../shared/services/feedbacks.service";
 import { inject } from "@angular/core";
 
 export const feedBackDetailsResolver: ResolveFn<IFeedBack | null> = 
