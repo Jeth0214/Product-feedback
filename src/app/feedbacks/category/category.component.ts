@@ -2,6 +2,7 @@ import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
+  standalone: true,
     selector: 'app-category',
     imports: [NgClass],
     templateUrl: './category.component.html',
