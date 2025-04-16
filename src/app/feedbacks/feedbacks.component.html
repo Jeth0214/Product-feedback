@@ -1,100 +1,95 @@
-  <!-- @if(feedBacks()) {
-      <app-loading [full]="true" />
-      @for( feedBack of feedBacks(); track feedBack.id) {
-      <div 
-        class="feedBack mx-4 md:mx-0  group/card hover:shadow-2xl hover:transition-all  md:flex justify-between items-center shadow-md bg-white rounded-lg px-8 py-7 my-5">
-      
-        <div class=" flex gap-x-10 gap-y-4 flex-col md:flex-row ">
-          <div class="feedBack_upvotes order-2 md:order-1 flex justify-between md:block">
-      
-            <button
-              class="group/upvote flex gap-x-2 flex-row items-center  md:flex-col px-2 py-3 font-bold min-w-12 bg-light-500 rounded-10 hover:bg-light-300  active:bg-blue active:text-white transition">
-              <fa-icon class="font-bold text-blue group-active/upvote:text-white" [icon]="upVoteIcon"></fa-icon>
-              <span class="text-sm">{{feedBack.upvotes}}</span>
-            </button>
-      
-            @if(feedBack.comments) {
-            <div class=" feedback_comment_count flex  md:hidden items-center gap-2">
-              <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
-              <p class="font-bold">{{feedBack.comments.length}}</p>
-            </div>
-            }
-      
-      
-          </div>
-      
-          <div class="feedBack_descriptions order-1 md:order-2">
-            <h3 [routerLink]="['/feedbacks', feedBack.id]" class="text-lg cursor-pointer font-bold group-hover/card:text-blue">{{feedBack.title}}</h3>
-            <p class="my-2">{{feedBack.description}}</p>
-            <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">
-              {{feedBack.category}}</p>
-          </div>
-      
-        </div>
-      
-        @if(feedBack.comments) {
-        <div class="feedback_comment_count hidden md:flex  items-center gap-2">
-          <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
-          <p class="font-bold">{{feedBack.comments.length}}</p>
-        </div>
-        }
-      </div>
-      
-      }
-   } 
-  @else {
-    <app-empty />
-  } -->
-  
-  <header class="lg:basis-64 md:flex md:flex-row lg:flex-col md:justify-between lg:justify-start gap-8 ">
 
-    <app-feedback-board></app-feedback-board>
+  <main class="main md:container md:px-6  md:my-10 md:flex md:flex-col lg:flex-row gap-8 relative overflow-hidden">
 
-    <!-- show on medium devices -->
-    <div class=" hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
+    <aside class="lg:basis-64 md:flex md:flex-row lg:flex-col md:justify-between lg:justify-start gap-8 ">
   
-      <app-category />
+      <app-feedback-board (isMenuOpen)="toggleRoadmapAndFilter($event)"></app-feedback-board>
   
-    </div>
-  
-    <div class="hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
-  
-      <app-roadmap-main-card />
-  
-    </div>
-  
-    <!-- Show on mobile devices -->
-    <div class="block md:hidden">
-      <!-- <div class="menu-background" [class.show]="isOpen"></div> -->
-      <div class="menu-background"></div>
-      <!-- <div class="menu-panel text-center" [class.show]="isOpen"> -->
-      <div class="menu-panel text-center">
-        <div class="bg-white  rounded-lg shadow-md  p-6">
-  
-          <app-category />
-  
-        </div>
-        <div class="bg-white  rounded-lg shadow-md  p-6  mt-6 md:mt-0">
-  
-          <app-roadmap-main-card />
-  
-        </div>
-  
+      <!-- show on medium devices -->
+      <div class=" hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
+    
+        <app-category />
+    
       </div>
+    
+      <div class="hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
+    
+        <app-roadmap-main-card />
+    
+      </div>
+    
+      <!-- Show on mobile devices -->
+      <div class="block md:hidden">
+        <div class="menu- show" [class.show]="isOpen"></div>
+        <!-- <div class="menu-background show"></div> -->
+        <div class="menu-panel text-center" [class.show]="isOpen">
+        <!-- <div class="menu-panel text-center "> -->
+          <div class="bg-white  rounded-lg shadow-md  p-6">
+            <app-category />
+          </div>
+          <div class="bg-white  rounded-lg shadow-md  p-6  mt-6 md:mt-0">
+            <app-roadmap-main-card />
+          </div>
+        </div>
+      </div>
+    </aside>
+    
+    <div class="flex-auto">
+    
+      <app-toolbar [isSuggestionPage]="true" [title]="'Suggestions'" />
+    
+      <app-feedback-list></app-feedback-list>
+
+        @if(feedBacks()) {
+              <app-loading [full]="true" />
+              @for( feedBack of feedBacks(); track feedBack.id) {
+              <div 
+                class="feedBack mx-4 md:mx-0  group/card hover:shadow-2xl hover:transition-all  md:flex justify-between items-center shadow-md bg-white rounded-lg px-8 py-7 my-5">
+              
+                <div class=" flex gap-x-10 gap-y-4 flex-col md:flex-row ">
+                  <div class="feedBack_upvotes order-2 md:order-1 flex justify-between md:block">
+              
+                    <button
+                      class="group/upvote flex gap-x-2 flex-row items-center  md:flex-col px-2 py-3 font-bold min-w-12 bg-light-500 rounded-10 hover:bg-light-300  active:bg-blue active:text-white transition">
+                      <fa-icon class="font-bold text-blue group-active/upvote:text-white" [icon]="upVoteIcon"></fa-icon>
+                      <span class="text-sm">{{feedBack.upvotes}}</span>
+                    </button>
+              
+                    @if(feedBack.comments) {
+                    <div class=" feedback_comment_count flex  md:hidden items-center gap-2">
+                      <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
+                      <p class="font-bold">{{feedBack.comments.length}}</p>
+                    </div>
+                    }
+              
+              
+                  </div>
+              
+                  <div class="feedBack_descriptions order-1 md:order-2">
+                    <h3 [routerLink]="['/feedbacks', feedBack.id]" class="text-lg cursor-pointer font-bold group-hover/card:text-blue">{{feedBack.title}}</h3>
+                    <p class="my-2">{{feedBack.description}}</p>
+                    <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">
+                      {{feedBack.category}}</p>
+                  </div>
+              
+                </div>
+              
+                @if(feedBack.comments) {
+                <div class="feedback_comment_count hidden md:flex  items-center gap-2">
+                  <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
+                  <p class="font-bold">{{feedBack.comments.length}}</p>
+                </div>
+                }
+              </div>
+              
+              }
+           } 
+          @else {
+            <app-empty />
+          }
+    
     </div>
-  
-  
-  
-  
-  </header>
-  
-  <div class="flex-auto">
-  
-    <!-- <app-toolbar [isSuggestionPage]="true" [title]="'Suggestions'" /> -->
-  
-    <!-- <app-feedbacks /> -->
-  
-  </div>
+  </main>
 
 
 

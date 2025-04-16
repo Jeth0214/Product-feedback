@@ -13,19 +13,19 @@ import { RoadmapMainCardComponent } from '../roadmap/roadmap-main-card/roadmap-m
 import { CategoryComponent } from './category/category.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { FeedbackBoardComponent } from "./feedback-board/feedback-board.component";
+import { FeedbackListComponent } from './feedback-list/feedback-list.component';
 
 @Component({
   selector: 'app-feedbacks',
   standalone: true,
   imports: [
-    // EmptyComponent,
-    // FontAwesomeModule,
-    // LoadingComponent,
-    // RouterLink,
-    // ToolbarComponent,
+
+    ToolbarComponent,
     RoadmapMainCardComponent,
     CategoryComponent,
-    FeedbackBoardComponent
+    FeedbackBoardComponent,
+    ToolbarComponent, 
+    FeedbackListComponent
 ],
     templateUrl: './feedbacks.component.html',
     styleUrl: './feedbacks.component.scss'
@@ -42,7 +42,11 @@ export class FeedbacksComponent {
   // Injections
   _feedBackService = inject(FeedBackService);
   _toastrService = inject(ToastrService);
-  _loadingService= inject(LoadingService);
+  _loadingService = inject(LoadingService);
+  
+  // property to show hide roadmap and filter cards
+  isOpen = false;
+
 
   constructor() {
    this.getFeedBacks();
@@ -62,5 +66,10 @@ export class FeedbacksComponent {
   }
 
 
+  // method to toggle the roadmap and filter cards
+  toggleRoadmapAndFilter(event: any) { 
+    console.log(event);
+    this.isOpen = event;
+  }
 
 }
