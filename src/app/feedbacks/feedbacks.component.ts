@@ -32,43 +32,23 @@ import { FeedbackListComponent } from './feedback-list/feedback-list.component';
 })
 export class FeedbacksComponent {
  
-  // properties
-  plusIcon = faPlus;
-  upVoteIcon = faChevronUp;
-  commentIcon = faComment;
-  feedBacks = signal<IFeedBack[]>([]);
 
 
-  // Injections
-  _feedBackService = inject(FeedBackService);
-  _toastrService = inject(ToastrService);
-  _loadingService = inject(LoadingService);
+
+
+
   
   // property to show hide roadmap and filter cards
   isOpen = false;
 
 
-  constructor() {
-   this.getFeedBacks();
-  }
+ 
 
-  async getFeedBacks() {
-    this._loadingService.loadingOn();
-    try {
-      const feedBacks = await this._feedBackService.getAllFeedBacks();
-      this.feedBacks.set(feedBacks);
-    } catch (error) {
-      const errorMessage = ( error as HttpErrorResponse ).message || 'Unknown error';
-      this._toastrService.error(errorMessage, 'Error');
-    } finally {
-      this._loadingService.loadingOff();
-    }
-  }
+
 
 
   // method to toggle the roadmap and filter cards
   toggleRoadmapAndFilter(event: any) { 
-    console.log(event);
     this.isOpen = event;
   }
 
