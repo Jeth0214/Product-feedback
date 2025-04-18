@@ -27,7 +27,7 @@ export class FeedbackListComponent {
   plusIcon = faPlus;
   upVoteIcon = faChevronUp;
   commentIcon = faComment;
-    feedBacks = signal<IFeedBack[]>([]);
+  feedBacks = signal<IFeedBack[]>([]);
 
   // Injections
   _feedBackService = inject(FeedBackService);

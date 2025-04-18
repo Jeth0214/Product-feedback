@@ -6,7 +6,7 @@ import { feedBackDetailsResolver } from './feedback-details/feedback-details.res
 export const routes: Routes = [
   { path: '', redirectTo: '/feedbacks', pathMatch: 'full' },
   {path: 'feedbacks', loadComponent: () => import('./feedbacks/feedbacks.component').then(m => m.FeedbacksComponent) },
-  { path: 'feedback/:id', resolve: { feedBackDetails: feedBackDetailsResolver } , loadComponent: () => import('./feedback-details/feedback-details.component').then(m => m.FeedbackDetailsComponent) },
+  { path: 'feedbacks:id', resolve: { feedBackDetails: feedBackDetailsResolver } , loadComponent: () => import('./feedback-details/feedback-details.component').then(m => m.FeedbackDetailsComponent) },
   { path: 'roadmap', loadComponent: () => import('./roadmap/roadmap.component').then(m => m.RoadmapComponent ) },
   {path: '**', loadComponent: () => import('./page-404/page-404.component').then(m => m.Page404Component)}
 ];

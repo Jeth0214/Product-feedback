@@ -58,13 +58,13 @@ export class FeedbackDetailsComponent {
 
   getRouteId() {
       this._activatedRoute.paramMap.subscribe( (param: ParamMap) => { 
-      const feedBackID = param.get('feedBackId');
+      const feedBackID = param.get('id');
       if (feedBackID) {
         this.id = +feedBackID;
         this.getFeedBackById(this.id);
       } else {
         this._toastrService.error('No id provided');
-        this._router.navigate(['/home']);
+        this._router.navigate(['/feedbacks']);
       }
     })
   }
