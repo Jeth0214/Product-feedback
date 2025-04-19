@@ -104,8 +104,6 @@ async deleteFeedback(id: number): Promise<void> {
 
     // show error alert message
     this._toastrService.error(`${operation} failed: ${error.body.error}`, 'Error');
-
-    this._router.navigate(['/']);
     // Let the app keep running by returning an empty result.
     return of(result as T);
   };
