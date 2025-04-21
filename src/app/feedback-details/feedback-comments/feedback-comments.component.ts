@@ -32,8 +32,8 @@ export class FeedbackCommentsComponent {
 
   
   constructor() {
-    effect(() => console.log('comment', this.comment()));
-    effect(() => console.log('Feedback', this.feedBack()));
+    // effect(() => console.log('comment', this.comment()));
+    // effect(() => console.log('Feedback', this.feedBack()));
     this.addComment();
    }
 

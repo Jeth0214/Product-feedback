@@ -6,7 +6,6 @@ import { inject } from "@angular/core";
 export const feedBackDetailsResolver: ResolveFn<IFeedBack | null> = 
   async (route : ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
     const id = route.paramMap.get('id');
-    console.log('id', route.paramMap);
     if (!id) {
       return null;
     }
