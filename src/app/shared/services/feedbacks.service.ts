@@ -5,11 +5,8 @@ import { IFeedBack } from "../models/feedbacks.model";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { IComment } from "../models/comment.model";
+import { toSignal  } from "@angular/core/rxjs-interop";
 
-interface IDepartment {
-  id: number;
-  name: string;
- }
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +27,8 @@ export class FeedBackService {
   // signals
   #feedBacks = signal<IFeedBack[]>([]);
   feedBacksSignal = this.#feedBacks.asReadonly();
+
+
 
 // Fetches all feedbacks from the API
  async getAllFeedBacks(): Promise<IFeedBack[]> { 
