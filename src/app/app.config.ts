@@ -1,23 +1,45 @@
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ApplicationConfig, importProvidersFrom, inject, provideExperimentalZonelessChangeDetection, provideZoneChangeDetection } from '@angular/core';
+import { createUrlTreeFromSnapshot, PreloadAllModules, provideRouter, Router, withComponentInputBinding, withInMemoryScrolling, withPreloading, withRouterConfig, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch} from '@angular/common/http';
-import { InMemoryDataService, provideInMemoryDataService } from './shared/services/in-memory-data.service';
+import { InMemoryDataService } from './shared/services/in-memory-data.service';
 import { provideToastr } from 'ngx-toastr';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(
+      routes,
+      withInMemoryScrolling(),
+      withViewTransitions({
+        onViewTransitionCreated: ({ transition, to }) => {
+          const router = inject(Router);
+          const toTree = createUrlTreeFromSnapshot(to, []);
+          // Skip the transition if the only thing changing is the fragment and queryParams
+          if (
+            router.isActive(toTree, {
+              paths: 'exact',
+              matrixParams: 'exact',
+              fragment: 'ignored',
+              queryParams: 'ignored',
+            })
+          ) {
+            transition.skipTransition();
+          }
+        },
+      }),
+      withComponentInputBinding(),
+      withRouterConfig({ paramsInheritanceStrategy: 'always', onSameUrlNavigation: 'reload' }),
+      withPreloading(PreloadAllModules),
+    ),
     provideClientHydration(),
     provideHttpClient(withFetch()),
-    // provideInMemoryDataService({ dataEncapsulation: false }),
-    provideAnimations(),
+    provideAnimationsAsync(),
     provideToastr(),
-    importProvidersFrom(HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService))
+    importProvidersFrom(HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService)),
   ]
 };

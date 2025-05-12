@@ -35,19 +35,7 @@ export class FeedbackListComponent {
   _loadingService = inject(LoadingService);
 
    constructor() {
-   this.getFeedBacks();
+
   }
   
-    async getFeedBacks() {
-    this._loadingService.loadingOn();
-    try {
-      const feedBacks = await this._feedBackService.getAllFeedBacks();
-      this.feedBacks.set(feedBacks);
-    } catch (error) {
-      const errorMessage = ( error as HttpErrorResponse ).message || 'Unknown error';
-      this._toastrService.error(errorMessage, 'Error');
-    } finally {
-      this._loadingService.loadingOff();
-    }
-  }
 }

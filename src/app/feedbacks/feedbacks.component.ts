@@ -32,8 +32,11 @@ import { FeedbackListComponent } from './feedback-list/feedback-list.component';
 })
 export class FeedbacksComponent {
  
+  // injections
+  _feedBackService = inject(FeedBackService);
 
-
+  // properties
+  isLoading = this._feedBackService.isLoading;
 
 
 

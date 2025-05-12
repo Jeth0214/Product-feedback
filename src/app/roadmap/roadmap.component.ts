@@ -52,7 +52,7 @@ export class RoadmapComponent implements OnInit {
     this._loadingService.loadingOn();
     try {
       const feedBacks = await this._feedBackService.getAllFeedBacks();
-      this.feedBacks.set(feedBacks)
+      // this.feedBacks.set(feedBacks)
     }
     catch (err) {
       console.error('Error loading feed', err);
