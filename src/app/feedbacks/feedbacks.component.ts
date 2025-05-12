@@ -9,45 +9,50 @@ import { LoadingComponent } from '../shared/components/loading/loading.component
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { LoadingService } from '../shared/services/loading.service';
+import { RoadmapMainCardComponent } from '../roadmap/roadmap-main-card/roadmap-main-card.component';
+import { CategoryComponent } from './category/category.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { FeedbackBoardComponent } from "./feedback-board/feedback-board.component";
+import { FeedbackListComponent } from './feedback-list/feedback-list.component';
 
 @Component({
   selector: 'app-feedbacks',
   standalone: true,
-    imports: [EmptyComponent, FontAwesomeModule, LoadingComponent, RouterLink],
+  imports: [
+
+    ToolbarComponent,
+    RoadmapMainCardComponent,
+    CategoryComponent,
+    FeedbackBoardComponent,
+    ToolbarComponent, 
+    FeedbackListComponent
+],
     templateUrl: './feedbacks.component.html',
     styleUrl: './feedbacks.component.scss'
 })
 export class FeedbacksComponent {
  
-  // properties
-  plusIcon = faPlus;
-  upVoteIcon = faChevronUp;
-  commentIcon = faComment;
-  feedBacks = signal<IFeedBack[]>([]);
-
-
-  // Injections
+  // injections
   _feedBackService = inject(FeedBackService);
-  _toastrService = inject(ToastrService);
-  _loadingService= inject(LoadingService);
 
-  constructor() {
-   this.getFeedBacks();
+  // properties
+  isLoading = this._feedBackService.isLoading;
+
+
+
+  
+  // property to show hide roadmap and filter cards
+  isOpen = false;
+
+
+ 
+
+
+
+
+  // method to toggle the roadmap and filter cards
+  toggleRoadmapAndFilter(event: any) { 
+    this.isOpen = event;
   }
-
-  async getFeedBacks() {
-    this._loadingService.loadingOn();
-    try {
-      const feedBacks = await this._feedBackService.getAllFeedBacks();
-      this.feedBacks.set(feedBacks);
-    } catch (error) {
-      const errorMessage = ( error as HttpErrorResponse ).message || 'Unknown error';
-      this._toastrService.error(errorMessage, 'Error');
-    } finally {
-      this._loadingService.loadingOff();
-    }
-  }
-
-
 
 }
