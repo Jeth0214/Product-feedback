@@ -1,24 +1,51 @@
-import { Component , Input} from '@angular/core';
-
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { Component, Input } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { RouterLink } from '@angular/router';
 import { DropdownComponent } from '../../shared/components/dropdown/dropdown.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
-  standalone: true,
-    selector: 'app-toolbar',
-    imports: [DropdownComponent, FontAwesomeModule, RouterLink],
-    templateUrl: './toolbar.component.html',
-    styleUrl: './toolbar.component.scss'
+  selector: 'app-toolbar',
+  imports: [DropdownComponent, FontAwesomeModule],
+  templateUrl: './toolbar.component.html',
+  styleUrl: './toolbar.component.scss'
 })
 export class ToolbarComponent {
 
-  @Input() title: string = '';
-  @Input() isSuggestionPage: boolean = true;
-  suggestionsCount: number = 6;
+   @Input() title: string = '';
+    @Input() isSuggestionPage: boolean = true;
+    suggestionsCount: number = 6;
+  
+    faPlus = faPlus;
 
-  faPlus = faPlus;
+  dropDownOptions = [
+    {
+      name: 'Most Upvotes',
+      value: {
+        prop: 'upvotes',
+        order: 'asc'
+      }
+    },
+    {
+      name: 'Least Upvotes',
+      value: {
+        prop: 'upvotes',
+        order: 'desc'
+      }
+    },
+    {
+      name: 'Most Comments',
+      value: {
+        prop: 'comments',
+        order: 'asc'
+      }
+    },
+    {
+      name: 'Least Comments',
+      value: {
+        prop: 'comments',
+        order: 'desc'
+      }
+    }
+  ];
 
-  dropDownOptions: string[] = [ 'Most Upvotes', 'Least Upvotes', 'Most Comments', 'Least Comments'];;
 }

@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class DropdownComponent {
 
-  @Input() sortOptions: string [] = [];
+  @Input() sortOptions = [];
   @Input() sortBy = '';
 
   isDropdownOpen = false;

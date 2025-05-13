@@ -13,5 +13,5 @@ export class LoadingComponent {
   _loadingService = inject(LoadingService);
   isLoading = this._loadingService.isLoading;
 
-  @Input() full : boolean = false;
+  @Input() full: boolean = false;
 }

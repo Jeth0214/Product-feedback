@@ -7,7 +7,7 @@ import { RoadmapListCardComponent } from './roadmap-list-card/roadmap-list-card.
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { RoadMapStatus } from '../shared/models/roadmap-status.model';
 import { LoadingService } from '../shared/services/loading.service';
-import { ToolbarComponent } from '../feedbacks/toolbar/toolbar.component';
+import { ToolbarComponent } from '../shared/components/toolbar/toolbar.component';
 
 
 

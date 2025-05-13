@@ -6,6 +6,7 @@ import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { IComment } from "../models/comment.model";
 import { toSignal  } from "@angular/core/rxjs-interop";
+import { LoadingService } from "./loading.service";
 
 
 @Injectable({
@@ -22,18 +23,17 @@ export class FeedBackService {
   _http = inject(HttpClient);
   _toastrService = inject(ToastrService);
   _router = inject(Router);
+  _loadingService = inject(LoadingService);
 
 
   // signals
   feedBacks:WritableSignal<IFeedBack[]> = signal([]);
-  isLoading = signal<boolean>(false);
-
 
 
 
 // Fetches all feedbacks from the API
   getAllFeedBacks() { 
-    this.isLoading.set(true);
+    this._loadingService.loadingOn();
     this._http.get<IFeedBack[]>(this.api)
       .pipe(
         catchError(
@@ -41,7 +41,7 @@ export class FeedBackService {
         ))
       .subscribe(response => { 
         this.feedBacks.set(response);
-        this.isLoading.set(false);
+        this._loadingService.loadingOff();
         console.log('Feedbacks from service', response);
       });
     
