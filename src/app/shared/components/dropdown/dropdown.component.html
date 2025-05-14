@@ -17,9 +17,9 @@
   <!-- Dropdown menu -->
   <div id="dropdownHover" [class.hidden]="!isDropdownOpen" class="z-10 absolute top-14 bg-white divide-y divide-gray-100 rounded-lg shadow w-64 ">
     <ul class=" text-dark-500 " aria-labelledby="dropdownHoverButton">
-      @for(option of sortOptions; track option) {
+      @for(option of dropDownOptions; track option.name) {
         <li (click)="onSelectOption(option)" [class.text-purple]="sortBy === option" class=" flex items-center justify-between py-3 px-6 border-b  border-b-light-500 hover:text-purple cursor-pointer transition " [class.border-b-0]="$last" >
-          <span>{{option}}</span>
+          <span>{{option.name}}</span>
           <img [ngClass]="sortBy == option ? 'block' : 'hidden'"  src="./assets/shared/icon-check.svg" alt="check icon">
         </li>
       }

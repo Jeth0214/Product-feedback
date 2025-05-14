@@ -2,7 +2,7 @@ import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { RoadmapMainCardComponent } from '../roadmap/roadmap-main-card/roadmap-main-card.component';
 import { CategoryComponent } from './category/category.component';
-import { ToolbarComponent } from '../shared/components/toolbar/toolbar.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 import { FeedbackBoardComponent } from "./feedback-board/feedback-board.component";
 import { FeedbackListComponent } from './feedback-list/feedback-list.component';
 

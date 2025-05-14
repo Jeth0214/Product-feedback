@@ -17,7 +17,7 @@ export class ToolbarComponent {
   
     faPlus = faPlus;
 
-  dropDownOptions = [
+  sortOptions = [
     {
       name: 'Most Upvotes',
       value: {

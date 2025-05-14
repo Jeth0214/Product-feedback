@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class DropdownComponent {
 
-  @Input() sortOptions = [];
+  @Input() dropDownOptions:any[] = [];
   @Input() sortBy = '';
 
   isDropdownOpen = false;
@@ -18,9 +18,10 @@ export class DropdownComponent {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  onSelectOption(option: string) {
-    console.log(option);
+  onSelectOption(option: any) {
+    
+    console.log('select', option);
     this.isDropdownOpen = false;
-    this.sortBy = option;
+    this.sortBy = option.name;
    }
 }
