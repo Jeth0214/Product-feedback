@@ -1,6 +1,6 @@
 <div class="toolbar bg-dark p-4 md:rounded-xl text-light">
   <div class="flex justify-between items-center">
-    @if(isSuggestionPage) {
+
     <div class="flex items-center">
       <img class="hidden md:block me-4" src="./assets/suggestions/icon-suggestions.svg" alt="bulb">
       <div class="hidden md:block font-bold">
@@ -8,21 +8,11 @@
         {{title}}
       </div>
       <div class="md:ms-9">
-        <app-dropdown [dropDownOptions]="sortOptions" ></app-dropdown>
+        <app-dropdown [dropDownOptions]="sortByName" ></app-dropdown>
       </div>
     </div>
-    }
-    @else {
-    <div>
-      <a routerLink="/"
-        class="text-sm flex items-center gap-3 cursor-pointer transition hover:font-bold hover:underline">
-        <img loading="lazy" src="./assets/shared/icon-arrow-left.svg" alt="arrow left">
-        <span>Go Back</span>
-      </a>
-
-      <h1 class="text-2xl font-bold">{{title}}</h1>
-    </div>
-    }
+    
+   
 
 
 

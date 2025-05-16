@@ -3,6 +3,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { DropdownComponent } from '../../shared/components/dropdown/dropdown.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+export interface SortOption  { name: string; value: { prop: string; order: string } };
+
 @Component({
   selector: 'app-toolbar',
   imports: [DropdownComponent, FontAwesomeModule],
@@ -17,7 +19,7 @@ export class ToolbarComponent {
   
     faPlus = faPlus;
 
-  sortOptions = [
+  sortOptions: SortOption[] = [
     {
       name: 'Most Upvotes',
       value: {
@@ -48,4 +50,10 @@ export class ToolbarComponent {
     }
   ];
 
+  sortByName = this.sortOptions.map((option) => option.name);
+  
+  
+
 }
+
+

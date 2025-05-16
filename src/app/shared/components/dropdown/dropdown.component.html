@@ -1,11 +1,15 @@
-<div class="relative">
+<div class="relative" #dropdownContainer>
 
-  <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover"
-    (click)="toggleDropdown()" (blur)="isDropdownOpen = false" class="text-white  hover:text-gray-100  flex items-center gap-2" type="button">
-    <span>Sort by: <span class="font-bold">{{ sortBy }}</span> </span>
+  <button 
+    (click)="toggleDropdown()" 
+    class="text-white  hover:text-gray-100  flex items-center gap-2" type="button"
+    aria-haspopup="listbox"
+    [attr.aria-expanded]="isDropdownOpen()"
+    >
+    <span>Sort by: <span class="font-bold">{{ sortBy() }}</span> </span>
   
     <!-- SVG -->
-    @if(!isDropdownOpen) {
+    @if(!isDropdownOpen()) {
     <img loading="lazy" src="./assets/shared/icon-arrow-down.svg" alt="arrow down">
     }
     @else {
@@ -15,16 +19,18 @@
   </button>
   
   <!-- Dropdown menu -->
-  <div id="dropdownHover" [class.hidden]="!isDropdownOpen" class="z-10 absolute top-14 bg-white divide-y divide-gray-100 rounded-lg shadow w-64 ">
-    <ul class=" text-dark-500 " aria-labelledby="dropdownHoverButton">
-      @for(option of dropDownOptions; track option.name) {
-        <li (click)="onSelectOption(option)" [class.text-purple]="sortBy === option" class=" flex items-center justify-between py-3 px-6 border-b  border-b-light-500 hover:text-purple cursor-pointer transition " [class.border-b-0]="$last" >
-          <span>{{option.name}}</span>
-          <img [ngClass]="sortBy == option ? 'block' : 'hidden'"  src="./assets/shared/icon-check.svg" alt="check icon">
-        </li>
-      }
-     
-    </ul>
-  </div>
+   @if(isDropdownOpen()) {
+     <div id="dropdownHover"  class="z-10 absolute top-14 bg-white divide-y divide-gray-100 rounded-lg shadow w-64 ">
+       <ul class=" text-dark-500 " role="listbox">
+         @for(option of dropDownOptions(); track option) {
+           <li (click)="onSelectOption(option)" [class.text-purple]="sortBy() === option" class=" flex items-center justify-between py-3 px-6 border-b  border-b-light-500 hover:text-purple cursor-pointer transition " [class.border-b-0]="$last" >
+             <span>{{option}}</span>
+             <img [ngClass]="sortBy() == option ? 'block' : 'hidden'"  src="./assets/shared/icon-check.svg" alt="check icon">
+           </li>
+         }
+        
+       </ul>
+     </div>
+   }
 </div>
 
