@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, ElementRef, HostListener, input, Input, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, HostListener, input, Input, output, signal, ViewChild } from '@angular/core';
 import { SortOption } from '../../../feedbacks/toolbar/toolbar.component';
 
 @Component({
@@ -13,16 +13,19 @@ export class DropdownComponent {
   @ViewChild('dropdownContainer') dropdownContainer!: ElementRef;
 
   dropDownOptions = input.required<string[]>();
-  sortBy = signal<string | undefined>(undefined);
+  selectedOption = signal<string | undefined>(undefined);
   isDropdownOpen = signal(false);
+  processOption = output<string | undefined>();
+  selectEffect = effect(() => this.processOption.emit(this.selectedOption()));
 
   ngOnInit() {
+    // Always set the first option as default
     const options = this.dropDownOptions();
     //  Fallback if options is empty or undefined
     if (options && options.length > 0) {
-      this.sortBy.set(options[0]);
+      this.selectedOption.set(options[0]);
     } else {
-      this.sortBy.set('');
+      this.selectedOption.set('');
     }
   }
 
@@ -31,9 +34,7 @@ export class DropdownComponent {
   }
 
   onSelectOption(option: any) {
-    
-    console.log('select', option);
-    this.sortBy.set(option);
+    this.selectedOption.set(option);
     this.isDropdownOpen.set(false);
   }
   

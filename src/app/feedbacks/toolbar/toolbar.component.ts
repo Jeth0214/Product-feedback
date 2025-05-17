@@ -53,7 +53,13 @@ export class ToolbarComponent {
   sortByName = this.sortOptions.map((option) => option.name);
   
   
-
+  onSortByChange(selectedOption: string) {
+    console.log('Selected option:', selectedOption);
+    const selectedSortOption = this.sortOptions.find(option => option.name === selectedOption);
+    if (selectedSortOption) {
+      console.log('Selected sort option:', selectedSortOption);
+     }
+   }
 }
 
 

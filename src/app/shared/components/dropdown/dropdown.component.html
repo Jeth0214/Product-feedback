@@ -1,12 +1,12 @@
-<div class="relative" #dropdownContainer>
+<div class="relative inline-block" #dropdownContainer>
 
   <button 
     (click)="toggleDropdown()" 
-    class="text-white  hover:text-gray-100  flex items-center gap-2" type="button"
+    class="text-white  hover:text-gray-100  flex items-center gap-2 font-bold" type="button"
     aria-haspopup="listbox"
     [attr.aria-expanded]="isDropdownOpen()"
     >
-    <span>Sort by: <span class="font-bold">{{ sortBy() }}</span> </span>
+   {{ selectedOption() }}
   
     <!-- SVG -->
     @if(!isDropdownOpen()) {
@@ -23,9 +23,9 @@
      <div id="dropdownHover"  class="z-10 absolute top-14 bg-white divide-y divide-gray-100 rounded-lg shadow w-64 ">
        <ul class=" text-dark-500 " role="listbox">
          @for(option of dropDownOptions(); track option) {
-           <li (click)="onSelectOption(option)" [class.text-purple]="sortBy() === option" class=" flex items-center justify-between py-3 px-6 border-b  border-b-light-500 hover:text-purple cursor-pointer transition " [class.border-b-0]="$last" >
+           <li (click)="onSelectOption(option)" [class.text-purple]="selectedOption() === option" class=" flex items-center justify-between py-3 px-6 border-b  border-b-light-500 hover:text-purple cursor-pointer transition " [class.border-b-0]="$last" >
              <span>{{option}}</span>
-             <img [ngClass]="sortBy() == option ? 'block' : 'hidden'"  src="./assets/shared/icon-check.svg" alt="check icon">
+             <img [ngClass]="selectedOption() == option ? 'block' : 'hidden'"  src="./assets/shared/icon-check.svg" alt="check icon">
            </li>
          }
         

@@ -8,7 +8,8 @@
         {{title}}
       </div>
       <div class="md:ms-9">
-        <app-dropdown [dropDownOptions]="sortByName" ></app-dropdown>
+        <span>Sort by: </span>
+        <app-dropdown [dropDownOptions]="sortByName" (processOption)="onSortByChange($any($event))"></app-dropdown>
       </div>
     </div>
     
