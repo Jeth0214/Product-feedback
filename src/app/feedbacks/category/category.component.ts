@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, effect, output, signal } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -10,13 +10,19 @@ import { Component } from '@angular/core';
 })
 export class CategoryComponent {
 
-  categories: string[] = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
-  chosenCategory: string = 'All';
 
-  onChooseCategory(category: string = 'All') {
-    this.chosenCategory = category;
-    
-    console.log(this.chosenCategory);
+  categories: string[] = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
+  chosenCategory = signal<string>('All');
+  emitCategory = output<string>();
+  processCategory = effect(() => {
+    console.log('Category:', this.chosenCategory());
+    this.emitCategory.emit(this.chosenCategory());
+  });
+
+
+
+  onChooseCategory(category: string) {
+    this.chosenCategory.set(category);
   }
 
 }

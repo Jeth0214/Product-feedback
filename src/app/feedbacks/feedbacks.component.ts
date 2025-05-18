@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { RoadmapMainCardComponent } from '../roadmap/roadmap-main-card/roadmap-main-card.component';
 import { CategoryComponent } from './category/category.component';
@@ -21,13 +21,14 @@ import { FeedbackListComponent } from './feedback-list/feedback-list.component';
     styleUrl: './feedbacks.component.scss'
 })
 export class FeedbacksComponent  {
-  // icons
  
   // injections
   _feedBackService = inject(FeedBackService);
 
   // properties
-  feedBacks = this._feedBackService.feedBacks;
+  feedBacks = this._feedBackService.filteredFeedBacks;
+  count = computed(() => this._feedBackService.filteredFeedBacks().length);
+  category = this._feedBackService.categoryTerm;
   
   
   constructor() 
@@ -49,5 +50,10 @@ export class FeedbacksComponent  {
   toggleRoadmapAndFilter(event: any) { 
     this.isOpen = event;
   }
+
+  onChooseCategory(category: string) {
+    this._feedBackService.setCategoryTerm(category);
+   }
+
 
 }

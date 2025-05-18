@@ -27,11 +27,24 @@ export class FeedBackService {
 
 
   // signals
-  feedBacks:WritableSignal<IFeedBack[]> = signal([]);
+  feedBacks = signal<IFeedBack[]>([]);
+  categoryTerm = signal('All');
 
+  filteredFeedBacks = computed(() => {
+    const category = this.categoryTerm();
+    if (category === 'All') {
+      return this.feedBacks();
+    } else {
+      return this.feedBacks().filter((feedback) => feedback.category.toLowerCase() === category.toLowerCase());
+    }
+  })
 
-
-// Fetches all feedbacks from the API
+  // Filter Setter
+  setCategoryTerm(category: string) {
+    this.categoryTerm.set(category);
+  }
+  
+  // Fetches all feedbacks from the API and sets the feedbacks signal
   getAllFeedBacks() { 
     this._loadingService.loadingOn();
     this._http.get<IFeedBack[]>(this.api)
@@ -42,7 +55,6 @@ export class FeedBackService {
       .subscribe(response => { 
         this.feedBacks.set(response);
         this._loadingService.loadingOff();
-        console.log('Feedbacks from service', response);
       });
     
   }

@@ -1,6 +1,6 @@
 
-@if(feedBacks()) {
-  <app-loading [full]="true" />
+<app-loading [full]="true" />
+@if(feedBacks().length) {
   @for( feedBack of feedBacks(); track feedBack.id) {
     <div
       class="feedBack mx-4 md:mx-0  group/card hover:shadow-2xl hover:transition-all  md:flex justify-between items-center shadow-md bg-white rounded-lg px-8 py-7 my-5">

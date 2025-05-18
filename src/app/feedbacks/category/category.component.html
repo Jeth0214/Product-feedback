@@ -1,6 +1,6 @@
 
   @for( category of categories; track category ) {
-  <button (click)="onChooseCategory( category)" [ngClass]="chosenCategory === category ? '!bg-blue !text-white ' : ''"
+  <button (click)="onChooseCategory( category)" [ngClass]="chosenCategory() === category ? '!bg-blue !text-white ' : ''"
     [class.ms-2]="!$first" [class.mb-4]="!$last"
     class="mb- text-sm inline-block capitalize py-1 px-4 bg-light-500 text-blue font-semibold rounded-10 hover:bg-light-300  transition">
     {{ category }}

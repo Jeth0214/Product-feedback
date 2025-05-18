@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, computed, input, Input } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { DropdownComponent } from '../../shared/components/dropdown/dropdown.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -13,11 +13,9 @@ export interface SortOption  { name: string; value: { prop: string; order: strin
 })
 export class ToolbarComponent {
 
-   @Input() title: string = '';
-    @Input() isSuggestionPage: boolean = true;
-    suggestionsCount: number = 6;
-  
-    faPlus = faPlus;
+  suggestionsCount = input(1);
+  faPlus = faPlus;
+  title =  computed(() => this.suggestionsCount() > 1 ? 'Suggestions' : 'Suggestion');
 
   sortOptions: SortOption[] = [
     {
@@ -54,11 +52,7 @@ export class ToolbarComponent {
   
   
   onSortByChange(selectedOption: string) {
-    console.log('Selected option:', selectedOption);
-    const selectedSortOption = this.sortOptions.find(option => option.name === selectedOption);
-    if (selectedSortOption) {
-      console.log('Selected sort option:', selectedSortOption);
-     }
+    this.sortOptions.find(option => option.name === selectedOption);
    }
 }
 
