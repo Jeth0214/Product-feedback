@@ -1,12 +1,10 @@
-import { Component, computed, effect, HostListener, inject, signal, OnInit } from '@angular/core';
+import { Component, computed, HostListener, inject,  OnInit } from '@angular/core';
 import { FeedBackService } from '../shared/services/feedbacks.service';
-import { IFeedBack } from '../shared/models/feedbacks.model';
 import { NgClass } from '@angular/common';
 import { EmptyComponent } from '../shared/components/empty/empty.component';
 import { RoadmapListCardComponent } from './roadmap-list-card/roadmap-list-card.component';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { RoadMapStatus } from '../shared/models/roadmap-status.model';
-import { LoadingService } from '../shared/services/loading.service';
 import { ToolbarComponent } from '../shared/components/toolbar/toolbar.component';
 
 
@@ -26,10 +24,9 @@ export class RoadmapComponent implements OnInit {
 
   // injections
   _feedBackService = inject(FeedBackService);
-  _loadingService = inject(LoadingService);
 
   // signals
-  feedBacks = signal<IFeedBack[]>([]);
+  feedBacks = this._feedBackService.filteredFeedBacks;
   planned = computed(() => { return this.feedBacks().filter(feedBack =>  feedBack.status === 'planned' ) });
   inProgress = computed(() => { return this.feedBacks().filter(feedBack => feedBack.status === 'in-progress') });
   live = computed(() => {return this.feedBacks().filter(feedBack => feedBack.status === 'live') });
@@ -41,25 +38,13 @@ export class RoadmapComponent implements OnInit {
   }
 
   constructor() {
-    this.loadFeedBacks();
   }
-
+  
   ngOnInit() {
     this.isLargeScreen = window.innerWidth >= 768;
+    this._feedBackService.getAllFeedBacks();
   }
 
-  async loadFeedBacks() {
-    this._loadingService.loadingOn();
-    try {
-      const feedBacks = await this._feedBackService.getAllFeedBacks();
-      // this.feedBacks.set(feedBacks)
-    }
-    catch (err) {
-      console.error('Error loading feed', err);
-    } finally {
-      this._loadingService.loadingOff();
-     }
-  }
 
   onSelectRoadMapStatus(type: string) {
     this.selectedRoadMapStatus = type as RoadMapStatus;

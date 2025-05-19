@@ -15,7 +15,6 @@ export class CategoryComponent {
   chosenCategory = signal<string>('All');
   emitCategory = output<string>();
   processCategory = effect(() => {
-    console.log('Category:', this.chosenCategory());
     this.emitCategory.emit(this.chosenCategory());
   });
 

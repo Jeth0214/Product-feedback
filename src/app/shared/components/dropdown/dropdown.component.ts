@@ -1,6 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, effect, ElementRef, HostListener, input, Input, output, signal, ViewChild } from '@angular/core';
-import { SortOption } from '../../../feedbacks/toolbar/toolbar.component';
+import { Component, effect, ElementRef, HostListener, input, output, signal, ViewChild } from '@angular/core';
 
 @Component({
     selector: 'app-dropdown',

@@ -1,21 +1,21 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { FeedBackService } from '../shared/services/feedbacks.service';
-import { RoadmapMainCardComponent } from '../roadmap/roadmap-main-card/roadmap-main-card.component';
 import { CategoryComponent } from './category/category.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { FeedbackBoardComponent } from "./feedback-board/feedback-board.component";
 import { FeedbackListComponent } from './feedback-list/feedback-list.component';
+import { RoadmapReportComponent } from './roadmap-report/roadmap-report.component';
 
 @Component({
   selector: 'app-feedbacks',
   standalone: true,
   imports: [
     ToolbarComponent,
-    RoadmapMainCardComponent,
     CategoryComponent,
     FeedbackBoardComponent,
     ToolbarComponent, 
-    FeedbackListComponent
+    FeedbackListComponent,
+    RoadmapReportComponent
 ],
     templateUrl: './feedbacks.component.html',
     styleUrl: './feedbacks.component.scss'
@@ -36,24 +36,22 @@ export class FeedbacksComponent  {
     this._feedBackService.getAllFeedBacks();
   }
 
- 
-
-
   // property to show hide roadmap and filter cards
   isOpen = false;
 
 
- 
-
-
-  // method to toggle the roadmap and filter cards
+  // toggle the roadmap and filter cards
   toggleRoadmapAndFilter(event: any) { 
     this.isOpen = event;
   }
 
   onChooseCategory(category: string) {
     this._feedBackService.setCategoryTerm(category);
-   }
+  }
+  
+  onSortByValue(sortValue: string) {
+    this._feedBackService.setSortValue(sortValue);
+  }
 
 
 }
