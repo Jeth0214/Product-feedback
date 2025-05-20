@@ -1,13 +1,13 @@
 <div class="my-6 mx-4 md:mx-0">
-  <h2 class="text-lg text-dark-800 font-bold capitalize"> {{ title }} ({{feedBacks().length}})</h2>
-  <p> {{ description }} </p>
+  <h2 class="text-lg text-dark-800 font-bold capitalize"> {{ title() }} ({{feedBacks().length}})</h2>
+  <p> {{ description() }} </p>
 
   @for( feedBack  of feedBacks(); track feedBack.id) {
-  <div   [ngClass]="borderClass"
+  <div   [ngClass]="borderClass()"
     class="feedBack mx-4 md:mx-0 cursor-pointer border-t-4 group/card hover:shadow-2xl hover:transition-all shadow-md bg-white rounded-lg px-8 py-7 my-5">
   
     <div class="feedBack_descriptions">
-      <div class="mb-3.5"> <fa-icon ngClass="text-{{title}}" class=" me-4 " [icon]="circleIcon"></fa-icon> In Progress</div>
+      <div class="mb-3.5"> <fa-icon ngClass="text-{{ title() }}" class=" me-4 " [icon]="circleIcon"></fa-icon> In Progress</div>
       <h3 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack.title}}</h3>
       <p class="my-2">{{feedBack.description}}</p>
       <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">

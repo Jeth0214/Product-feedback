@@ -19,11 +19,9 @@ export class RoadmapListCardComponent {
 
   // signals
   feedBacks = input.required<IFeedBack[]>()
-
-  // Normal Input
-  @Input() title : string = '';
-  @Input() description: string = '';
-  @Input()  borderClass = '';
+  title  = input('');
+  description = input('');
+  borderClass = input('');
   
  
 }

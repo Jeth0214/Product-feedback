@@ -1,9 +1,30 @@
 <div class="md:container px-0 md:px-6  md:mt-10">
   <!-- Toolbar -->
-  <app-toolbar [title]="title" [isSuggestionPage]="false"></app-toolbar>
+  <div class="toolbar bg-dark p-4 md:rounded-xl text-light">
+    <div class="flex justify-between items-center">
+      <div>
+        <a routerLink="/"
+          class="text-sm flex items-center gap-3 cursor-pointer transition hover:font-bold hover:underline">
+          <img loading="lazy" src="./assets/shared/icon-arrow-left.svg" alt="arrow left">
+          <span>Go Back</span>
+        </a>
+  
+        <h1 class="text-2xl font-bold">{{title}}</h1>
+      </div>   
+  
+      <div>
+        <button
+          class="bg-purple px-6 py-3 rounded-xl font-bold flex items-center transition ease-in-out  hover:bg-purple-500">
+          <fa-icon class="me-2" [icon]="faPlus"></fa-icon>
+          <span class="sr-only">Add Feedback</span>
+          <span>Add Feedback</span>
+        </button>
+      </div>
+    </div>
+    </div>
 
   <!-- loadingSpinner -->
-  <app-loading [full]="true" />
+  <app-loading  [full]="true"/>
 
   <!-- Button Group on Mobile -->
   <div class="flex justify-evenly gap-0  md:hidden border border-b-gray-200">
@@ -17,7 +38,7 @@
       [ngClass]="selectedRoadMapStatus == 'live' ? 'border-b-live border-b-4  font-bold !text-dark-800' : ''"
       class="flex-1 cursor py-5 text-sm text-gray-400">Live ({{live().length}}) </button>
   </div>
-</div>
+
 
 @if(feedBacks().length > 0) {
   <div class="container px-6">
@@ -41,6 +62,8 @@
 @else {
   <app-empty />
 }
+
+</div>
 
 
 

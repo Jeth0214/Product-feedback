@@ -5,13 +5,20 @@ import { EmptyComponent } from '../shared/components/empty/empty.component';
 import { RoadmapListCardComponent } from './roadmap-list-card/roadmap-list-card.component';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { RoadMapStatus } from '../shared/models/roadmap-status.model';
-import { ToolbarComponent } from '../shared/components/toolbar/toolbar.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 
 
 @Component({
     selector: 'app-roadmap',
-    imports: [ToolbarComponent, NgClass, EmptyComponent, RoadmapListCardComponent, LoadingComponent],
+  imports: [
+    NgClass,
+    EmptyComponent,
+    RoadmapListCardComponent,
+    LoadingComponent,
+    FontAwesomeModule
+  ],
     templateUrl: './roadmap.component.html',
     styleUrl: './roadmap.component.scss'
 })
@@ -21,6 +28,7 @@ export class RoadmapComponent implements OnInit {
   title: string = 'Roadmap';
   selectedRoadMapStatus : RoadMapStatus = 'in-progress';
   isLargeScreen: boolean = window.innerWidth >= 768;
+    faPlus = faPlus;
 
   // injections
   _feedBackService = inject(FeedBackService);
