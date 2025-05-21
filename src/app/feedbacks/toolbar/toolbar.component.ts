@@ -2,11 +2,12 @@ import { Component, computed, effect, input, Input, output, signal } from '@angu
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { DropdownComponent } from '../../shared/components/dropdown/dropdown.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-toolbar',
-  imports: [DropdownComponent, FontAwesomeModule],
+  imports: [DropdownComponent, FontAwesomeModule, RouterLink],
   templateUrl: './toolbar.component.html',
   styleUrl: './toolbar.component.scss'
 })

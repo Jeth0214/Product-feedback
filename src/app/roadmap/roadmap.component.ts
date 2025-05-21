@@ -7,6 +7,7 @@ import { LoadingComponent } from '../shared/components/loading/loading.component
 import { RoadMapStatus } from '../shared/models/roadmap-status.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { RouterLink } from '@angular/router';
 
 
 
@@ -17,7 +18,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
     EmptyComponent,
     RoadmapListCardComponent,
     LoadingComponent,
-    FontAwesomeModule
+    FontAwesomeModule,
+    RouterLink
   ],
     templateUrl: './roadmap.component.html',
     styleUrl: './roadmap.component.scss'
