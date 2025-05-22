@@ -10,8 +10,21 @@
   <div class=" bg-white rounded-lg   p-10 mt-12 md:mt-20 ">
     <div>
       <img [src]="formIcon" alt="form icon" loading="lazy" class="-mt-14">
-      <h1 class="text-2xl font-bold text-dark-800 mt-3"> {{ title }} </h1>
+      <h1 class="text-2xl mt-3"> {{ title }} </h1>
     </div>
+
+    <form >
+      <div class="mt-10">
+        <h2>Feedback Title</h2>
+        <label for="title" class="text-sm text-dark-500">Add a short, descriptive headline</label>
+        <input type="text" id="title" name="title" class="w-full mt-4 py-3 px-6 text-dark-800 bg-light-800 border-0  rounded-lg focus:outline-none  focus:border-blue focus:border-transparent">
+      </div>
+      <div class="mt-10">
+        <h2>Category</h2>
+        <label for="title" class="text-sm text-dark-500">Choose a category for your feedback</label>
+        <app-dropdown [dropDownOptions]="categories" />
+      </div>
+    </form>
 
   </div>
 
