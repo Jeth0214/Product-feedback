@@ -2,7 +2,7 @@
 
   <div>
     <a routerLink="/" class="text-sm flex items-center gap-3 cursor-pointer transition font-bold hover:underline">
-      <img loading="lazy" src="./assets/shared/icon-arrow-left.svg" alt="arrow left">
+      <img loading="lazy" src="./assets/shared/icon-blue-arrow-left.svg" alt="arrow left">
       <span>Go Back</span>
     </a>
   </div>
@@ -22,7 +22,7 @@
       <div class="mt-10">
         <h2>Category</h2>
         <label for="title" class="text-sm text-dark-500">Choose a category for your feedback</label>
-        <app-dropdown [dropDownOptions]="categories" />
+        <app-dropdown [dropDownOptions]="categories"  [dropDownType]="'block'" [dropDownArrowColor]="'blue'"/>
       </div>
     </form>
 

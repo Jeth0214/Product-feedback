@@ -9,7 +9,12 @@
       </div>
       <div class="md:ms-9">
         <span>Sort by: </span>
-        <app-dropdown [dropDownOptions]="sortByName" (processOption)="onSortByChange($any($event))"></app-dropdown>
+        <app-dropdown 
+        [dropDownOptions]="sortByName" 
+        (processOption)="onSortByChange($any($event))" 
+        [dropDownType]="'inline-block'" 
+        [dropDownArrowColor]="'white'"
+        />
       </div>
     </div>
   

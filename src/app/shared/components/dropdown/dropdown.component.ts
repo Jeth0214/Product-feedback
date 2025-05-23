@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, effect, ElementRef, HostListener, input, output, signal, ViewChild } from '@angular/core';
+import { Component, computed, effect, ElementRef, HostListener, input, output, signal, ViewChild } from '@angular/core';
 
 @Component({
     selector: 'app-dropdown',
@@ -12,10 +12,34 @@ export class DropdownComponent {
   @ViewChild('dropdownContainer') dropdownContainer!: ElementRef;
 
   dropDownOptions = input.required<string[]>();
+  dropDownType = input.required<string>();
+  dropDownArrowColor = input.required<string>();
+  processOption = output<string | undefined>();
+
+
   selectedOption = signal<string | undefined>(undefined);
   isDropdownOpen = signal(false);
-  processOption = output<string | undefined>();
+
+
   selectEffect = effect(() => this.processOption.emit(this.selectedOption()));
+
+  // change button style class  based on the dropdown type value
+  buttonClass = computed(() => {
+   return this.dropDownType() == 'inline-block' ? 'text-white  hover:text-gray-100'
+      : 'text-dark-800 bg-light-800 border-0  rounded-lg focus:outline-none  focus:border-blue focus:border-transparent w-full px-6 py-3'
+  });
+
+  // change list width   based on the dropdown type value
+  listClass = computed(() => { return this.dropDownType() == 'inline-block' ? 'w-64' : 'w-full' });
+
+  // change  icon  based on the dropdown arrow color value and isDropdownOpen state
+  arrowIcon = computed(() => { 
+    return this.isDropdownOpen() ?
+      `/assets/shared/icon-${this.dropDownArrowColor()}-arrow-down.svg`
+      : `/assets/shared/icon-${this.dropDownArrowColor()}-arrow-up.svg`;
+   })
+
+
 
   ngOnInit() {
     // Always set the first option as default
