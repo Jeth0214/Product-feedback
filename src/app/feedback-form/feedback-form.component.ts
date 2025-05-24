@@ -14,5 +14,17 @@ export class FeedbackFormComponent {
   title = 'Create New Feedback';
 
   categories = ['Feature', 'UI', 'UX', 'Enhancement', 'Bug'];
+  // Default selected category and transform it to title case
+  selectedCategory = this.selectedCategoryTitleCase('bug');
+
+  onSelectCategory(category: string) {
+    console.log('Selected category:', category);
+  }
+
+  // transform selected Category  to title case
+ private selectedCategoryTitleCase(category: string): string {
+    return category.charAt(0).toUpperCase() + category.slice(1);
+  }
+
 
 }

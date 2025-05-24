@@ -15,7 +15,7 @@ export class DropdownComponent {
   dropDownType = input.required<string>();
   dropDownArrowColor = input.required<string>();
   processOption = output<string | undefined>();
-
+  defaultOption = input<string | undefined>(undefined);
 
   selectedOption = signal<string | undefined>(undefined);
   isDropdownOpen = signal(false);
@@ -26,8 +26,13 @@ export class DropdownComponent {
   // change button style class  based on the dropdown type value
   buttonClass = computed(() => {
    return this.dropDownType() == 'inline-block' ? 'text-white  hover:text-gray-100'
-      : 'text-dark-800 bg-light-800 border-0  rounded-lg focus:outline-none  focus:border-blue focus:border-transparent w-full px-6 py-3'
+      : 'text-dark-800 bg-light-800 rounded-lg w-full px-6 py-3 hover:border hover:border-blue'
   });
+
+  // change button border class  based on the dropdown type value and isDropdownOpen state
+  borderClass = computed(() => { 
+    return this.dropDownType() == 'block' && this.isDropdownOpen() ? 'border-blue border ' : 'border-0';
+  })
 
   // change list width   based on the dropdown type value
   listClass = computed(() => { return this.dropDownType() == 'inline-block' ? 'w-64' : 'w-full' });
@@ -44,11 +49,12 @@ export class DropdownComponent {
   ngOnInit() {
     // Always set the first option as default
     const options = this.dropDownOptions();
+    const defaultOption = this.defaultOption();
     //  Fallback if options is empty or undefined
-    if (options && options.length > 0) {
-      this.selectedOption.set(options[0]);
+    if (defaultOption) {
+      this.selectedOption.set(defaultOption);
     } else {
-      this.selectedOption.set('');
+      this.selectedOption.set(options[0]);
     }
   }
 

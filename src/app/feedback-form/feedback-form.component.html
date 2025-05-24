@@ -14,15 +14,36 @@
     </div>
 
     <form >
+      <!-- title -->
       <div class="mt-10">
         <h2>Feedback Title</h2>
         <label for="title" class="text-sm text-dark-500">Add a short, descriptive headline</label>
-        <input type="text" id="title" name="title" class="w-full mt-4 py-3 px-6 text-dark-800 bg-light-800 border-0  rounded-lg focus:outline-none  focus:border-blue focus:border-transparent">
+        <input type="text" id="title" name="title" class="w-full mt-4 py-3 px-6 text-dark-800 bg-light-800 border-0  rounded-lg hover:border hover:border-blue focus:outline-none  focus:border-blue focus:border-transparent">
       </div>
+
+      <!-- Category -->
       <div class="mt-10">
         <h2>Category</h2>
         <label for="title" class="text-sm text-dark-500">Choose a category for your feedback</label>
-        <app-dropdown [dropDownOptions]="categories"  [dropDownType]="'block'" [dropDownArrowColor]="'blue'"/>
+        <app-dropdown 
+          [defaultOption]="selectedCategory"
+          [dropDownOptions]="categories"  
+          [dropDownType]="'block'" 
+          [dropDownArrowColor]="'blue'"
+          (processOption)="onSelectCategory($any($event))"
+        />
+      </div>
+
+      <!-- Description -->
+      <div class="mt-10">
+        <h2>Feedback Detail</h2>
+        <label for="description" class="text-sm text-dark-500">Include any specific comments on what should be improved, added, etc.</label>
+        <textarea id="description" name="description" rows="5" class="w-full mt-4 py-3 px-6 text-dark-800 bg-light-800 border-0 outline-offset-0  rounded-lg   hover:outline-blue hover:outline-1 focus:outline-blue focus:border-transparent"></textarea>
+      </div>
+
+      <!-- Buttons -->
+      <div class="mt-10 flex items-center gap-3 justify-end">
+        <button type="submit" class="py-3 px-6 bg-blue text-white rounded-lg hover:bg-blue-700 transition">Add Feedback</button>
       </div>
     </form>
 
