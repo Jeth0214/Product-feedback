@@ -26,12 +26,14 @@ export class DropdownComponent {
   // change button style class  based on the dropdown type value
   buttonClass = computed(() => {
    return this.dropDownType() == 'inline-block' ? 'text-white  hover:text-gray-100'
-      : 'text-dark-800 bg-light-800 rounded-lg w-full px-6 py-3 hover:border hover:border-blue'
+      : 'text-dark-800 bg-light-800 rounded-lg w-full px-6 py-3 mt-4 border border-white hover:border-blue hover:ring-2 hover:ring-blue'
   });
 
   // change button border class  based on the dropdown type value and isDropdownOpen state
   borderClass = computed(() => { 
-    return this.dropDownType() == 'block' && this.isDropdownOpen() ? 'border-blue border ' : 'border-0';
+    return this.dropDownType() == 'block' && this.isDropdownOpen() ?
+      ' focus:outline-none focus:border-blue focus:ring-1 focus:ring-blue '
+      : 'border-0';
   })
 
   // change list width   based on the dropdown type value
