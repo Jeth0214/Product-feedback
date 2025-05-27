@@ -305,6 +305,15 @@ export class InMemoryDataService implements InMemoryDbService {
             ];
             return {feedBacks};
           }
+
+  // Overrides the genId method to ensure that a hero always has an id.
+  // If the feedBacks array is empty,
+  // the method below returns the initial number (11).
+  // if the feedBacks array is not empty, the method below returns the highest
+  // hero id + 1.
+  genId(feedBacks: IFeedBack[]): number {
+    return feedBacks.length > 0 ? Math.max(...feedBacks.map(hero => hero.id)) + 1 : 11;
+  }
 }
 
 // Provide the HttpClientInMemoryWebApiModule using a provider factory function

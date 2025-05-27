@@ -1,11 +1,12 @@
-import { computed, effect, inject, Injectable, signal, WritableSignal } from "@angular/core";
+import { computed, effect, inject, Injectable, OnDestroy, signal, WritableSignal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { catchError, firstValueFrom, Observable, of, tap } from 'rxjs';
+import { catchError, finalize, firstValueFrom, Observable, of, Subject, tap } from 'rxjs';
+import { takeUntil } from "rxjs/operators";
 import { IFeedBack } from "../models/feedbacks.model";
 import { ToastrService } from "ngx-toastr";
 import { Router } from "@angular/router";
 import { IComment } from "../models/comment.model";
-import { toSignal  } from "@angular/core/rxjs-interop";
+import { takeUntilDestroyed, toSignal  } from "@angular/core/rxjs-interop";
 import { LoadingService } from "./loading.service";
 
 
@@ -14,22 +15,25 @@ import { LoadingService } from "./loading.service";
 })
 
 
-export class FeedBackService {
+export class FeedBackService implements OnDestroy {
 
   //properties
-  api: string = 'api/feedBacks';
+  private api: string = 'api/feedBacks';
+  private destroy$ = new Subject(); // This is used to clean up subscriptions when the service is destroyed
  
   // innjections
   _http = inject(HttpClient);
   _toastrService = inject(ToastrService);
   _router = inject(Router);
   _loadingService = inject(LoadingService);
+  
 
 
   // signals
-  feedBacks = signal<IFeedBack[]>([]);
+  private feedBacks = signal<IFeedBack[]>([]);
   categoryTerm = signal('All');
   sortValue = signal('Most Upvotes');
+  isLoading = signal(false);
 
 
   filteredFeedBacks = computed(() => {
@@ -74,15 +78,22 @@ async getFeedBackById(id: number): Promise<IFeedBack> {
   }
 
   // Adds a new feedback to the API and updates the feedbacks signal
-async addFeedback(feedback: Partial<IFeedBack>): Promise<IFeedBack> {
-  const response$ = await this._http.post<IFeedBack>(this.api, feedback).pipe(
-    catchError(
-      this.handleError<IFeedBack>('Add Feedback', {} as IFeedBack)
-  ));
-  const newFeedback = await firstValueFrom(response$);
-  this.feedBacks.update((current) => [...current, newFeedback]);
-  return newFeedback;
-}
+  addFeedBack(feedback: Partial<IFeedBack>) {
+    this.isLoading.set(true);
+    this._http.post<IFeedBack>(this.api, feedback)
+      .pipe(
+        catchError(
+          this.handleError<IFeedBack>('Add Feedback', {} as IFeedBack)
+        ),
+        finalize( () => this.isLoading.set(false)),
+        takeUntil(this.destroy$) // Clean up subscription when the service is destroyed
+      )
+      .subscribe((newFeedback) => {
+        this.feedBacks.update((current) => [...current, newFeedback]);
+        this._toastrService.success('Feedback added successfully', 'Success');
+        this._router.navigate(['/feedbacks']);
+       })
+  }
   
 
   // Updates an existing feedback in the API and updates the feedbacks signal
@@ -169,6 +180,12 @@ async deleteFeedback(id: number): Promise<void> {
       default:
         return feedBacks;
     }
+  }
+
+  ngOnDestroy(): void {
+    // Clean up subscriptions when the service is destroyed
+    this.destroy$.next(null);
+    this.destroy$.complete();
   }
 
   

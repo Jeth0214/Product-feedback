@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DropdownComponent } from '../shared/components/dropdown/dropdown.component';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { IFeedBack } from '../shared/models/feedbacks.model';
+import { FeedBackService } from '../shared/services/feedbacks.service';
 
 @Component({
   selector: 'app-feedback-form',
@@ -15,19 +17,21 @@ export class FeedbackFormComponent implements OnInit {
   title = 'Create New Feedback';
   isLoading = false; // Subject to change based on loading state
 
-  categories = ['Feature', 'UI', 'UX', 'Enhancement', 'Bug'];
-
+  
   // Default selected category and transform it to title case
   // This should be set based on the feedback to be updated 
   // or set to a default value base on first element of categories.
   // selectedCategory = this.selectedCategoryTitleCase('bug');
   
-  selectedCategory = this.categories[0]; // Default to 'feature'
-
-
+  
   // form properties
   private formBuilder = inject(FormBuilder);
   feedBackform: FormGroup = new FormGroup({});
+  categories = ['Feature', 'UI', 'UX', 'Enhancement', 'Bug'];
+  selectedCategory = this.categories[0]; // Default to 'feature'
+
+  // Injections
+  _feedbackService = inject(FeedBackService);
 
   ngOnInit() {
     this.setUpForm();
@@ -53,8 +57,19 @@ export class FeedbackFormComponent implements OnInit {
     } 
 
     const formData = this.feedBackform.value;
+    const data: Partial <IFeedBack> = {
+      title: formData.title,
+      category: this.selectedCategory,
+      description: formData.description,
+      status: 'suggestion', // Default status
+      upvotes: 0, // Default upvotes
+      comments: [] // Default empty comments array
+    }
     console.log('Form submitted with data:', formData);
+    console.log('data:', data);
     // Here you can handle the form submission, e.g., send it to a server
+    this._feedbackService.addFeedBack(data);
+
   }
 
   // transform selected Category  to title case
