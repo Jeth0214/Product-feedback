@@ -1,4 +1,4 @@
-import { computed, effect, inject, Injectable, OnDestroy, signal, WritableSignal } from "@angular/core";
+import { computed, DestroyRef, effect, inject, Injectable, OnDestroy, signal, WritableSignal } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { catchError, finalize, firstValueFrom, Observable, of, Subject, tap } from 'rxjs';
 import { takeUntil } from "rxjs/operators";
@@ -15,17 +15,17 @@ import { LoadingService } from "./loading.service";
 })
 
 
-export class FeedBackService implements OnDestroy {
+export class FeedBackService  {
 
   //properties
   private api: string = 'api/feedBacks';
-  private destroy$ = new Subject(); // This is used to clean up subscriptions when the service is destroyed
+  private destroy$ = inject(DestroyRef)
  
   // innjections
-  _http = inject(HttpClient);
-  _toastrService = inject(ToastrService);
-  _router = inject(Router);
-  _loadingService = inject(LoadingService);
+  private _http = inject(HttpClient);
+  private _toastrService = inject(ToastrService);
+  private _router = inject(Router);
+  private _loadingService = inject(LoadingService);
   
 
 
@@ -57,11 +57,14 @@ export class FeedBackService implements OnDestroy {
     this._loadingService.loadingOn();
     this._http.get<IFeedBack[]>(this.api)
       .pipe(
+        tap(
+          (response) =>this.feedBacks.set(response)
+        ),
         catchError(
         this.handleError<IFeedBack[]>('Get All Feedbacks', [] as IFeedBack[])
-        ))
-      .subscribe(response => { 
-        this.feedBacks.set(response);
+        ),
+        takeUntilDestroyed(this.destroy$) // Clean up subscription when the service is destroyed
+      ).subscribe(response => { 
         this._loadingService.loadingOff();
       });
     
@@ -86,7 +89,7 @@ async getFeedBackById(id: number): Promise<IFeedBack> {
           this.handleError<IFeedBack>('Add Feedback', {} as IFeedBack)
         ),
         finalize( () => this.isLoading.set(false)),
-        takeUntil(this.destroy$) // Clean up subscription when the service is destroyed
+        takeUntilDestroyed(this.destroy$) // Clean up subscription when the service is destroyed
       )
       .subscribe((newFeedback) => {
         this.feedBacks.update((current) => [...current, newFeedback]);
@@ -180,12 +183,6 @@ async deleteFeedback(id: number): Promise<void> {
       default:
         return feedBacks;
     }
-  }
-
-  ngOnDestroy(): void {
-    // Clean up subscriptions when the service is destroyed
-    this.destroy$.next(null);
-    this.destroy$.complete();
   }
 
   

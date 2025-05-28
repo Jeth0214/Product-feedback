@@ -4,10 +4,11 @@ import { DropdownComponent } from '../shared/components/dropdown/dropdown.compon
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { IFeedBack } from '../shared/models/feedbacks.model';
 import { FeedBackService } from '../shared/services/feedbacks.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-feedback-form',
-  imports: [RouterLink, DropdownComponent, ReactiveFormsModule,],
+  imports: [RouterLink, DropdownComponent, ReactiveFormsModule, NgClass],
   templateUrl: './feedback-form.component.html',
   styleUrl: './feedback-form.component.scss'
 })
@@ -33,15 +34,22 @@ export class FeedbackFormComponent implements OnInit {
   // Injections
   _feedbackService = inject(FeedBackService);
 
+  // helper method to check if a control has error
+  hasError(controlName: string): boolean {
+    const control = this.feedBackform.get(controlName);
+    return !!(control && control.invalid && control?.touched );
+  }
+
+
   ngOnInit() {
     this.setUpForm();
   }
   
   setUpForm() {
     this.feedBackform = this.formBuilder.group({
-      title: ['', Validators.required],
+      title: ['', [Validators.required, Validators.minLength(5)]],
       category: [this.selectedCategory.toLowerCase()],
-      description: ['', Validators.required],
+      description: ['', [Validators.required, Validators.minLength(20)]],
     });
    }
 
@@ -58,16 +66,11 @@ export class FeedbackFormComponent implements OnInit {
 
     const formData = this.feedBackform.value;
     const data: Partial <IFeedBack> = {
-      title: formData.title,
-      category: this.selectedCategory,
-      description: formData.description,
+      ...formData,
       status: 'suggestion', // Default status
       upvotes: 0, // Default upvotes
       comments: [] // Default empty comments array
     }
-    console.log('Form submitted with data:', formData);
-    console.log('data:', data);
-    // Here you can handle the form submission, e.g., send it to a server
     this._feedbackService.addFeedBack(data);
 
   }
