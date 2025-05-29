@@ -70,19 +70,19 @@ export class FeedbackDetailsComponent {
   }
 
   async getFeedBackById(id: number) {
-    this._loadingService.loadingOn();
-    try {
-      const feedBackFromApi = await this._feedbackService.getFeedBackById(id);
+    // this._loadingService.loadingOn();
+    // try {
+    //   const feedBackFromApi = await this._feedbackService.getFeedBackById(id);
 
-      this.feedBack.set(feedBackFromApi);
-    }
-    catch (error) {
-      console.error(error);
-      this._router.navigate(['/home']);
-    }
-    finally {
-       this._loadingService.loadingOff();
-    }
+    //   this.feedBack.set(feedBackFromApi);
+    // }
+    // catch (error) {
+    //   console.error(error);
+    //   this._router.navigate(['/home']);
+    // }
+    // finally {
+    //    this._loadingService.loadingOff();
+    // }
   }
 
   async addComment(commentdata: string) {

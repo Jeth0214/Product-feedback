@@ -40,6 +40,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideAnimationsAsync(),
     provideToastr(),
+    // Import the InMemoryDataService to mock backend API calls
     importProvidersFrom(HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService)),
   ]
 };

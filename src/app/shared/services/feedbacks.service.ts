@@ -31,6 +31,7 @@ export class FeedBackService  {
 
   // signals
   private feedBacks = signal<IFeedBack[]>([]);
+  selectedFeedBack = signal<IFeedBack>({} as IFeedBack); 
   categoryTerm = signal('All');
   sortValue = signal('Most Upvotes');
   isLoading = signal(false);
@@ -71,13 +72,22 @@ export class FeedBackService  {
   }
 
 // Fetches a specific feedback by its ID from the API
-async getFeedBackById(id: number): Promise<IFeedBack> {
-    const response$ = await this._http.get<IFeedBack>(`${this.api}/${id}`).pipe(
+  getFeedBackById(id: number) {
+    this.isLoading.set(true);
+    this._http.get<IFeedBack>(`${this.api}/${id}`).pipe(
+      tap((response) => {
+        if (response) {
+          this.selectedFeedBack.set(response)
+        }
+      }
+      ), 
       catchError(
-        this.handleError<IFeedBack>('Get Feedback By id', {} as IFeedBack)
-    ));
-    const feedBack = await firstValueFrom(response$);
-    return feedBack;
+        this.handleError<IFeedBack>('Get Feedback By id', {} as IFeedBack),
+      ),
+      takeUntilDestroyed(this.destroy$) // Clean up subscription when the service is destroyed
+    ).subscribe((response) => {
+      this.isLoading.set(false);
+    } );
   }
 
   // Adds a new feedback to the API and updates the feedbacks signal
