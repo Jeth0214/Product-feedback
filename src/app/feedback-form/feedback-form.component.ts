@@ -26,7 +26,7 @@ export class FeedbackFormComponent implements OnInit {
   // or set to a default value base on first element of categories.
   // selectedCategory = this.selectedCategoryTitleCase('bug');
 
-  @Input() id: string | null = null; // Optional input for feedback ID, used for editing existing feedbacks
+  @Input() id: string | null = ''; // Optional input for feedback ID, used for editing existing feedbacks
   
   
   // form properties
@@ -34,18 +34,17 @@ export class FeedbackFormComponent implements OnInit {
   feedBackform: FormGroup = new FormGroup({});
   categories = ['Feature', 'UI', 'UX', 'Enhancement', 'Bug'];
   selectedFeedBack = this._feedbackService.selectedFeedBack; // Used for editing feedbacks
-  eff=  effect(() => {
-    // Effect to update the form when selectedFeedBack changes
-    console.log('Selected feedback changed:', this.selectedFeedBack());
-    this.selectedFeedBack().category ? this.selectedCategoryTitleCase(this.selectedFeedBack().category) : this.categories[0];
-  })
-  selectedCategory = computed(() => { 
-    return this.selectedFeedBack().category ? this.selectedCategoryTitleCase(this.selectedFeedBack().category) : this.categories[0];
-  })
+  
+  selectedCategory = 'Feature'; // Default selected category, can be changed based on feedback
 
-  eff2 =  effect(() => {
-    // Effect to update the form when selectedFeedBack changes
-    console.log('Selected category:', this.selectedCategory());
+  getfeedBackEffect = effect(() => {
+           const feedback = this.selectedFeedBack();
+          console.log('Fetching feedback with ID:', feedback);
+          if (feedback) {
+            this.setUpForm(feedback);
+            this.selectedCategory = this.selectedCategoryTitleCase(feedback.category);
+          }
+  
   })
   
   
@@ -58,20 +57,35 @@ export class FeedbackFormComponent implements OnInit {
   }
 
 
+  
+
+
   ngOnInit() {
-    if (this.id) {
-      this._feedbackService.getFeedBackById(+this.id);
-    }
-    this.setUpForm(this.selectedFeedBack());
+        // If an ID is provided, fetch the feedback by ID and set up the form
+        if (this.id) {
+          this._feedbackService.getFeedBackById(+this.id);
+      
+        } else {
+          // If no ID is provided, set up the form with default values
+          this.setUpForm();
+        }
+    
+        // effect(() => {
+        //   const feedback = this.selectedFeedBack();
+        //   console.log('Fetching feedback with ID:', feedback);
+        //   if (feedback) {
+        //     this.setUpForm(feedback);
+        //     this.selectedCategory = this.selectedCategoryTitleCase(feedback.category);
+        //   }
+        // });
   }
   
   setUpForm(feedback?: IFeedBack) {
     // If feedback is provided, populate the form with its data
     // Otherwise, initialize the form with default values
-    console.log('Setting up form with feedback:', feedback);
     this.feedBackform = this.formBuilder.group({
       title: [feedback?.title ?? '', [Validators.required, Validators.minLength(5)]],
-      category: [this.selectedCategory().toLowerCase()],
+      category: [this.selectedCategory.toLowerCase()],
       description: [feedback?.description ?? '', [Validators.required, Validators.minLength(20)]],
     });
    }
