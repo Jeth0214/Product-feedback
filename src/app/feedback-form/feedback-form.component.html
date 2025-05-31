@@ -9,8 +9,11 @@
 
   <div class=" bg-white rounded-lg   p-10 mt-12 md:mt-20 ">
     <div>
-      <img [src]="formIcon" alt="form icon" loading="lazy" class="-mt-14">
-      <h1 class="text-2xl mt-3"> {{ title }} </h1>
+      @if(selectedFeedBack()) {
+        <img [src]="formIcon" alt="form icon" loading="lazy" class="-mt-14">
+        <h1 class="text-2xl mt-3"> {{ title }} </h1>
+      } 
+
     </div>
 
     <form [formGroup]="feedBackform" class="mt-10" (ngSubmit)="onSubmit()">
@@ -36,16 +39,19 @@
       </div>
 
       <!-- Category -->
+      
       <div class="mt-10">
         <h2>Category</h2>
-        <label for="category" class="text-sm text-dark-500">Choose a category for your feedback</label>
-        <app-dropdown 
-          [defaultOption]="selectedCategory"
-          [dropDownOptions]="categories"  
-          [dropDownType]="'block'" 
-          [dropDownArrowColor]="'blue'"
-          (processOption)="onSelectCategory($any($event))"
-        />
+        <label for="category" class="text-sm text-dark-500 ">Choose a category for your feedback</label>
+        @if(selectedCategory) {
+           <app-dropdown 
+             [defaultOption]="selectedCategory"
+             [dropDownOptions]="categories"  
+             [dropDownType]="'block'" 
+             [dropDownArrowColor]="'blue'"
+             (processOption)="onSelectCategory($any($event))"
+           />
+          }
       </div>
 
       <!-- Description -->

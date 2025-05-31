@@ -26,7 +26,7 @@ export class DropdownComponent {
   // change button style class  based on the dropdown type value
   buttonClass = computed(() => {
    return this.dropDownType() == 'inline-block' ? 'text-white font-bold  hover:text-gray-100'
-      : 'text-dark-800 bg-light-800 rounded-lg w-full px-6 py-3 mt-4 border border-white hover:border-blue hover:ring-2 hover:ring-blue'
+      : 'text-dark-800 bg-light-800 text-base rounded-lg w-full px-6 py-3 mt-4 border border-white hover:border-blue hover:ring-2 hover:ring-blue'
   });
 
   // change button border class  based on the dropdown type value and isDropdownOpen state
