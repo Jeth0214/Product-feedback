@@ -30,18 +30,20 @@ export class FeedbackFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   feedBackform: FormGroup = new FormGroup({});
   categories = ['Feature', 'UI', 'UX', 'Enhancement', 'Bug'];
-  selectedFeedBack = this._feedbackService.selectedFeedBack; // Used for editing feedbacks
-  selectedCategory = ''; // Default selected category, can be updated based on feedback
+  status = ['Suggestion', 'Planned', 'In-Progress', 'Live'];
+  selectedFeedBack = this._feedbackService.selectedFeedBack; 
+  selectedCategory = '';
+  selectedStatus = '';
   
 
   getfeedBackEffect = effect(() => {
     const feedback = this.selectedFeedBack();
-    if (feedback) {
+    if (feedback && this.id) {
 
       this.setUpForm(feedback);
-      this.selectedCategory = this.selectedCategoryTitleCase(feedback.category);
+      this.selectedCategory = this.dropdownValueToTitleCase(feedback.category);
       this.formIcon = 'assets/shared/icon-edit-feedback.svg';
-      this.title = `Editing'${this.selectedFeedBack().title}'`;
+      this.title = `Editing '${this.selectedFeedBack().title}'`;
     }      
   })
 
@@ -63,7 +65,8 @@ export class FeedbackFormComponent implements OnInit {
       this._feedbackService.getFeedBackById(+this.id);  
     } else {
       // If no ID is provided, set up the form for creating a new feedback
-      this.selectedCategory = this.selectedCategoryTitleCase(this.categories[0]); // Default to first category
+      this.selectedCategory = this.dropdownValueToTitleCase(this.categories[0]); // Default to first category
+      this.selectedStatus= this.dropdownValueToTitleCase(this.status[0]); // Default to first status
       this.setUpForm();
     }
   
@@ -84,6 +87,10 @@ export class FeedbackFormComponent implements OnInit {
     this.selectedCategory = category.toLowerCase();
   }
 
+  onSelectStatus(status: string) {
+    this.selectedStatus = status.toLowerCase();
+  }
+
   // onSubmit method to handle form submission
   onSubmit() {
     if (this.feedBackform.invalid) {
@@ -95,7 +102,7 @@ export class FeedbackFormComponent implements OnInit {
     const data: Partial <IFeedBack> = {
       ...formData,
       category: this.selectedCategory.toLowerCase(), // Ensure category is in lowercase
-      status: 'suggestion', // Default status
+      status: this.selectedStatus.toLowerCase(), // Ensure status is in lowercase
       upvotes: 0, // Default upvotes
       comments: [] // Default empty comments array
     }
@@ -104,8 +111,8 @@ export class FeedbackFormComponent implements OnInit {
   }
 
   // transform selected Category  to title case
- private selectedCategoryTitleCase(category: string): string {
-    return category.charAt(0).toUpperCase() + category.slice(1);
+ private dropdownValueToTitleCase(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
 
