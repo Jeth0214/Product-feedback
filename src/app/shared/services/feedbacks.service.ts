@@ -73,14 +73,14 @@ export class FeedBackService  {
 
 // Fetches a specific feedback by its ID from the API
   getFeedBackById(id: number) {
-    this.isLoading.set(true);
+    this._loadingService.loadingOn();
     this._http.get<IFeedBack>(`${this.api}/${id}`).pipe(
-      catchError(
-        this.handleError<IFeedBack>('Get Feedback By id', {} as IFeedBack),
+      catchError( 
+        this.handleError<IFeedBack>('Get Feedback By id', {} as IFeedBack)
       ),
       takeUntilDestroyed(this.destroy$) // Clean up subscription when the service is destroyed
     ).subscribe((response) => {
-      this.isLoading.set(false);
+      this._loadingService.loadingOff();
     this.selectedFeedBack.set(response)
     } );
   }
