@@ -113,15 +113,15 @@ export class FeedbackDetailsComponent {
 
 
   async updateFeedBack(feedBack: IFeedBack) {
-    this.isLoading = true;
-    try {
-      const updatedFeedbackFromService = await this._feedbackService.updateFeedback(feedBack);
-      this.feedBack.set(updatedFeedbackFromService);
-    } catch (error) {
-      console.error('Error updating feedback:', error);
-    } finally { 
-      this.isLoading = false;
-    }
+    // this.isLoading = true;
+    // try {
+    //   const updatedFeedbackFromService = await this._feedbackService.updateFeedback(feedBack);
+    //   this.feedBack.set(updatedFeedbackFromService);
+    // } catch (error) {
+    //   console.error('Error updating feedback:', error);
+    // } finally { 
+    //   this.isLoading = false;
+    // }
   }
    
   

@@ -105,21 +105,21 @@ export class FeedBackService  {
   
 
   // Updates an existing feedback in the API and updates the feedbacks signal
-  // !! NOTE : angular-in-memory-web-api PUT method did not return the updated object, 
-  // !! so we are returning the same object that was sent to the API
-  async updateFeedback(feedback: IFeedBack): Promise<IFeedBack> {
-    const response$ = await this._http.put<IFeedBack>(this.api, feedback).pipe(
-    // I console.log the response to see the updated object , no return value either no error or success
-    tap((response) => console.log('Feedback updated response from observable', response)), 
-    catchError(
-      this.handleError<IFeedBack>('Update Feedback', {} as IFeedBack)
-  ));
-    const updatedFeedback = await firstValueFrom(response$);
-    // I console.log the response to see the updated object , no return value neither error nor success
-  console.log('Updated FeedBack from service', updatedFeedback);
-  this.feedBacks.update((current) => current.map(fb => fb.id === feedback.id ? feedback : fb));
-  return feedback;
-  }
+
+  updateFeedBack(feedback: Partial<IFeedBack>) {
+      this.isLoading.set(true);
+    this._http.put<IFeedBack>(this.api, feedback).pipe(
+      // !! NOTE : angular-in-memory-web-api PUT method did not return the updated object, 
+      // !! so we are returning the same object that was sent to the API if successful
+      tap((response) => console.log('Feedback updated response from observable', response)),
+      catchError(this.handleError<IFeedBack>('Update Feedback', {} as IFeedBack)),
+      finalize(() => {
+        this.isLoading.set(false);
+      }),
+    ).subscribe((updatedFeedback) => { 
+      console.log('Feedback updated successfully', updatedFeedback);
+    });
+    }
   
 
 
