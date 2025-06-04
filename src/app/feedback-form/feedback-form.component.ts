@@ -1,11 +1,14 @@
 import { Component, computed, effect, inject, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownComponent } from '../shared/components/dropdown/dropdown.component';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { IFeedBack } from '../shared/models/feedbacks.model';
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { NgClass } from '@angular/common';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
+import { finalize } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-feedback-form',
@@ -18,10 +21,12 @@ export class FeedbackFormComponent  {
   private _activatedRoute = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
   private _feedbackService = inject(FeedBackService);
+  private _toastrService = inject(ToastrService);
+  private _router = inject(Router)
 
   
   selectedFeedBack = this._feedbackService.selectedFeedBack; 
-  isLoading = this._feedbackService.isLoading;
+  isLoading = false;
 
   // Component properties
   formIcon = '';
@@ -100,27 +105,52 @@ export class FeedbackFormComponent  {
     if (this.feedBackform.invalid) {
       console.log('Form is invalid. Please fill in all required fields.');
       return;
-    } 
+    }
     const formData = this.feedBackform.value;
+    if (this.selectedFeedBack() && this.id) {
+      this.updateFeedBack(formData); // Call update method if feedback exists
+    }
+    else {
+      this.addFeedBack(formData); // Call add method if feedback does not exist
+    }
+  }  
+  
+  // update feedback to server
+  updateFeedBack(formData: Partial<IFeedBack>) {
     const data: Partial <IFeedBack> = {
+      ...this.selectedFeedBack(),
       ...formData,
       category: this.selectedCategory.toLowerCase(), // Ensure category is in lowercase
       status: this.selectedStatus.toLowerCase(), // Ensure status is in lowercase
-      upvotes:  this.selectedFeedBack().upvotes ??  0, // Default upvotes
-      comments: this.selectedFeedBack().comments ?? []  // Default empty comments array
+  
     }
-
-    console.log('Data to be submitted:', data);
-    if (this.selectedFeedBack() && this.id) {
-      this._feedbackService.updateFeedBack(data);
-    }
-    else {
-      this._feedbackService.addFeedBack(data);
-      this.feedBackform.reset(); // Reset the form after submission
-    }
-
-
+    this._feedbackService.updateFeedBack(data);
   }
+  
+  // add new feedback to server
+  addFeedBack(formData: Partial<IFeedBack>) {
+    this.isLoading = true; // Set loading state to true
+    const data: Partial<IFeedBack> = {
+      ...formData,
+      category: this.selectedCategory.toLowerCase(), // Ensure category is in lowercase
+      status: this.selectedStatus.toLowerCase(), // Ensure status is in lowercase
+      upvotes: 0, // Default upvotes
+      comments: [] // Default empty comments array
+    };
+    this._feedbackService.addFeedBack(data).pipe(
+      finalize(() => this.isLoading = false) // Set loading state to false after the request completes
+      )
+      .subscribe({
+        next: () => {
+          this.feedBackform.reset(); // Reset the form after submission
+          this._toastrService.success('Feedback added successfully', 'Success'); // Show success message
+          this._router.navigate(['/feedbacks']); // Navigate to the feedbacks list
+      },
+      error: (error: HttpErrorResponse) => {
+        this._toastrService.error('Failed to add feedback', `Status: ${error.status}`);
+      }
+    });
+   }
 
 
   // transform selected Category  to title case

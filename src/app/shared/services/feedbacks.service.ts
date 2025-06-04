@@ -86,40 +86,42 @@ export class FeedBackService  {
   }
 
   // Adds a new feedback to the API and updates the feedbacks signal
-  addFeedBack(feedback: Partial<IFeedBack>) {
-    this.isLoading.set(true);
-    this._http.post<IFeedBack>(this.api, feedback)
-      .pipe(
-        catchError(
-          this.handleError<IFeedBack>('Add Feedback', {} as IFeedBack)
-        ),
-        finalize( () => this.isLoading.set(false)),
-        takeUntilDestroyed(this.destroy$) // Clean up subscription when the service is destroyed
-      )
-      .subscribe((newFeedback) => {
-        this.feedBacks.update((current) => [...current, newFeedback]);
-        this._toastrService.success('Feedback added successfully', 'Success');
-        this._router.navigate(['/feedbacks']);
-       })
+  // addFeedBack(feedback: Partial<IFeedBack>) {
+  //   this.isLoading.set(true);
+  //   this._http.post<IFeedBack>(this.api + 's', feedback)
+  //     .pipe(
+  //       catchError(
+  //         this.handleError<IFeedBack>('Add Feedback', {} as IFeedBack)
+  //       ),
+  //       finalize( () => this.isLoading.set(false)),
+  //       takeUntilDestroyed(this.destroy$) // Clean up subscription when the service is destroyed
+  //     )
+  //     .subscribe((newFeedback) => {
+  //       this.feedBacks.update((current) => [...current, newFeedback]);
+  //       this._toastrService.success('Feedback added successfully', 'Success');
+  //       this._router.navigate(['/feedbacks']);
+  //      })
+  // }
+
+  // Adds a new feedback to the API
+  addFeedBack(feedback: Partial<IFeedBack>): Observable<IFeedBack> {
+   return this._http.post<IFeedBack>(this.api, feedback)
   }
+
   
 
   // Updates an existing feedback in the API and updates the feedbacks signal
-
+  // !! NOTE : angular-in-memory-web-api PUT method did not return the updated object, 
+  // !! so we are returning the same object that was sent to the API if successful
   updateFeedBack(feedback: Partial<IFeedBack>) {
       this.isLoading.set(true);
     this._http.put<IFeedBack>(this.api, feedback).pipe(
-      // !! NOTE : angular-in-memory-web-api PUT method did not return the updated object, 
-      // !! so we are returning the same object that was sent to the API if successful
-      tap((response) => console.log('Feedback updated response from observable', response)),
       catchError(this.handleError<IFeedBack>('Update Feedback', {} as IFeedBack)),
-      finalize(() => {
-        this.isLoading.set(false);
-      }),
-    ).subscribe((updatedFeedback) => { 
-      console.log('Feedback updated successfully', updatedFeedback);
+      finalize(() => this.isLoading.set(false)),
+    ).subscribe(() => {
+      this._toastrService.success(`Feedback with ${feedback.id} updated successfully`, 'Success');
     });
-    }
+  }
   
 
 
