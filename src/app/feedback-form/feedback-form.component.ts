@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownComponent } from '../shared/components/dropdown/dropdown.component';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -9,6 +9,7 @@ import { LoadingComponent } from '../shared/components/loading/loading.component
 import { finalize } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-feedback-form',
@@ -23,14 +24,16 @@ export class FeedbackFormComponent  {
   private _feedbackService = inject(FeedBackService);
   private _toastrService = inject(ToastrService);
   private _router = inject(Router)
+  private _destroyRef = inject(DestroyRef);
 
   
   selectedFeedBack = this._feedbackService.selectedFeedBack; 
   isLoading = false;
 
   // Component properties
-  formIcon = '';
-  title = '';
+  formIcon = 'assets/shared/icon-new-feedback.svg';
+  title = 'Create New Feedback';
+  submitButtonText = 'Add Feedback';
   id = 0; 
 
 
@@ -58,12 +61,11 @@ export class FeedbackFormComponent  {
           this.formIcon = 'assets/shared/icon-edit-feedback.svg';
           this.title = `Editing '${this.selectedFeedBack().title}'`;
           this.selectedCategory = this.dropdownValueToTitleCase(feedback.category);
-          this.selectedStatus= this.dropdownValueToTitleCase(feedback.status); // Default to first status
-        } 
+          this.selectedStatus = this.dropdownValueToTitleCase(feedback.status);
+          this.submitButtonText = 'Update Feedback';
+        }  
         else {
           // If no ID is provided, set up the form for creating a new feedback
-          this.formIcon = 'assets/shared/icon-new-feedback.svg';
-          this.title = 'Create New Feedback';
           this.selectedCategory = this.dropdownValueToTitleCase(this.categories[0]); // Default to first category
           this.setUpForm();
         }
@@ -138,12 +140,13 @@ export class FeedbackFormComponent  {
       comments: [] // Default empty comments array
     };
     this._feedbackService.addFeedBack(data).pipe(
-      finalize(() => this.isLoading = false) // Set loading state to false after the request completes
+      finalize(() => this.isLoading = false) ,// Set loading state to false after the request completes
+      takeUntilDestroyed(this._destroyRef)
       )
       .subscribe({
         next: () => {
-          this.feedBackform.reset(); // Reset the form after submission
           this._toastrService.success('Feedback added successfully', 'Success'); // Show success message
+          this.feedBackform.reset(); // Reset the form after submission
           this._router.navigate(['/feedbacks']); // Navigate to the feedbacks list
       },
       error: (error: HttpErrorResponse) => {
