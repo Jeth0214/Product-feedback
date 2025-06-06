@@ -27,6 +27,8 @@ export class FeedbackListComponent {
   // signals
   feedBacks = input<IFeedBack[]>([]);
 
+  isLoading = input<boolean>(false);
+
 
   
 }

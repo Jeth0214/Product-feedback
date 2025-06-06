@@ -5,6 +5,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { FeedbackBoardComponent } from "./feedback-board/feedback-board.component";
 import { FeedbackListComponent } from './feedback-list/feedback-list.component';
 import { RoadmapReportComponent } from './roadmap-report/roadmap-report.component';
+import { LoadingService } from '../shared/services/loading.service';
 
 @Component({
   selector: 'app-feedbacks',
@@ -24,6 +25,7 @@ export class FeedbacksComponent  {
  
   // injections
   _feedBackService = inject(FeedBackService);
+  _loadingService = inject(LoadingService);
 
   // properties
   feedBacks = this._feedBackService.filteredFeedBacks;

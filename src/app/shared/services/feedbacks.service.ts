@@ -130,13 +130,8 @@ export class FeedBackService  {
 
 
 // Deletes a feedback from the API and updates the feedbacks signal
-async deleteFeedback(id: number): Promise<void> {
-  const response$ = await this._http.delete<void>(`${this.api}/${id}`).pipe(
-    catchError(
-      this.handleError<void>('Delete Feedback')
-  ));
-  await firstValueFrom(response$);
-  this.feedBacks.update((current) => current.filter(fb => fb.id !== id));
+  deleteFeedBack(id: number): Observable<IFeedBack> {
+    return this._http.delete<IFeedBack>(`${this.api}/${id}`)
   }
   
 
