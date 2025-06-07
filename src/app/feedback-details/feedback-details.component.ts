@@ -12,10 +12,18 @@ import { IUser } from '../shared/models/user.model';
 import { LoadingService } from '../shared/services/loading.service';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { ToastrService } from 'ngx-toastr';
+import { EmptyComponent } from '../shared/components/empty/empty.component';
 
 @Component({
     selector: 'app-feedback-details',
-    imports: [RouterLink, FontAwesomeModule, FeedbackCommentsComponent, FeedbackCommentFormComponent, LoadingComponent],
+  imports: [
+    RouterLink,
+    FontAwesomeModule,
+    FeedbackCommentsComponent,
+    FeedbackCommentFormComponent,
+    LoadingComponent,
+    EmptyComponent
+  ],
     templateUrl: './feedback-details.component.html',
     styleUrl: './feedback-details.component.scss'
 })
@@ -58,7 +66,8 @@ export class FeedbackDetailsComponent {
 
   getRouteId() {
       this._activatedRoute.paramMap.subscribe( (param: ParamMap) => { 
-      const feedBackID = param.get('id');
+        const feedBackID = param.get('id');
+        console.log(feedBackID)
       if (feedBackID) {
         this.id = +feedBackID;
         this.getFeedBackById(this.id);

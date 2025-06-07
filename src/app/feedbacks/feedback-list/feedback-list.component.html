@@ -9,7 +9,7 @@
         <div class=" flex gap-x-10 gap-y-4 flex-col md:flex-row ">
           <div class="feedBack_upvotes order-2 md:order-1 flex justify-between md:block">
   
-            <button
+            <button (click)="onUpVote(feedBack)"
               class="group/upvote flex gap-x-2 flex-row items-center  md:flex-col px-2 py-3 font-bold min-w-12 bg-light-500 rounded-10 hover:bg-light-300  active:bg-blue active:text-white transition">
               <fa-icon class="font-bold text-blue group-active/upvote:text-white" [icon]="upVoteIcon"></fa-icon>
               <span class="text-sm">{{feedBack.upvotes}}</span>

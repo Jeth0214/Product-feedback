@@ -30,7 +30,7 @@ export class RoadmapComponent implements OnInit {
   title: string = 'Roadmap';
   selectedRoadMapStatus : RoadMapStatus = 'in-progress';
   isLargeScreen: boolean = window.innerWidth >= 768;
-    faPlus = faPlus;
+  faPlus = faPlus;
 
   // injections
   _feedBackService = inject(FeedBackService);
@@ -45,9 +45,6 @@ export class RoadmapComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.isLargeScreen = event.target.innerWidth >= 768;
-  }
-
-  constructor() {
   }
   
   ngOnInit() {

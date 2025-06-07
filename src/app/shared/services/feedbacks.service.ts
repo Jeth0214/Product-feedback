@@ -81,7 +81,7 @@ export class FeedBackService  {
       takeUntilDestroyed(this.destroy$) // Clean up subscription when the service is destroyed
     ).subscribe((response) => {
       this._loadingService.loadingOff();
-    this.selectedFeedBack.set(response)
+      this.selectedFeedBack.set(response)
     } );
   }
 
@@ -125,6 +125,22 @@ export class FeedBackService  {
   
   updateFeedBack(feedback: Partial<IFeedBack>): Observable<IFeedBack> {
     return this._http.put<IFeedBack>(this.api, feedback)
+  }
+
+    // !! NOTE : angular-in-memory-web-api PUT method did not return the updated object, 
+  // !! so we are returning the same object that was sent to the API if successful
+  upVoteFeedBack(upvotedFeedback: IFeedBack) {
+    this._http.put<IFeedBack>(this.api, upvotedFeedback).pipe(
+      catchError(this.handleError<IFeedBack>('Update Feedback', {} as IFeedBack)),
+      takeUntilDestroyed(this.destroy$)
+    ).subscribe(() => {
+      this.feedBacks.update( (feedBacks: IFeedBack[]) => {
+        // search the feedback on feedbacks and replace it
+       return  feedBacks.map( feedBack => upvotedFeedback.id === feedBack.id ? {...feedBack, ...upvotedFeedback} : feedBack)
+        
+      })
+      this._toastrService.success(`Feedback upvoted successfully`, 'Success');
+    });
   }
   
 

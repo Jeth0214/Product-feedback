@@ -6,6 +6,7 @@ import { FeedbackBoardComponent } from "./feedback-board/feedback-board.componen
 import { FeedbackListComponent } from './feedback-list/feedback-list.component';
 import { RoadmapReportComponent } from './roadmap-report/roadmap-report.component';
 import { LoadingService } from '../shared/services/loading.service';
+import { IFeedBack } from '../shared/models/feedbacks.model';
 
 @Component({
   selector: 'app-feedbacks',
@@ -53,6 +54,11 @@ export class FeedbacksComponent  {
   
   onSortByValue(sortValue: string) {
     this._feedBackService.setSortValue(sortValue);
+  }
+
+  onUpVoteFeedBack(feedBack: IFeedBack) {
+    console.log('upvoted', feedBack)
+    this._feedBackService.upVoteFeedBack(feedBack)
   }
 
 

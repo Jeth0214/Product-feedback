@@ -195,13 +195,10 @@ export class FeedbackFormComponent {
 
   // transform selected Category  to title case
   private dropdownValueToTitleCase(value: string): string {
-   // if the value has "-" in it, split it and capitalize each part
-    if (value.includes('-')) { 
-      return value.split('-')
-        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-        .join('-');
-    }
-    return value.charAt(0).toUpperCase() + value.slice(1);
+    if (!value) return '';
+    return value.includes('-')
+      ? value.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('-')
+      : value.charAt(0).toUpperCase() + value.slice(1);
   }
 
 
