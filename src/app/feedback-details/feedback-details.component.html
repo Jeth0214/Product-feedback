@@ -12,10 +12,11 @@
         </a>
       
         @if (feedBack()) {
-          <button
+          <a
+          [routerLink]="['/feedback-form', feedBack().id]"
             class="bg-blue text-white px-6 py-3 rounded-xl font-bold   hover:bg-blue-800 hover:text-light-500 transition ease-in-out">
             Edit Feedback
-          </button>
+          </a>
         }
       </section>
       
@@ -28,16 +29,12 @@
           <div class=" flex gap-x-10 gap-y-4 flex-col md:flex-row ">
             <div class="feedBack_upvotes order-2 md:order-1 flex justify-between md:block">
         
-              <button
-                class="group/upvote flex gap-x-2 flex-row items-center  md:flex-col px-2 py-3 font-bold min-w-12 bg-light-500 rounded-10 hover:bg-light-300  active:bg-blue active:text-white transition">
-                <fa-icon class="font-bold text-blue group-active/upvote:text-white" [icon]="upVoteIcon"></fa-icon>
-                <span class="text-sm">{{feedBack()?.upvotes}}</span>
-              </button>
+              <app-upvote-button [feedBack]="feedBack()" [buttonStyle]="'stack'" />
         
-              @if(feedBack()?.comments) {
+              @if(feedBack().comments) {
               <div class=" feedback_comment_count flex  md:hidden items-center gap-2">
                 <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
-                <p class="font-bold">{{feedBack()?.comments?.length}}</p>
+                <p class="font-bold">{{feedBack().comments?.length}}</p>
               </div>
               }
         
@@ -45,18 +42,18 @@
             </div>
         
             <div class="feedBack_descriptions order-1 md:order-2">
-              <h1 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack()?.title}}</h1>
-              <p class="my-2">{{feedBack()?.description}}</p>
+              <h1 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack().title}}</h1>
+              <p class="my-2">{{feedBack().description}}</p>
               <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">
-                {{feedBack()?.category}}</p>
+                {{feedBack().category}}</p>
             </div>
         
           </div>
         
-          @if(feedBack()?.comments) {
+          @if(feedBack().comments) {
           <div class="feedback_comment_count hidden md:flex  items-center gap-2">
             <img src="./assets/shared/icon-comments.svg" alt="comments" loading="lazy">
-            <p class="font-bold">{{feedBack()?.comments?.length}}</p>
+            <p class="font-bold">{{feedBack().comments?.length}}</p>
           </div>
           }
         </section>
@@ -108,6 +105,8 @@
             </p>
           </div>  
         </div>
+
+        <!-- <app-empty /> -->
     }
 
   }

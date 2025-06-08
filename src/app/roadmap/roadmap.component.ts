@@ -8,6 +8,7 @@ import { RoadMapStatus } from '../shared/models/roadmap-status.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { RouterLink } from '@angular/router';
+import { LoadingService } from '../shared/services/loading.service';
 
 
 
@@ -34,6 +35,7 @@ export class RoadmapComponent implements OnInit {
 
   // injections
   _feedBackService = inject(FeedBackService);
+  _loadingService = inject(LoadingService)
 
   // signals
   feedBacks = this._feedBackService.filteredFeedBacks;

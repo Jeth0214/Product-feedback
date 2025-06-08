@@ -40,29 +40,31 @@
       class="flex-1 cursor py-5 text-sm text-gray-400">Live ({{live().length}}) </button>
   </div>
 
-
-@if(feedBacks().length > 0) {
+@if(!_loadingService.isLoading()) {
+  @if(feedBacks().length > 0) {
   <div class="container px-6">
-    <div class="grid gap-3 md:grid-cols-3">
+    <div class="grid gap-5 md:grid-cols-3">
       <!-- Display all cards on larger screens -->
-       @if(selectedRoadMapStatus == 'planned' || isLargeScreen){
-         <app-roadmap-list-card  [feedBacks]="planned()" borderClass="border-planned" title="planned"
-           description="Ideas prioritized for research" />
-       }
-        @if(selectedRoadMapStatus == 'in-progress' || isLargeScreen){
-
-          <app-roadmap-list-card [feedBacks]="inProgress()" borderClass="border-in-progress" title="in-progress"
-            description="Features currently being developed" />
-        }
-        @if(selectedRoadMapStatus == 'live' || isLargeScreen){
-          <app-roadmap-list-card  [feedBacks]="live()" borderClass="border-live" title="live" description="Released features" />
-        }
+      @if(selectedRoadMapStatus == 'planned' || isLargeScreen){
+      <app-roadmap-list-card [feedBacks]="planned()" borderClass="border-planned" title="planned"
+        description="Ideas prioritized for research" />
+      }
+      @if(selectedRoadMapStatus == 'in-progress' || isLargeScreen){
+  
+      <app-roadmap-list-card [feedBacks]="inProgress()" borderClass="border-in-progress" title="in-progress"
+        description="Features currently being developed" />
+      }
+      @if(selectedRoadMapStatus == 'live' || isLargeScreen){
+      <app-roadmap-list-card [feedBacks]="live()" borderClass="border-live" title="live"
+        description="Released features" />
+      }
     </div>
   </div>
-} 
-@else {
-  <app-empty />
+  }
+  @else {
+  <app-empty /> }
 }
+
 
 </div>
 

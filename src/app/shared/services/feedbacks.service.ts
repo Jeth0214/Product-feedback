@@ -58,12 +58,8 @@ export class FeedBackService  {
     this._loadingService.loadingOn();
     this._http.get<IFeedBack[]>(this.api)
       .pipe(
-        tap(
-          (response) =>this.feedBacks.set(response)
-        ),
-        catchError(
-        this.handleError<IFeedBack[]>('Get All Feedbacks', [] as IFeedBack[])
-        ),
+        tap((response) => this.feedBacks.set(response)),
+        catchError( this.handleError<IFeedBack[]>('Get All Feedbacks', [] as IFeedBack[])),
         takeUntilDestroyed(this.destroy$) // Clean up subscription when the service is destroyed
       ).subscribe(response => { 
         this._loadingService.loadingOff();
@@ -136,9 +132,10 @@ export class FeedBackService  {
     ).subscribe(() => {
       this.feedBacks.update( (feedBacks: IFeedBack[]) => {
         // search the feedback on feedbacks and replace it
-       return  feedBacks.map( feedBack => upvotedFeedback.id === feedBack.id ? {...feedBack, ...upvotedFeedback} : feedBack)
+        return  feedBacks.map( feedBack => upvotedFeedback.id === feedBack.id ? {...feedBack, ...upvotedFeedback} : feedBack)
         
       })
+      this.selectedFeedBack.set(upvotedFeedback);
       this._toastrService.success(`Feedback upvoted successfully`, 'Success');
     });
   }

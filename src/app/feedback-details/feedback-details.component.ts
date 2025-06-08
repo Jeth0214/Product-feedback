@@ -13,6 +13,7 @@ import { LoadingService } from '../shared/services/loading.service';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { ToastrService } from 'ngx-toastr';
 import { EmptyComponent } from '../shared/components/empty/empty.component';
+import { UpvoteButtonComponent } from '../shared/components/upvote-button/upvote-button.component';
 
 @Component({
     selector: 'app-feedback-details',
@@ -22,7 +23,8 @@ import { EmptyComponent } from '../shared/components/empty/empty.component';
     FeedbackCommentsComponent,
     FeedbackCommentFormComponent,
     LoadingComponent,
-    EmptyComponent
+    EmptyComponent,
+    UpvoteButtonComponent
   ],
     templateUrl: './feedback-details.component.html',
     styleUrl: './feedback-details.component.scss'
@@ -30,12 +32,12 @@ import { EmptyComponent } from '../shared/components/empty/empty.component';
 export class FeedbackDetailsComponent {
 
    // Injections
-  _activatedRoute = inject(ActivatedRoute);
-  _authService = inject(AuthService);
-  _feedbackService = inject(FeedBackService);
-  _router = inject(Router);
+  private _activatedRoute = inject(ActivatedRoute);
+  private _authService = inject(AuthService);
+  private _feedbackService = inject(FeedBackService);
+  private _router = inject(Router);
+  private _toastrService = inject(ToastrService);
   _loadingService = inject(LoadingService);
-  _toastrService = inject(ToastrService);
 
 
   // properties
@@ -44,7 +46,7 @@ export class FeedbackDetailsComponent {
   isLoading: boolean = false;
 
   // signals
-  feedBack = signal<IFeedBack | undefined>(undefined);
+  feedBack = this._feedbackService.selectedFeedBack;
   comments = computed(() => this.feedBack()?.comments ?? []);
   title = computed(() => { return `${this.comments().length} Comment${this.comments().length > 1 ? 's' : ''}` });
 
@@ -53,46 +55,21 @@ export class FeedbackDetailsComponent {
    
 
   constructor() {
-    // Get feedback details using resolver
-    // has issue if user manually type the id in the search bar
-    // this.feedBack.set(this._activatedRoute.snapshot.data["feedBackDetails"]);
+    this.getFeedBack();
     
-
-    // use paramMap to get feedback id dynamically
-    this.getRouteId();
-
-
   }
-
-  getRouteId() {
+  
+  getFeedBack() {
+    // use paramMap to get feedback id dynamically
       this._activatedRoute.paramMap.subscribe( (param: ParamMap) => { 
         const feedBackID = param.get('id');
-        console.log(feedBackID)
       if (feedBackID) {
         this.id = +feedBackID;
-        this.getFeedBackById(this.id);
-      } else {
-        this._toastrService.error('No id provided');
-        this._router.navigate(['/feedbacks']);
-      }
+        this._feedbackService.getFeedBackById(this.id)
+      } 
     })
   }
 
-  async getFeedBackById(id: number) {
-    // this._loadingService.loadingOn();
-    // try {
-    //   const feedBackFromApi = await this._feedbackService.getFeedBackById(id);
-
-    //   this.feedBack.set(feedBackFromApi);
-    // }
-    // catch (error) {
-    //   console.error(error);
-    //   this._router.navigate(['/home']);
-    // }
-    // finally {
-    //    this._loadingService.loadingOff();
-    // }
-  }
 
   async addComment(commentdata: string) {
     const currentUser = this._authService.user() as IUser;

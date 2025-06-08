@@ -1,0 +1,5 @@
+<button (click)="onUpVote()" [ngClass]="buttonClass()"
+  class="group/upvote flex gap-x-2 flex-row items-center  font-bold min-w-12 bg-light-500 rounded-10 hover:bg-light-300  active:bg-blue active:text-white transition">
+  <fa-icon class="font-bold text-blue group-active/upvote:text-white" [icon]="upVoteIcon"></fa-icon>
+  <span class="text-sm">{{feedBack().upvotes}}</span>
+</button>
