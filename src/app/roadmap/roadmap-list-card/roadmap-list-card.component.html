@@ -8,7 +8,7 @@
   
     <div class="feedBack_descriptions">
       <div class="mb-3.5"> <fa-icon ngClass="text-{{ title() }}" class=" me-4 " [icon]="circleIcon"></fa-icon> In Progress</div>
-      <h3 class="text-lg  font-bold group-hover/card:text-blue">{{feedBack.title}}</h3>
+      <h3 class="text-lg  font-bold group-hover/card:text-blue"  [routerLink]="['/feedbacks', feedBack.id]">{{feedBack.title}}</h3>
       <p class="my-2">{{feedBack.description}}</p>
       <p class="inline-block capitalize py-2 px-4 bg-light-500 text-blue font-semibold rounded-10 ">
         {{feedBack.category}}</p>
