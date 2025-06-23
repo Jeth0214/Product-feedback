@@ -47,16 +47,10 @@ export class FeedbackDetailsComponent {
 
   // signals
   feedBack = this._feedbackService.selectedFeedBack;
-  comments = computed(() => this.feedBack()?.comments ?? []);
-  title = computed(() => { return `${this.comments().length} Comment${this.comments().length > 1 ? 's' : ''}` });
-
-
-
-   
+  comments = computed(() => { return this.feedBack().comments ? this.feedBack().comments : [] })
 
   constructor() {
     this.getFeedBack();
-    
   }
   
   getFeedBack() {
@@ -69,51 +63,6 @@ export class FeedbackDetailsComponent {
       } 
     })
   }
-
-
-  async addComment(commentdata: string) {
-    const currentUser = this._authService.user() as IUser;
-    let comment: IComment = {
-      id: this.comments.length + 1,
-      content: commentdata,
-      user: currentUser,
-   }
-
-    // since we don have a comment endpoint, we will update the feedback with the new or added comment 
-    this.feedBack.update((current) => {
-      if (current) {
-        current.comments = current.comments ?? [];
-        current.comments.push(comment);
-      }
-      return current;
-    });
-   const updatedFeedBack = this.feedBack() as IFeedBack;
-
-   await this.updateFeedBack(updatedFeedBack); 
-    
-   
-  }
-
-
-
-
-
-  async updateFeedBack(feedBack: IFeedBack) {
-    // this.isLoading = true;
-    // try {
-    //   const updatedFeedbackFromService = await this._feedbackService.updateFeedback(feedBack);
-    //   this.feedBack.set(updatedFeedbackFromService);
-    // } catch (error) {
-    //   console.error('Error updating feedback:', error);
-    // } finally { 
-    //   this.isLoading = false;
-    // }
-  }
-   
-  
-
-
-
 
 }
 
