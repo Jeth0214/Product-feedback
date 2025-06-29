@@ -30,7 +30,7 @@ export class FeedbackCommentsComponent {
   feedBackId = input.required<number>();
   isLast = input<boolean>();
   feedBack = input<IFeedBack>();
-    title = computed(() => { return `${this.comments().length} Comment${this.comments().length > 1 ? 's' : ''}` });
+  title = computed(() => { return `${this.comments().length} Comment${this.comments().length > 1 ? 's' : ''}` });
   // replyBorder = computed(() => this.comment().replyingTo ? ' border-l  md:ms-6 ps-6' : '');
   currentUser = this._authService.user();
 
