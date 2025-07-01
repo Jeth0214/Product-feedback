@@ -1,43 +1,12 @@
 
-
-
-      <!-- Feedback Comments -->
       <section class="rounded overflow-hidden shadow-sm bg-white p-6">
         @if(comments().length > 0) {
-        <h2 class="font-bold text-lg text-dark-800">{{ title()}}</h2>
-        @for(comment of comments(); track comment?.id) {
 
-          <div>
-            <div class="flex items-center justify-between">
-              <div class="flex gap-4">
-                <img class="h-10 w-10 rounded-full " [src]="comment?.user?.image" [alt]="comment?.user?.name">
-                <div>
-                  <h3 class="font-bold text-dark-800">{{ comment?.user?.name }}</h3>
-                  <p> &commat;{{ comment?.user?.username }}</p>
-                </div>
-              </div>
-          
-              @if(comment?.user?.username != currentUser?.username) {
-                <button (click)="onShowCommentForm()"
-                        class="font-semibold text-blue cursor-pointer hover:underline transition-all ease-in-out"> 
-                  Reply
-                </button>
-              }
-            </div>
-          
-            <div class="ps-0 md:ps-14 mt-3" [ngClass]="isLast()  ? 'pb-0' : 'pb-8'">
-              <p> <span class="text-purple font-bold" *ngIf="comment?.replyingTo">&commat;{{ comment?.replyingTo }}</span> {{
-                comment?.content }} </p>
-            </div>
-          
-            @if(showCommentForm) {
-            <div class="ps-0 md:ps-14 mt-3 ">
-              <app-feedback-comment-form [isReply]="true" buttonText="Post Reply" />
-            </div>
-            } 
+          <h2 class="font-bold text-lg text-dark-800">{{ title()}}</h2>
 
-            <!-- REPLIES -->
-            <div>
+          @for(comment of comments(); track comment?.id) {
+
+            <div class="border-b last:border-b-0 border-gray-200 pt-8 last:pb-0">
               <div class="flex items-center justify-between">
                 <div class="flex gap-4">
                   <img class="h-10 w-10 rounded-full " [src]="comment?.user?.image" [alt]="comment?.user?.name">
@@ -55,7 +24,7 @@
                 }
               </div>
             
-              <div class="ps-0 md:ps-14 mt-3" [ngClass]="isLast()  ? 'pb-0' : 'pb-8'">
+              <div class="ps-0 md:ps-14 mt-3" [ngClass]="$last ? 'pb-0' : 'pb-8'">
                 <p> <span class="text-purple font-bold" *ngIf="comment?.replyingTo">&commat;{{ comment?.replyingTo }}</span> {{
                   comment?.content }} </p>
               </div>
@@ -65,12 +34,49 @@
                 <app-feedback-comment-form [isReply]="true" buttonText="Post Reply" />
               </div>
               } 
-  
-              <!-- REPLIES -->
-            </div>
-          </div>
 
-        }
+              <!-- REPLIES -->
+              @if((comment?.replies?.length ?? 0) > 0) {
+                <div class="mt-8">
+                  @for(reply of comment?.replies; track reply?.user) {
+  
+                    <div class="md:ms-6 ps-6">
+                      <div class="flex items-center justify-between">
+                        <div class="flex gap-4">
+                          <img class="h-10 w-10 rounded-full " [src]="reply.user.image" [alt]="reply.user.name">
+                          <div>
+                            <h3 class="font-bold text-dark-800">{{ reply.user.name }}</h3>
+                            <p> &commat;{{ reply.user.username }}</p>
+                          </div>  
+                        </div>
+                    
+                        @if(reply.user.username != currentUser?.username) {
+                        <button (click)="onShowCommentForm()"
+                          class="font-semibold text-blue cursor-pointer hover:underline transition-all ease-in-out"> Reply </button>
+                        }
+                      </div>
+                    
+                      <div class="ps-0 md:ps-14 mt-2" [ngClass]="isLast()  ? 'pb-0' : 'pb-8'">
+                        <p> 
+                          <span class="text-purple font-bold" *ngIf="reply.replyingTo">
+                            &commat;{{ reply.replyingTo }}
+                          </span> 
+                          {{reply.content }} 
+                        </p>
+                      </div>
+                    
+                      @if(showCommentForm) {
+                      <div class="ps-0 md:ps-14 mt-3 ">
+                    
+                        <app-feedback-comment-form [isReply]="true" buttonText="Post Reply" />
+                      </div>
+                      }          
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
         }
         @else {
           <div class="my-10">
