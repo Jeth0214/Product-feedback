@@ -1,16 +1,17 @@
 import { Component, computed,  effect,  inject,  Input,  input } from '@angular/core';
 import { IComment } from '../../shared/models/comment.model';
 import { NgClass, NgIf } from '@angular/common';
-import { FeedbackCommentFormComponent } from '../feedback-comment-form/feedback-comment-form.component';
+
 import { IFeedBack } from '../../shared/models/feedbacks.model';
 import { IReply } from '../../shared/models/replies.model';
 import { IUser } from '../../shared/models/user.model';
 import { AuthService } from '../../shared/services/auth.service';
+import { CommentFormComponent } from '../components/comment-form/comment-form.component';
 
 
 @Component({
   selector: 'app-feedback-comments',
-  imports: [NgClass, FeedbackCommentFormComponent, NgIf],
+  imports: [NgClass, CommentFormComponent ,NgIf],
   templateUrl: './feedback-comments.component.html',
   styleUrl: './feedback-comments.component.scss'
 })
