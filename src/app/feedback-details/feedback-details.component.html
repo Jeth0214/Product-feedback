@@ -28,7 +28,7 @@
         <app-feedback-card [feedBack]="feedBack()" />
 
         <!-- Comments -->
-        <app-feedback-comments [comments]="comments() || []" [feedBackId]="feedBack().id"  />
+        <app-comment   />
 
         <!-- Comment Form -->
          <app-comment-form [isLoading]="isAddingComment" (comment)="onCommentAdded($any($event))" />

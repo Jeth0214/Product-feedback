@@ -10,13 +10,14 @@ import { ToastrService } from 'ngx-toastr';
 import { FeedbackCardComponent } from '../shared/components/feedback-card/feedback-card.component';
 import { CommentFormComponent } from './components/comment-form/comment-form.component';
 import { finalize } from 'rxjs';
+import { CommentComponent } from './components/comment/comment.component';
 
 @Component({
     selector: 'app-feedback-details',
   imports: [
     RouterLink,
     FontAwesomeModule,
-    FeedbackCommentsComponent,
+    CommentComponent,
     LoadingComponent,
     FeedbackCardComponent,
     CommentFormComponent
