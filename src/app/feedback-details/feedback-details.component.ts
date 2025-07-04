@@ -58,7 +58,6 @@ export class FeedbackDetailsComponent {
       if (feedBackID) {
         this.id = +feedBackID;
         this._feedbackService.getFeedBackById(this.id);
-        console.log(this.currentUser());
       } 
     })
   }

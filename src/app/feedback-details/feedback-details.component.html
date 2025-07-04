@@ -27,8 +27,38 @@
         <!-- Feedback -->
         <app-feedback-card [feedBack]="feedBack()" />
 
-        <!-- Comments -->
-        <app-comment   />
+        <!-- Comments Section -->
+        <section class="rounded overflow-hidden shadow-sm bg-white p-6">
+          @let comments = feedBack().comments;
+          @if( comments && comments.length > 0) {
+        
+          <h2 class="font-bold text-lg text-dark-800 mb-8">{{ comments.length}} Comments</h2>
+        
+            @for(comment of comments; track comment?.id) {
+              
+              <app-comment [comment]="comment" [currentUser]="currentUser()!" />
+              <!-- REPLIES -->
+                @if((comment?.replies?.length ?? 0) > 0) {
+                  <div class="mt-8">
+                    @for(reply of comment?.replies; track reply?.user) {
+                  
+                    <div class="md:ms-6 ps-6">
+                      <app-comment [comment]="reply" [currentUser]="currentUser()!" />
+                    </div>
+                    }
+                  </div>
+                }
+            }
+          }
+          @else {
+          <div class="my-10">
+            <img class="mx-auto mb-6" src="./assets/suggestions/illustration-empty.svg" alt="Man with magnifying glass">
+            <h3 class="font-bold text-3xl text-center">No Comment</h3>
+          </div>
+          }
+        </section>
+
+
 
         <!-- Comment Form -->
          <app-comment-form [isLoading]="isAddingComment" (comment)="onCommentAdded($any($event))" />
