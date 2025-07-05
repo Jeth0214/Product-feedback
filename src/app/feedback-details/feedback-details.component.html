@@ -32,7 +32,7 @@
           @let comments = feedBack().comments;
           @if( comments && comments.length > 0) {
         
-          <h2 class="font-bold text-lg text-dark-800 mb-8">{{ comments.length}} Comments</h2>
+          <h2 class="font-bold text-lg text-dark-800 mb-8">{{ commentsCount() }} Comments</h2>
         
             @for(comment of comments; track comment?.id) {
               

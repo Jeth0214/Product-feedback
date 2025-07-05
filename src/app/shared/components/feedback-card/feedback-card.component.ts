@@ -1,7 +1,8 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, effect, input } from '@angular/core';
 import { IFeedBack } from '../../models/feedbacks.model';
 import { UpvoteButtonComponent } from '../upvote-button/upvote-button.component';
 import { RouterLink } from '@angular/router';
+import { countComment } from '../../functions/countComment';
 
 @Component({
   selector: 'app-feedback-card',
@@ -13,19 +14,7 @@ export class FeedbackCardComponent {
 
   feedBack = input.required<IFeedBack>();
 
-  commentsCount = computed(() => {
-    let count = 0;
-    let comments = this.feedBack().comments;
-    if(comments) {
-      comments.forEach(comment => {
-        count++;
-        if (comment.replies) {
-          count += comment.replies.length;
-        }
-      });
+  commentsCount = computed(() => countComment(this.feedBack().comments));
 
-    }
-    return count;
-  })
   
 }

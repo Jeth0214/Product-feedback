@@ -1,7 +1,6 @@
 import { Component,  computed, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { FeedbackCommentsComponent } from './feedback-comments/feedback-comments.component';
 import { AuthService } from '../shared/services/auth.service';
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { LoadingService } from '../shared/services/loading.service';
@@ -11,6 +10,7 @@ import { FeedbackCardComponent } from '../shared/components/feedback-card/feedba
 import { CommentFormComponent } from './components/comment-form/comment-form.component';
 import { finalize } from 'rxjs';
 import { CommentComponent } from './components/comment/comment.component';
+import { countComment } from '../shared/functions/countComment';
 
 @Component({
     selector: 'app-feedback-details',
@@ -47,6 +47,7 @@ export class FeedbackDetailsComponent {
   currentUser = this._authService.user;
 
   comments = computed(() => { return this.feedBack().comments ? this.feedBack().comments : [] });
+  commentsCount = computed(() => countComment(this.feedBack().comments));
 
   constructor() {
     this.getFeedBack();
@@ -82,20 +83,22 @@ export class FeedbackDetailsComponent {
       content: comment,
     }
 
+    let feedBack = this.feedBack();
+    if (!feedBack.comments) {
+      feedBack.comments = [];
+      feedBack.comments.push(commentData);
+    }
+    else {
+      feedBack.comments.push(commentData);
+    }
+
   
-    this._feedbackService.updateFeedBack(this.feedBack()).pipe(
+    this._feedbackService.updateFeedBack(feedBack).pipe(
       finalize(() => {
         this.isAddingComment = false;
       })
     ).subscribe({
-      next: (updatedFeedBack) => {
-        if (this.feedBack().comments) {
-          this.feedBack().comments!.push(commentData);
-        }
-        else {
-          this.feedBack().comments = [commentData];
-        }
-    
+      next: () => {
       },
       error: (error) => {
         this._toastrService.error('Failed to add comment. Please try again later.');

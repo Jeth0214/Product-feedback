@@ -120,7 +120,10 @@ export class FeedBackService  {
   // }
   
   updateFeedBack(feedback: Partial<IFeedBack>): Observable<IFeedBack> {
-    return this._http.put<IFeedBack>(this.api, feedback)
+    return this._http.put<IFeedBack>(this.api, feedback).pipe(
+      tap(() => {this.selectedFeedBack.set({...this.selectedFeedBack(), ...feedback})}),
+      catchError(this.handleError<IFeedBack>('Update Feedback', {} as IFeedBack))
+    );
   }
 
     // !! NOTE : angular-in-memory-web-api PUT method did not return the updated object, 
