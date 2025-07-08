@@ -16,5 +16,4 @@ export class FeedbackCardComponent {
 
   commentsCount = computed(() => countComment(this.feedBack().comments));
 
-  
 }
