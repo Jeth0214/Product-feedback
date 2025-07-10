@@ -28,13 +28,10 @@
         <app-feedback-card [feedBack]="feedBack()" />
 
         <!-- Comments Section -->
-         <app-comment-list [comments]="feedBack().comments" [currentUser]="currentUser()" />
+         <app-comment-list [comments]="comments()" [currentUser]="currentUser()" [commentsCount]="commentsCount()" />
     
-
-
-
         <!-- Comment Form -->
-         <app-comment-form [isLoading]="isAddingComment" (comment)="onCommentAdded($any($event))" />
+         <app-comment-form [isCommenting]="isAddingComment" (commentContent)="onCommentAdded($any($event))" [isReply]="false" />
   
       }
       @else {

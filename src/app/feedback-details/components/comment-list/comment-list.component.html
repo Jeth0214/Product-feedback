@@ -1,28 +1,28 @@
 <section class="rounded overflow-hidden shadow-sm bg-white p-6">
-  @if( comments() && comments()?.length! > 0) {
+    @if( comments() && comments()?.length! > 0) {
 
-  <h2 class="font-bold text-lg text-dark-800 mb-8">{{ commentsCount() }} Comments</h2>
+      <h2 class="font-bold text-lg text-dark-800 mb-8">{{ commentsCount() }} Comments</h2>
 
-  @for(comment of comments(); track comment?.id) {
+      @for(comment of comments(); track comment?.id) {
 
-  <app-comment [comment]="comment" [currentUser]="currentUser()!" />
-  <!-- REPLIES -->
-  @if((comment?.replies?.length ?? 0) > 0) {
-  <div class="mt-8">
-    @for(reply of comment?.replies; track reply?.user) {
+        <app-comment [comment]="comment" [currentUser]="currentUser()!" />
+          <!-- REPLIES -->
+          @if((comment?.replies?.length ?? 0) > 0) {
+          <div class="mt-8">
+              @for(reply of comment?.replies; track reply?.user) {
 
-    <div class="md:ms-6 ps-6">
-      <app-comment [comment]="reply" [currentUser]="currentUser()!" />
-    </div>
+                <div class="md:ms-6 ps-6">
+                  <app-comment [comment]="reply" [currentUser]="currentUser()!" />
+                </div>
+              }
+          </div>
+        }
+      }
     }
-  </div>
-  }
-  }
-  }
-  @else {
-  <div class="my-10">
-    <img class="mx-auto mb-6" src="./assets/suggestions/illustration-empty.svg" alt="Man with magnifying glass">
-    <h3 class="font-bold text-3xl text-center">No Comment</h3>
-  </div>
-  }
+    @else {
+      <div class="my-10">
+        <img class="mx-auto mb-6" src="./assets/suggestions/illustration-empty.svg" alt="Man with magnifying glass">
+        <h3 class="font-bold text-3xl text-center">No Comment</h3>
+      </div>
+    }
 </section>

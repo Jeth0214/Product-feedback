@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, computed, DestroyRef, EventEmitter, inject, input, Input, output, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -12,7 +12,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class CommentFormComponent {
 // injections
 private _fb = inject(FormBuilder);
-  private destroyRef$ = inject(DestroyRef);
+private destroyRef$ = inject(DestroyRef);
   
 
  // properties
@@ -20,11 +20,12 @@ private _fb = inject(FormBuilder);
 remainingCharacters = this.maxCharacters;
   
 
- @Input() isReply: boolean = false;
- @Input() buttonText: string = 'Post Comment';
- @Input() isLoading: boolean = false;
- @Output() comment = new EventEmitter();
+ isReply = input.required<boolean>();
+ isCommenting = input.required<boolean>();
+ buttonText = computed( () => { return this.isReply() ? 'Reply': 'Comment' }) 
+ commentContent = output<string>()
 
+  
  // form
  commentForm: FormGroup  = new FormGroup({});
 
@@ -53,9 +54,9 @@ remainingCharacters = this.maxCharacters;
 */
  onSubmit() {
    if (this.commentForm.invalid) return;
-   const commentData = this.commentForm.value.comment.trim();
-   console.log(commentData);
-   this.comment.emit(commentData);
+   const commentTrimmed = this.commentForm.value.comment.trim();
+   console.log(commentTrimmed);
+   this.commentContent.emit(commentTrimmed);
    this.commentForm.reset();
    this.remainingCharacters = 250;
   }

@@ -1,9 +1,9 @@
-<section [ngClass]="!isReply ? 'shadow-sm bg-white rounded-lg p-6 my-6' : ''">
-  @if(!isReply) {
+<section [ngClass]="!isReply() ? 'shadow-sm bg-white rounded-lg p-6 my-6' : ''">
+  @if(!isReply()) {
     <h2 class="font-bold text-lg text-dark-800 mb-6">Add Comment</h2>
   }
  
-  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" [ngClass]="isReply ? 'flex items-start gap-4' : ''">
+  <form [formGroup]="commentForm" (ngSubmit)="onSubmit()" [ngClass]="isReply() ? 'flex items-start gap-4' : ''">
   
     <div class="mb-4 flex-1">
   
@@ -28,11 +28,11 @@
     </div>
   
     <div class="flex justify-between items-center">
-      @if(!isReply) { <p>{{ remainingCharacters }} Characters left</p> }
+      @if(!isReply()) { <p>{{ remainingCharacters }} Characters left</p> }
   
-      <button type="submit" [disabled]="isLoading"
+      <button type="submit" [disabled]="isCommenting()"
         class="flex items-center gap-1  bg-purple rounded-10 font-bold text-sm text-light-500 py-3 px-6 hover:bg-purple-500 transition-colors ease-in-out">
-        <span>{{ buttonText }}</span>
+        <span> Post {{ buttonText() }}</span>
       </button>
     </div>
   </form>

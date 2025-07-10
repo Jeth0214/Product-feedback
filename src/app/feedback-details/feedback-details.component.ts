@@ -9,7 +9,6 @@ import { ToastrService } from 'ngx-toastr';
 import { FeedbackCardComponent } from '../shared/components/feedback-card/feedback-card.component';
 import { CommentFormComponent } from './components/comment-form/comment-form.component';
 import { finalize } from 'rxjs';
-import { CommentComponent } from './components/comment/comment.component';
 import { countComment } from '../shared/functions/countComment';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 
@@ -18,7 +17,6 @@ import { CommentListComponent } from './components/comment-list/comment-list.com
   imports: [
     RouterLink,
     FontAwesomeModule,
-    CommentComponent,
     LoadingComponent,
     FeedbackCardComponent,
     CommentFormComponent,
@@ -48,6 +46,8 @@ export class FeedbackDetailsComponent {
   feedBack = this._feedbackService.selectedFeedBack;
   currentUser = this._authService.user;
 
+  comments = computed(() => { return this.feedBack().comments ? this.feedBack().comments : [] });
+  commentsCount = computed(() => countComment(this.feedBack().comments));
 
   constructor() {
     this.getFeedBack();
@@ -64,47 +64,52 @@ export class FeedbackDetailsComponent {
   }
   onCommentAdded(comment: string) {
 
-  //   this.isAddingComment = true;
+    this.isAddingComment = true;
 
-  //   // we need to provide id since we are not using real api
-  //   let comments = this.comments();
-  //   let commentId = (comments && comments.length > 0) ? comments[comments.length - 1].id + 1 : 1;
+    // we need to provide id since we are not using real api
+    let comments = this.comments();
+    let commentId = (comments && comments.length > 0) ? comments[comments.length - 1].id + 1 : 1;
 
-  //   const user = this.currentUser();
-  //   if (!user) {
-  //     this._toastrService.error('You must be logged in to comment.');
-  //     return;
-  //   }
+    const user = this.currentUser();
+    if (!user) {
+      this._toastrService.error('You must be logged in to comment.');
+      return;
+    }
    
-  //   // Create a comment object
-  //   let commentData = {
-  //     id: commentId,
-  //     user: user,
-  //     content: comment,
-  //   }
+    // Create a comment object
+    let commentData = {
+      id: commentId,
+      user: user,
+      content: comment,
+    }
 
-  //   let feedBack = this.feedBack();
-  //   if (!feedBack.comments) {
-  //     feedBack.comments = [];
-  //     feedBack.comments.push(commentData);
-  //   }
-  //   else {
-  //     feedBack.comments.push(commentData);
-  //   }
+    let feedBack = this.feedBack();
+    if (!feedBack.comments) {
+      feedBack.comments = [];
+      feedBack.comments.push(commentData);
+    }
+    else {
+      feedBack.comments.push(commentData);
+    }
 
   
-  //   this._feedbackService.updateFeedBack(feedBack).pipe(
-  //     finalize(() => {
-  //       this.isAddingComment = false;
-  //     })
-  //   ).subscribe({
-  //     next: () => {
-  //     },
-  //     error: (error) => {
-  //       this._toastrService.error('Failed to add comment. Please try again later.');
-  //     }
-  //   })
+    this._feedbackService.updateFeedBack(feedBack).pipe(
+      finalize(() => {
+        this.isAddingComment = false;
+      })
+    ).subscribe({
+      next: () => {
+      },
+      error: (error) => {
+        this._toastrService.error('Failed to add comment. Please try again later.');
+      }
+    })
   }
+
+  // find the index of a comment using comment id
+  // commentIndex(comments:[], id:number) {
+  //   let index = 
+  // }
 
 
 }
