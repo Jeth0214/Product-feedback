@@ -28,7 +28,7 @@
         <app-feedback-card [feedBack]="feedBack()" />
 
         <!-- Comments Section -->
-         <app-comment-list [comments]="comments()" [currentUser]="currentUser()" [commentsCount]="commentsCount()" />
+         <app-comment-list [currentUser]="currentUser()"  [feedBack]="feedBack()" />
     
         <!-- Comment Form -->
          <app-comment-form [isCommenting]="isAddingComment" (commentContent)="onCommentAdded($any($event))" [isReply]="false" />

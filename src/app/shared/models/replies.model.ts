@@ -5,3 +5,9 @@ export interface IReply {
   replyingTo: string;
   user: IUser;
 }
+
+export interface IReplyInit {
+  commentId: number,
+  replyingTo: string,
+  content: string
+}

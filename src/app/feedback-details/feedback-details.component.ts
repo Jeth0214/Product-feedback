@@ -47,7 +47,7 @@ export class FeedbackDetailsComponent {
   currentUser = this._authService.user;
 
   comments = computed(() => { return this.feedBack().comments ? this.feedBack().comments : [] });
-  commentsCount = computed(() => countComment(this.feedBack().comments));
+  
 
   constructor() {
     this.getFeedBack();

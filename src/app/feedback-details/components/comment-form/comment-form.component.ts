@@ -55,7 +55,6 @@ remainingCharacters = this.maxCharacters;
  onSubmit() {
    if (this.commentForm.invalid) return;
    const commentTrimmed = this.commentForm.value.comment.trim();
-   console.log(commentTrimmed);
    this.commentContent.emit(commentTrimmed);
    this.commentForm.reset();
    this.remainingCharacters = 250;

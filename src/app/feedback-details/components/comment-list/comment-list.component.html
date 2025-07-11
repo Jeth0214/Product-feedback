@@ -5,14 +5,14 @@
 
       @for(comment of comments(); track comment?.id) {
 
-        <app-comment [comment]="comment" [currentUser]="currentUser()!" />
+        <app-comment [comment]="comment" (replyContent)="onAddingReply($event)" [commentId]="comment.id"  />
           <!-- REPLIES -->
           @if((comment?.replies?.length ?? 0) > 0) {
           <div class="mt-8">
               @for(reply of comment?.replies; track reply?.user) {
 
                 <div class="md:ms-6 ps-6">
-                  <app-comment [comment]="reply" [currentUser]="currentUser()!" />
+                  <app-comment [comment]="reply"  (replyContent)="onAddingReply($event)" [commentId]="comment.id" />
                 </div>
               }
           </div>

@@ -22,7 +22,7 @@
 
   @if(showCommentForm) {
     <div class="ps-0 md:ps-14 mt-3 ">
-      <app-comment-form [isCommenting]="isSendingReply"  [isReply]="true" />
+      <app-comment-form [isCommenting]="isSendingReply"  [isReply]="true" (commentContent)="onReply($event)" />
     </div>
   }
 </div>
