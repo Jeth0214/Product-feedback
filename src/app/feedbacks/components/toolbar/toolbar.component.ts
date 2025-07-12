@@ -1,8 +1,8 @@
 import { Component, computed, effect, input, Input, output, signal } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { DropdownComponent } from '../../shared/components/dropdown/dropdown.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { RouterLink } from '@angular/router';
+import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 
 
 @Component({

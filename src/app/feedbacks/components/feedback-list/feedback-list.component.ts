@@ -1,12 +1,11 @@
 import { Component, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { EmptyComponent } from '../../shared/components/empty/empty.component';
-import { LoadingComponent } from '../../shared/components/loading/loading.component';
-import { faComment, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { IFeedBack } from '../../shared/models/feedbacks.model';
-import { UpvoteButtonComponent } from "../../shared/components/upvote-button/upvote-button.component";
-import { FeedbackCardComponent } from '../../shared/components/feedback-card/feedback-card.component';
+import { faPlus, faComment } from '@fortawesome/free-solid-svg-icons';
+import { EmptyComponent } from '../../../shared/components/empty/empty.component';
+import { FeedbackCardComponent } from '../../../shared/components/feedback-card/feedback-card.component';
+import { LoadingComponent } from '../../../shared/components/loading/loading.component';
+import { IFeedBack } from '../../../shared/models/feedbacks.model';
+
 
 @Component({
   selector: 'app-feedback-list',

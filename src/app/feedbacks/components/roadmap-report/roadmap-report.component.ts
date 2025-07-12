@@ -2,7 +2,8 @@ import { Component, computed, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink } from '@angular/router';
-import { IFeedBack } from '../../shared/models/feedbacks.model';
+import { IFeedBack } from '../../../shared/models/feedbacks.model';
+
 
 @Component({
   selector: 'app-roadmap-report',

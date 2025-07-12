@@ -1,10 +1,10 @@
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { FeedBackService } from '../shared/services/feedbacks.service';
-import { CategoryComponent } from './category/category.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { FeedbackBoardComponent } from "./feedback-board/feedback-board.component";
-import { FeedbackListComponent } from './feedback-list/feedback-list.component';
-import { RoadmapReportComponent } from './roadmap-report/roadmap-report.component';
+import { CategoryComponent } from './components/category/category.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { FeedbackBoardComponent } from "./components/feedback-board/feedback-board.component";
+import { FeedbackListComponent } from './components/feedback-list/feedback-list.component';
+import { RoadmapReportComponent } from './components/roadmap-report/roadmap-report.component';
 import { LoadingService } from '../shared/services/loading.service';
 import { IFeedBack } from '../shared/models/feedbacks.model';
 
@@ -57,7 +57,6 @@ export class FeedbacksComponent  {
   }
 
   onUpVoteFeedBack(feedBack: IFeedBack) {
-    console.log('upvoted', feedBack)
     this._feedBackService.upVoteFeedBack(feedBack)
   }
 
