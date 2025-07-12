@@ -2,7 +2,7 @@ import { Component, computed, HostListener, inject,  OnInit } from '@angular/cor
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { NgClass } from '@angular/common';
 import { EmptyComponent } from '../shared/components/empty/empty.component';
-import { RoadmapListCardComponent } from './roadmap-list-card/roadmap-list-card.component';
+import { RoadmapListCardComponent } from './components/roadmap-list-card/roadmap-list-card.component';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { RoadMapStatus } from '../shared/models/roadmap-status.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';

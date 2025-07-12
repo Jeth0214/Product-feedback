@@ -42,8 +42,8 @@ export class DropdownComponent {
   // change  icon  based on the dropdown arrow color value and isDropdownOpen state
   arrowIcon = computed(() => { 
     return this.isDropdownOpen() ?
-      `/assets/shared/icon-${this.dropDownArrowColor()}-arrow-down.svg`
-      : `/assets/shared/icon-${this.dropDownArrowColor()}-arrow-up.svg`;
+      `/assets/shared/icon-${this.dropDownArrowColor()}-arrow-up.svg`
+      : `/assets/shared/icon-${this.dropDownArrowColor()}-arrow-down.svg`;
    })
 
 
