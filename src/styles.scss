@@ -21,8 +21,15 @@
   }
 }
 
-
-
+.header-board {
+  background-image: url('/assets/suggestions/mobile/background-header.png');
+    @media screen and (min-width: 600px) {
+      background-image: url('/assets/suggestions/tablet/background-header.png');
+    }
+    @media screen and (min-width: 992px) {
+      background-image: url('/assets/suggestions/desktop/background-header.png');
+    }
+}
 
 
 // mobile side
