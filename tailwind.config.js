@@ -30,9 +30,9 @@ module.exports = {
         jost: ['Jost']
       },
       backgroundImage: {
-        'mobile': "url('/assets/suggestions/mobile/background-header.png')",
-        'tablet': "url('/assets/suggestions/tablet/background-header.png')",
-        'desktop': "url('/assets/suggestions/desktop/background-header.png')",
+        'mobile': "url('assets/suggestions/mobile/background-header.png')",
+        'tablet': "url('assets/suggestions/tablet/background-header.png')",
+        'desktop': "url('assets/suggestions/desktop/background-header.png')",
 
       },
       borderRadius: {
