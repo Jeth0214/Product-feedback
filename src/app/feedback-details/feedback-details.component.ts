@@ -40,6 +40,7 @@ export class FeedbackDetailsComponent {
   id: number = 0;
   isLoading: boolean = false;
   isAddingComment: boolean = false;
+  isDeletingFeedBack: boolean = false;
 
 
   // signals
@@ -106,10 +107,26 @@ export class FeedbackDetailsComponent {
     })
   }
 
-  // find the index of a comment using comment id
-  // commentIndex(comments:[], id:number) {
-  //   let index = 
-  // }
+  onDeleteFeedBack() {
+    let id = this.feedBack().id;
+    this.isDeletingFeedBack = true;
+  
+
+    this._feedbackService.deleteFeedBack(id).pipe(
+      finalize(() => {
+        this.isDeletingFeedBack = false;
+      })
+    ).subscribe({
+      next: () => {
+        this._toastrService.success('Feedback deleted successfully.');
+        this._router.navigate(['/feedbacks']);
+      },
+      error: (error) => {
+        console.error('Error deleting feedback:', error);
+        this._toastrService.error('Failed to delete Feecback. Please try again later.');
+      }
+    });
+  }
 
 
 }

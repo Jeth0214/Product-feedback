@@ -15,11 +15,14 @@
           <div>
 
             <button
+            (click)="onDeleteFeedBack()"
+            [disabled]="isDeletingFeedBack"
               class="bg-red text-white px-6 py-3 rounded-xl font-bold me-2  hover:bg-red-800 hover:text-light-500 transition ease-in-out">
              Delete <span class="hidden md:inline-block">Feedback</span>
             </button>
             <a
             [routerLink]="['/feedback-form', feedBack().id]"
+            [ariaDisabled]="isDeletingFeedBack || isLoading"
               class="bg-blue text-white px-6 py-3 rounded-xl font-bold   hover:bg-blue-800 hover:text-light-500 transition ease-in-out">
               Edit <span class="hidden md:inline-block">Feedback</span>
             </a>
