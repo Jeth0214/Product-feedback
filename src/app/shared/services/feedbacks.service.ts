@@ -2,8 +2,6 @@ import { computed, DestroyRef, inject, Injectable, signal } from "@angular/core"
 import { HttpClient } from "@angular/common/http";
 import { finalize, Observable, tap } from 'rxjs';
 import { IFeedBack } from "../models/feedbacks.model";
-import { ToastrService } from "ngx-toastr";
-import { Router } from "@angular/router";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 
@@ -20,9 +18,6 @@ export class FeedBackService  {
  
   // Dependencies
   private readonly http = inject(HttpClient);
-  private readonly toastr = inject(ToastrService);
-  private readonly router = inject(Router);
-
 
   // signals
   private readonly feedBacks = signal<IFeedBack[]>([]);
@@ -93,9 +88,7 @@ export class FeedBackService  {
             list.map(fb => (fb.id === upvotedFeedback.id ? upvotedFeedback : fb))
           );
           this.selectedFeedBack.set(upvotedFeedback);
-          this.toastr.success('Feedback upvoted successfully', 'Success');
       }),
-      takeUntilDestroyed(this.destroy$)
     ).subscribe();
   }
   

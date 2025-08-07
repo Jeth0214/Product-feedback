@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, effect, output, signal } from '@angular/core';
+import { Component, effect, input, output, signal } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -13,6 +13,11 @@ export class CategoryComponent {
 
   categories: string[] = ['All', 'UI', 'UX', 'Enhancement', 'Bug', 'Feature'];
   chosenCategory = signal<string>('All');
+
+  // input signal
+  isLoading = input<boolean>(false);
+  count = input<number>(0);
+
   emitCategory = output<string>();
   processCategory = effect(() => {
     this.emitCategory.emit(this.chosenCategory());

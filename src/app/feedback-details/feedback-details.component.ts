@@ -123,7 +123,7 @@ export class FeedbackDetailsComponent {
       },
       error: (error) => {
         console.error('Error deleting feedback:', error);
-        this._toastrService.error('Failed to delete Feecback. Please try again later.');
+        this._toastrService.error('Failed to delete Feedback. Please try again later.');
       }
     });
   }

@@ -8,13 +8,13 @@
       <!-- show on medium devices -->
       <div class=" hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
     
-        <app-category (emitCategory)="onChooseCategory($any($event))" />
+        <app-category (emitCategory)="onChooseCategory($any($event))"  [isLoading]="isFeedbacksLoading()" [count]="count()" />
     
       </div>
     
       <div class="hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
     
-        <app-roadmap-report [feedbacks]="feedBacks()"/>
+        <app-roadmap-report [feedbacks]="feedBacks()"  [isloading]="isFeedbacksLoading()" />
     
       </div>
     
@@ -25,10 +25,10 @@
         <div class="menu-panel text-center" [class.show]="isOpen">
         <!-- <div class="menu-panel text-center "> -->
           <div class="bg-white  rounded-lg shadow-md  p-6">
-            <app-category (emitCategory)="onChooseCategory($any($event))" />
+            <app-category (emitCategory)="onChooseCategory($any($event))"  [isLoading]="isFeedbacksLoading()" [count]="count()"/>
           </div>
           <div class="bg-white  rounded-lg shadow-md  p-6  mt-6 md:mt-0">
-            <app-roadmap-report [feedbacks]="feedBacks()" />
+            <app-roadmap-report [feedbacks]="feedBacks()" [isloading]="isFeedbacksLoading()" />
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
     
       <app-toolbar [suggestionsCount]="count()" (emitSortValue)="onSortByValue($any($event))" />
     
-      <app-feedback-list [feedBacks]="feedBacks()" [isLoading]="_loadingService.isLoading()" />
+      <app-feedback-list [feedBacks]="feedBacks()" [isLoading]="isFeedbacksLoading()" />
 
 
     </div>
