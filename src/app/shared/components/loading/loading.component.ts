@@ -1,5 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
-import { LoadingService } from '../../services/loading.service';
+import { Component, inject, input } from '@angular/core';
 import { NgClass } from '@angular/common';
 
 @Component({
@@ -10,8 +9,7 @@ import { NgClass } from '@angular/common';
 })
 export class LoadingComponent {
 
-  _loadingService = inject(LoadingService);
-  isLoading = this._loadingService.isLoading;
+  isLoading = input<boolean>(false);
+  fullScreen = input<boolean>(false);
 
-  @Input() full: boolean = false;
 }

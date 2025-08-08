@@ -4,7 +4,7 @@ import { DropdownComponent } from '../shared/components/dropdown/dropdown.compon
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { IFeedBack } from '../shared/models/feedbacks.model';
 import { FeedBackService } from '../shared/services/feedbacks.service';
-import { NgClass } from '@angular/common';
+import { Location, NgClass } from '@angular/common';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { finalize } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
@@ -26,6 +26,7 @@ export class FeedbackFormComponent {
   private _toastrService = inject(ToastrService);
   private _router = inject(Router)
   private _destroyRef = inject(DestroyRef);
+  private readonly location = inject(Location);
 
   
   selectedFeedBack = this._feedbackService.selectedFeedBack; 
@@ -190,7 +191,15 @@ export class FeedbackFormComponent {
         this._toastrService.error('Failed to delete feedback', `Status: ${error.status}`); // Show error message
       }
     });
-   }
+  }
+  
+  goBack() {
+    if(window.history.length > 1) {
+      this.location.back(); 
+    } else {
+      this._router.navigate(['/feedbacks']);
+    }
+  }
 
 
   // transform selected Category  to title case
@@ -200,6 +209,8 @@ export class FeedbackFormComponent {
       ? value.split('-').map(part => part.charAt(0).toUpperCase() + part.slice(1)).join('-')
       : value.charAt(0).toUpperCase() + value.slice(1);
   }
+
+
 
 
 }

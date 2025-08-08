@@ -8,23 +8,28 @@
         {{title()}}
       </div>
       <div class="md:ms-9">
-        <span>Sort by: </span>
-        <app-dropdown 
-        [dropDownOptions]="sortByName" 
-        (processOption)="onSortByChange($any($event))" 
-        [dropDownType]="'inline-block'" 
-        [dropDownArrowColor]="'white'"
-        />
+        @if(showSortDropdown()) {
+          <span>Sort by: </span>
+          <app-dropdown 
+          [dropDownOptions]="sortByName" 
+          (processOption)="onSortByChange($any($event))" 
+          [dropDownType]="'inline-block'" 
+          [dropDownArrowColor]="'white'"
+          />
+        }
       </div>
     </div>
   
     <div>
-      <a routerLink="/feedback-form"
-        class="bg-purple px-6 py-3 rounded-xl font-bold flex items-center transition cursor-pointer ease-in-out  hover:bg-purple-500">
-        <fa-icon class="me-2" [icon]="faPlus"></fa-icon>
-        <span class="sr-only">Add Feedback</span>
-        <span>Add Feedback</span>
-      </a>
+      @if(!isLoading()) {
+        <button 
+        (click)="goToFeedbackForm()"
+          class="bg-purple px-6 py-3 rounded-xl font-bold flex items-center transition cursor-pointer ease-in-out  hover:bg-purple-500">
+          <fa-icon class="me-2" [icon]="faPlus"></fa-icon>
+          <span class="sr-only">Add Feedback</span>
+          <span>Add Feedback</span>
+        </button>
+      }
     </div>
   </div>
 </div>

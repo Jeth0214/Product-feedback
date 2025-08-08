@@ -1,22 +1,19 @@
-import { Component, computed, HostListener, inject,  OnInit } from '@angular/core';
+import { Component, computed, effect, HostListener, inject,  OnInit } from '@angular/core';
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { NgClass } from '@angular/common';
-import { EmptyComponent } from '../shared/components/empty/empty.component';
+import { EmptyCardComponent } from '../shared/components/empty-card/empty-card.component';
 import { RoadmapListCardComponent } from './components/roadmap-list-card/roadmap-list-card.component';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { RoadMapStatus } from '../shared/models/roadmap-status.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { RouterLink } from '@angular/router';
-import { LoadingService } from '../shared/services/loading.service';
-
-
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-roadmap',
+  selector: 'app-roadmap',
   imports: [
     NgClass,
-    EmptyComponent,
+    EmptyCardComponent,
     RoadmapListCardComponent,
     LoadingComponent,
     FontAwesomeModule,
@@ -34,14 +31,16 @@ export class RoadmapComponent implements OnInit {
   faPlus = faPlus;
 
   // injections
-  _feedBackService = inject(FeedBackService);
-  _loadingService = inject(LoadingService)
+  feedBackService = inject(FeedBackService);
+  router = inject(Router)
 
   // signals
-  feedBacks = this._feedBackService.filteredFeedBacks;
+  feedBacks = this.feedBackService.filteredFeedBacks;
+  isFetchingFeedBacks = this.feedBackService.isFetchingFeedBacks;
   planned = computed(() => { return this.feedBacks().filter(feedBack =>  feedBack.status === 'planned' ) });
   inProgress = computed(() => { return this.feedBacks().filter(feedBack => feedBack.status === 'in-progress') });
-  live = computed(() => {return this.feedBacks().filter(feedBack => feedBack.status === 'live') });
+  live = computed(() => { return this.feedBacks().filter(feedBack => feedBack.status === 'live') });
+  
 
   //isLargeScreen  detect if the screen is large, and it is updated on window resize.
   @HostListener('window:resize', ['$event'])
@@ -51,7 +50,7 @@ export class RoadmapComponent implements OnInit {
   
   ngOnInit() {
     this.isLargeScreen = window.innerWidth >= 768;
-    this._feedBackService.getAllFeedBacks();
+    this.feedBackService.getAllFeedBacks();
   }
 
 
@@ -59,5 +58,8 @@ export class RoadmapComponent implements OnInit {
     this.selectedRoadMapStatus = type as RoadMapStatus;
   }
 
+  gotToFeedbackForm() {
+    this.router.navigate(['/feedback-form']);
+  }
 
 }

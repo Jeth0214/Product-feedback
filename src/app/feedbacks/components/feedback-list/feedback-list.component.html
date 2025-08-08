@@ -1,14 +1,14 @@
 
-<app-loading [full]="true" />
-@if(!isLoading()) {
-  @if(feedBacks().length) {
-    @for( feedBack of feedBacks(); track feedBack.id) {
-      <app-feedback-card [feedBack]="feedBack" />
+<app-loading [fullScreen]="true"  [isLoading]="isLoading()" />
+  @if(!isLoading()) {
+    @if(feedBacks().length) {
+      @for( feedBack of feedBacks(); track feedBack.id) {
+        <app-feedback-card [feedBack]="feedBack" />
+      }
     }
-  }
-  @else {
-    <app-empty />
-  }
+    @else {
+      <app-empty-card />
+    }
 }
 
 

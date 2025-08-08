@@ -18,6 +18,8 @@ export class RoadmapReportComponent {
 
   feedbacks = input<IFeedBack[]>([]);
   isloading = input<boolean>(false);
+
+  showButton = computed(() =>!this.isloading() && this.feedbacks().length > 0);
   plannedCount = computed(() => this.feedbacks().reduce((acc, feedback) => acc + (feedback.status === 'planned' ? 1 : 0), 0));
   inProgressCount = computed(() => this.feedbacks().reduce((acc, feedback) => acc + (feedback.status === 'in-progress' ? 1 : 0), 0));
   liveCount = computed(() => this.feedbacks().reduce((acc, feedback) => acc + (feedback.status === 'live' ? 1 : 0), 0));

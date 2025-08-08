@@ -4,12 +4,12 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FeedBackService } from '../../services/feedbacks.service';
 
 @Component({
-    selector: 'app-empty',
+    selector: 'app-empty-card',
     imports: [FontAwesomeModule],
-    templateUrl: './empty.component.html',
-    styleUrl: './empty.component.scss'
+    templateUrl: './empty-card.component.html',
+    styleUrl: './empty-card.component.scss'
 })
-export class EmptyComponent {
+export class EmptyCardComponent {
 
   plusIcon = faPlus;
 

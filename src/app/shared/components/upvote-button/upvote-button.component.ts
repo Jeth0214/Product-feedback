@@ -12,8 +12,8 @@ import { NgClass } from '@angular/common';
   styleUrl: './upvote-button.component.scss'
 })
 export class UpvoteButtonComponent {
-  private _feedBackService = inject(FeedBackService)
 
+  feedBackService = inject(FeedBackService);
   upVoteIcon = faChevronUp;
   feedBack = input.required<IFeedBack>();
   buttonStyle = input.required<'inline' | 'stack'>();
@@ -24,7 +24,7 @@ export class UpvoteButtonComponent {
 
   onUpVote() {
     const upVotedFeedback = { ...this.feedBack(), upvotes: (this.feedBack().upvotes || 0) + 1 };
-    this._feedBackService.upVoteFeedBack(upVotedFeedback)
+    this.feedBackService.upVoteFeedBack(upVotedFeedback)
   }
 
 }

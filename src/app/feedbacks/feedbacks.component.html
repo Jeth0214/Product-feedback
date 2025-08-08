@@ -36,10 +36,9 @@
     
     <div class="flex-auto">
     
-      <app-toolbar [suggestionsCount]="count()" (emitSortValue)="onSortByValue($any($event))" />
+      <app-toolbar [suggestionsCount]="count()" (emitSortValue)="onSortByValue($any($event))" [isLoading]="isFeedbacksLoading()" />
     
       <app-feedback-list [feedBacks]="feedBacks()" [isLoading]="isFeedbacksLoading()" />
-
 
     </div>
   </main>

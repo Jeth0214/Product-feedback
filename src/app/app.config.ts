@@ -1,9 +1,9 @@
-import { ApplicationConfig, importProvidersFrom, inject, provideExperimentalZonelessChangeDetection, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, inject, provideZoneChangeDetection } from '@angular/core';
 import { createUrlTreeFromSnapshot, PreloadAllModules, provideRouter, Router, withComponentInputBinding, withInMemoryScrolling, withPreloading, withRouterConfig, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideHttpClient, withFetch} from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
 import { InMemoryDataService } from './shared/services/in-memory-data.service';
 import { provideToastr } from 'ngx-toastr';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -15,23 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withInMemoryScrolling(),
-      withViewTransitions({
-        onViewTransitionCreated: ({ transition, to }) => {
-          const router = inject(Router);
-          const toTree = createUrlTreeFromSnapshot(to, []);
-          // Skip the transition if the only thing changing is the fragment and queryParams
-          if (
-            router.isActive(toTree, {
-              paths: 'exact',
-              matrixParams: 'exact',
-              fragment: 'ignored',
-              queryParams: 'ignored',
-            })
-          ) {
-            transition.skipTransition();
-          }
-        },
-      }),
       withComponentInputBinding(),
       withRouterConfig({ paramsInheritanceStrategy: 'always', onSameUrlNavigation: 'reload' }),
       withPreloading(PreloadAllModules),

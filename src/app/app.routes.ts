@@ -1,7 +1,4 @@
 import { Routes } from '@angular/router';
-import { Page404Component } from './page-404/page-404.component';
-import { FeedbacksComponent } from './feedbacks/feedbacks.component';
-// import { feedBackDetailsResolver } from './feedback-details/feedback-details.resolver';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/feedbacks', pathMatch: 'full' },

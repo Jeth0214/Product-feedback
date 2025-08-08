@@ -3,7 +3,6 @@ import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService } from '../shared/services/auth.service';
 import { FeedBackService } from '../shared/services/feedbacks.service';
-import { LoadingService } from '../shared/services/loading.service';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { ToastrService } from 'ngx-toastr';
 import { FeedbackCardComponent } from '../shared/components/feedback-card/feedback-card.component';
@@ -11,6 +10,7 @@ import { CommentFormComponent } from './components/comment-form/comment-form.com
 import { finalize } from 'rxjs';
 import { countComment } from '../shared/functions/countComment';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-feedback-details',
@@ -33,7 +33,7 @@ export class FeedbackDetailsComponent {
   private _feedbackService = inject(FeedBackService);
   private _router = inject(Router);
   private _toastrService = inject(ToastrService);
-  _loadingService = inject(LoadingService);
+  private  location = inject(Location);
 
 
   // properties
@@ -45,6 +45,7 @@ export class FeedbackDetailsComponent {
 
   // signals
   feedBack = this._feedbackService.selectedFeedBack;
+  isFetchingSelectedFeedBack = this._feedbackService.isFetchingSelectedFeedBack;
   currentUser = this._authService.user;
 
   comments = computed(() => { return this.feedBack().comments ? this.feedBack().comments : [] });
@@ -129,5 +130,12 @@ export class FeedbackDetailsComponent {
   }
 
 
+    goBack() {
+    if(window.history.length > 1) {
+      this.location.back(); 
+    } else {
+      this._router.navigate(['/feedbacks']);
+    }
+  }
 }
 
