@@ -1,4 +1,4 @@
-import { Component,  computed, inject } from '@angular/core';
+import { Component,  computed, effect, inject } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService } from '../shared/services/auth.service';
@@ -8,9 +8,10 @@ import { ToastrService } from 'ngx-toastr';
 import { FeedbackCardComponent } from '../shared/components/feedback-card/feedback-card.component';
 import { CommentFormComponent } from './components/comment-form/comment-form.component';
 import { finalize } from 'rxjs';
-import { countComment } from '../shared/functions/countComment';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-feedback-details',
@@ -28,103 +29,81 @@ import { Location } from '@angular/common';
 export class FeedbackDetailsComponent {
 
    // Injections
-  private _activatedRoute = inject(ActivatedRoute);
-  private _authService = inject(AuthService);
-  private _feedbackService = inject(FeedBackService);
-  private _router = inject(Router);
-  private _toastrService = inject(ToastrService);
-  private  location = inject(Location);
+  private activatedRoute = inject(ActivatedRoute);
+  private authService = inject(AuthService);
+  private feedbackService = inject(FeedBackService);
+  private router = inject(Router);
+  private toastrService = inject(ToastrService);
+  private location = inject(Location);
 
 
   // properties
   id: number = 0;
   isLoading: boolean = false;
-  isAddingComment: boolean = false;
   isDeletingFeedBack: boolean = false;
-
-
+  
+  
   // signals
-  feedBack = this._feedbackService.selectedFeedBack;
-  isFetchingSelectedFeedBack = this._feedbackService.isFetchingSelectedFeedBack;
-  currentUser = this._authService.user;
+  feedBack = this.feedbackService.selectedFeedBack;
+  isFetchingSelectedFeedBack = this.feedbackService.isFetchingSelectedFeedBack;
+  isAddingComment = false;
+
+  currentUser = this.authService.user;
 
   comments = computed(() => { return this.feedBack().comments ? this.feedBack().comments : [] });
+
+  paramMap = toSignal(this.activatedRoute.paramMap, { initialValue: null });
   
 
   constructor() {
-    this.getFeedBack();
+    effect(() => {
+      const idParam = this.paramMap()?.get('id');
+      if (idParam) {
+        const feedBackID = +idParam;
+        if (feedBackID) {
+          this.feedbackService.getFeedBackById(feedBackID);
+        }
+      }
+     })
   }
   
-  getFeedBack() {
-      this._activatedRoute.paramMap.subscribe( (param: ParamMap) => { 
-        const feedBackID = param.get('id');
-      if (feedBackID) {
-        this.id = +feedBackID;
-        this._feedbackService.getFeedBackById(this.id);
-      } 
-    })
-  }
   onCommentAdded(comment: string) {
-
-    this.isAddingComment = true;
-
-    // we need to provide id since we are not using real api
-    let comments = this.comments();
-    let commentId = (comments && comments.length > 0) ? comments[comments.length - 1].id + 1 : 1;
-
     const user = this.currentUser();
     if (!user) {
-      this._toastrService.error('You must be logged in to comment.');
-      return;
+      this.toastrService.error('You must be logged in to comment.');
+      return ;
     }
-   
-    // Create a comment object
-    let commentData = {
-      id: commentId,
-      user: user,
-      content: comment,
-    }
+    
+    this.isAddingComment = true;
 
-    let feedBack = this.feedBack();
-    if (!feedBack.comments) {
-      feedBack.comments = [];
-      feedBack.comments.push(commentData);
-    }
-    else {
-      feedBack.comments.push(commentData);
-    }
-
-  
-    this._feedbackService.updateFeedBack(feedBack).pipe(
-      finalize(() => {
-        this.isAddingComment = false;
-      })
-    ).subscribe({
+    this.feedbackService.addComment(this.feedBack(), user, comment)
+    .pipe(finalize(() => this.isAddingComment = false))
+    .subscribe({
       next: () => {
+        this.toastrService.success('Comment added successfully.');
       },
-      error: (error) => {
-        this._toastrService.error('Failed to add comment. Please try again later.');
+      error: () => {
+        this.toastrService.error('Failed to add comment. Please try again later.');
       }
-    })
+    });
   }
+
 
   onDeleteFeedBack() {
     let id = this.feedBack().id;
     this.isDeletingFeedBack = true;
   
-
-    this._feedbackService.deleteFeedBack(id).pipe(
+    this.feedbackService.deleteFeedBack(id).pipe(
       finalize(() => {
         this.isDeletingFeedBack = false;
       })
     ).subscribe({
       next: () => {
-        this._toastrService.success('Feedback deleted successfully.');
-        this._router.navigate(['/feedbacks']);
+        this.toastrService.success('Feedback deleted successfully.');
+        this.router.navigate(['/feedbacks']);
       },
-      error: (error) => {
-        console.error('Error deleting feedback:', error);
-        this._toastrService.error('Failed to delete Feedback. Please try again later.');
+      error: (error: HttpErrorResponse) => {
+        this.toastrService.error('Failed to delete Feedback. Please try again later.', `Status: ${error.status}`);
       }
     });
   }
@@ -134,7 +113,7 @@ export class FeedbackDetailsComponent {
     if(window.history.length > 1) {
       this.location.back(); 
     } else {
-      this._router.navigate(['/feedbacks']);
+      this.router.navigate(['/feedbacks']);
     }
   }
 }

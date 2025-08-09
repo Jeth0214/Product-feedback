@@ -5,7 +5,6 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { FeedbackBoardComponent } from "./components/feedback-board/feedback-board.component";
 import { FeedbackListComponent } from './components/feedback-list/feedback-list.component';
 import { RoadmapReportComponent } from './components/roadmap-report/roadmap-report.component';
-import { IFeedBack } from '../shared/models/feedbacks.model';
 
 @Component({
   selector: 'app-feedbacks',
@@ -21,22 +20,20 @@ import { IFeedBack } from '../shared/models/feedbacks.model';
     templateUrl: './feedbacks.component.html',
     styleUrl: './feedbacks.component.scss'
 })
-export class FeedbacksComponent  {
+export class FeedbacksComponent implements OnInit {
  
   // injections
   feedBackService = inject(FeedBackService);
 
-  // properties
   feedBacks = this.feedBackService.filteredFeedBacks;
   isFeedbacksLoading = this.feedBackService.isFetchingFeedBacks;
   count = computed(() => this.feedBackService.filteredFeedBacks().length);
   category = this.feedBackService.categoryTerm;
   
-  
-  constructor() 
-  {
+
+  ngOnInit() {
     this.feedBackService.getAllFeedBacks();
-  }
+   }
 
   // property to show hide roadmap and filter cards
   isOpen = false;
@@ -53,10 +50,6 @@ export class FeedbacksComponent  {
   
   onSortByValue(sortValue: string) {
     this.feedBackService.setSortValue(sortValue);
-  }
-
-  onUpVoteFeedBack(feedBack: IFeedBack) {
-    this.feedBackService.upVoteFeedBack(feedBack)
   }
 
 

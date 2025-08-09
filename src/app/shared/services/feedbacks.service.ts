@@ -3,6 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { finalize, Observable, tap } from 'rxjs';
 import { IFeedBack } from "../models/feedbacks.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { IComment } from "../models/comment.model";
+import { IUser } from "../models/user.model";
 
 
 @Injectable({
@@ -24,13 +26,17 @@ export class FeedBackService  {
   readonly selectedFeedBack = signal<IFeedBack>({} as IFeedBack); 
   readonly categoryTerm = signal('All');
   readonly sortValue = signal('Most Upvotes');
+
+
   
   // loading signals
   readonly isFetchingFeedBacks = signal(false);
   readonly isFetchingSelectedFeedBack = signal(false);
   readonly isUpVotingFeedback = signal(false);
   readonly isUpdatingFeedback = signal(false);
-  readonly isCommenting = signal(false);
+  readonly isAddingComment = signal(false);
+
+
 
 
   readonly filteredFeedBacks = computed(() => {
@@ -79,6 +85,19 @@ export class FeedBackService  {
     return this.http.put<IFeedBack>(this.api, feedback).pipe(
       tap(() => {this.selectedFeedBack.set({...this.selectedFeedBack(), ...feedback})})
     );
+  }
+
+  // adds a comment to the feedback and updates the feedbacks signal
+  addComment(feedback: IFeedBack, user: IUser, content: string) {
+    const comments = feedback.comments ?? [];
+    const commentId = comments.length > 0 ? comments[comments.length - 1].id + 1 : 1;
+    const commentData = { id: commentId, user, content };
+
+    const updatedFeedback = {
+      ...feedback,
+      comments: [...comments, commentData]
+    };
+    return this.updateFeedBack(updatedFeedback);
   }
 
   upVoteFeedBack(upvotedFeedback: IFeedBack) {

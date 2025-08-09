@@ -8,9 +8,9 @@ const USER_STORAGE_KEY = 'user';
 })
 export class AuthService {
 
-  #userSignal = signal<IUser | null>(null);
+  userSignal = signal<IUser | null>(null);
 
-  user = this.#userSignal.asReadonly();
+  user = this.userSignal.asReadonly();
 
   constructor() {
     this.loadUserFromStorage();
@@ -22,7 +22,7 @@ export class AuthService {
     const userFromStorage = localStorage.getItem(USER_STORAGE_KEY);
     if (userFromStorage) {
       const userData = JSON.parse(userFromStorage);
-      this.#userSignal.set(userData);
+      this.userSignal.set(userData);
     }
     else {
       const temporaryUser: IUser = {
@@ -32,7 +32,7 @@ export class AuthService {
       }
 
       localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(temporaryUser));
-      this.#userSignal.set(temporaryUser);
+      this.userSignal.set(temporaryUser);
     }
  
   }

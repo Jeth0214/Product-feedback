@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, DestroyRef, EventEmitter, inject, input, Input, output, Output } from '@angular/core';
+import { Component, computed, DestroyRef, effect, EventEmitter, inject, input, Input, output, Output } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -30,7 +30,6 @@ remainingCharacters = this.maxCharacters;
  commentForm: FormGroup  = new FormGroup({});
 
 
-
  ngOnInit() {
       // Initialize the commentForm with a form control named 'comment' that has required and maxLength validators
       this.commentForm = this._fb.group({
@@ -45,6 +44,8 @@ remainingCharacters = this.maxCharacters;
       const length = value?.length || 0;
       this.remainingCharacters = Math.max(0, this.maxCharacters - length);
       });
+
+   
  }
 
  /**
