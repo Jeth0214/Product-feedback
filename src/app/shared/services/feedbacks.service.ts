@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { finalize, Observable, tap } from 'rxjs';
 import { IFeedBack } from "../models/feedbacks.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { IComment } from "../models/comment.model";
 import { IUser } from "../models/user.model";
 
 
@@ -33,11 +32,6 @@ export class FeedBackService  {
   readonly isFetchingFeedBacks = signal(false);
   readonly isFetchingSelectedFeedBack = signal(false);
   readonly isUpVotingFeedback = signal(false);
-  readonly isUpdatingFeedback = signal(false);
-  readonly isAddingComment = signal(false);
-
-
-
 
   readonly filteredFeedBacks = computed(() => {
     const filtered = this.categoryTerm() === 'All'
@@ -101,6 +95,7 @@ export class FeedBackService  {
   }
 
   upVoteFeedBack(upvotedFeedback: IFeedBack) {
+    this.isUpVotingFeedback.set(true);
     this.http.put<IFeedBack>(this.api, upvotedFeedback).pipe(
       tap(() => {
         this.feedBacks.update(list =>
@@ -108,6 +103,7 @@ export class FeedBackService  {
           );
           this.selectedFeedBack.set(upvotedFeedback);
       }),
+      finalize(() => this.isUpVotingFeedback.set(false)),
     ).subscribe();
   }
   

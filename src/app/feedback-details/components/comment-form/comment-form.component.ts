@@ -11,7 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class CommentFormComponent {
 // injections
-private _fb = inject(FormBuilder);
+private fb = inject(FormBuilder);
 private destroyRef$ = inject(DestroyRef);
   
 
@@ -31,28 +31,20 @@ remainingCharacters = this.maxCharacters;
 
 
  ngOnInit() {
-      // Initialize the commentForm with a form control named 'comment' that has required and maxLength validators
-      this.commentForm = this._fb.group({
-        comment: ['', [Validators.required, Validators.maxLength(this.maxCharacters)]]
-      });
-
-
-      // Listen to user input and update remainingCharacters based on the length of the input
-      this.commentForm.get('comment')?.valueChanges
-      .pipe(takeUntilDestroyed(this.destroyRef$))
-      .subscribe(value => {
-      const length = value?.length || 0;
-      this.remainingCharacters = Math.max(0, this.maxCharacters - length);
-      });
-
-   
+    // Initialize the commentForm with a form control named 'comment' that has required and maxLength validators
+    this.commentForm = this.fb.group({
+      comment: ['', [Validators.required, Validators.maxLength(this.maxCharacters)]]
+    });
+  
+    // Listen to user input and update remainingCharacters based on the length of the input
+    this.commentForm.get('comment')?.valueChanges
+    .pipe(takeUntilDestroyed(this.destroyRef$))
+    .subscribe(value => {
+    const length = value?.length || 0;
+    this.remainingCharacters = Math.max(0, this.maxCharacters - length);
+    });
  }
 
- /**
-* Handles the form submission.
-* If the form is invalid, it does nothing.
-* Otherwise, it emits the trimmed comment data and resets the form.
-*/
  onSubmit() {
    if (this.commentForm.invalid) return;
    const commentTrimmed = this.commentForm.value.comment.trim();

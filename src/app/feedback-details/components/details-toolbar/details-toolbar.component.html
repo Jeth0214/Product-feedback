@@ -1,0 +1,36 @@
+<!-- Toolbar -->
+<section class="flex justify-between items-center mb-10">
+  <button (click)="goBack()"
+    class="text-sm flex items-center gap-3 cursor-pointer transition hover:font-bold hover:underline">
+    <img loading="lazy" src="./assets/shared/icon-blue-arrow-left.svg" alt="arrow left">
+    <span>Go Back</span>
+  </button>
+
+  @if (feedBack() ) {
+  <div>
+
+    <button 
+      type="button" 
+      (click)="onDeleteFeedBack()" 
+      [disabled]="isDeleting()"
+      class="bg-red text-white px-6 py-3 rounded-xl font-bold me-2  hover:bg-red-800 hover:text-light-500 transition ease-in-out"
+      >
+        {{ deleteButtonText() }} 
+        @if( !isDeleting() ) { 
+          <span class="hidden md:inline-block">Feedback</span>
+        }
+    </button>
+
+    <button 
+      type="button" 
+      (click)="onEdit()" 
+      [disabled]="isDeleting()"
+      class="bg-blue text-white px-6 py-3 rounded-xl font-bold   hover:bg-blue-800 hover:text-light-500 transition ease-in-out"
+      >
+      Edit 
+      <span class="hidden md:inline-block">Feedback</span>
+    </button>
+
+  </div>
+  }
+</section>

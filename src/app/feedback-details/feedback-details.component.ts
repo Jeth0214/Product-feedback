@@ -1,5 +1,5 @@
-import { Component,  computed, effect, inject } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router, RouterLink } from '@angular/router';
+import { Component,  computed, effect, inject, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService } from '../shared/services/auth.service';
 import { FeedBackService } from '../shared/services/feedbacks.service';
@@ -9,19 +9,22 @@ import { FeedbackCardComponent } from '../shared/components/feedback-card/feedba
 import { CommentFormComponent } from './components/comment-form/comment-form.component';
 import { finalize } from 'rxjs';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
-import { Location } from '@angular/common';
+
 import { HttpErrorResponse } from '@angular/common/http';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { DetailsToolbarComponent } from './components/details-toolbar/details-toolbar.component';
+import { EmptyCardComponent } from '../shared/components/empty-card/empty-card.component';
 
 @Component({
     selector: 'app-feedback-details',
   imports: [
-    RouterLink,
     FontAwesomeModule,
     LoadingComponent,
+    DetailsToolbarComponent,
     FeedbackCardComponent,
     CommentFormComponent,
-    CommentListComponent
+    CommentListComponent,
+    EmptyCardComponent
   ],
     templateUrl: './feedback-details.component.html',
     styleUrl: './feedback-details.component.scss'
@@ -34,20 +37,14 @@ export class FeedbackDetailsComponent {
   private feedbackService = inject(FeedBackService);
   private router = inject(Router);
   private toastrService = inject(ToastrService);
-  private location = inject(Location);
+  
 
 
-  // properties
   id: number = 0;
-  isLoading: boolean = false;
-  isDeletingFeedBack: boolean = false;
-  
-  
-  // signals
   feedBack = this.feedbackService.selectedFeedBack;
   isFetchingSelectedFeedBack = this.feedbackService.isFetchingSelectedFeedBack;
-  isAddingComment = false;
-
+  isDeletingFeedBack = signal(false);
+  isAddingComment = signal(false);
   currentUser = this.authService.user;
 
   comments = computed(() => { return this.feedBack().comments ? this.feedBack().comments : [] });
@@ -64,20 +61,22 @@ export class FeedbackDetailsComponent {
           this.feedbackService.getFeedBackById(feedBackID);
         }
       }
+      else {
+        this.toastrService.error('Feedback ID is missing in the route parameters.');
+        this.router.navigate(['/feedbacks']);
+      }
      })
   }
   
-  onCommentAdded(comment: string) {
+  onComment(comment: string) {
     const user = this.currentUser();
     if (!user) {
       this.toastrService.error('You must be logged in to comment.');
       return ;
     }
-    
-    this.isAddingComment = true;
-
+    this.isAddingComment.set(true);
     this.feedbackService.addComment(this.feedBack(), user, comment)
-    .pipe(finalize(() => this.isAddingComment = false))
+    .pipe(finalize(() => this.isAddingComment.set(false)))
     .subscribe({
       next: () => {
         this.toastrService.success('Comment added successfully.');
@@ -91,11 +90,10 @@ export class FeedbackDetailsComponent {
 
   onDeleteFeedBack() {
     let id = this.feedBack().id;
-    this.isDeletingFeedBack = true;
-  
+    this.isDeletingFeedBack.set(true);
     this.feedbackService.deleteFeedBack(id).pipe(
       finalize(() => {
-        this.isDeletingFeedBack = false;
+        this.isDeletingFeedBack.set(false);
       })
     ).subscribe({
       next: () => {
@@ -109,12 +107,6 @@ export class FeedbackDetailsComponent {
   }
 
 
-    goBack() {
-    if(window.history.length > 1) {
-      this.location.back(); 
-    } else {
-      this.router.navigate(['/feedbacks']);
-    }
-  }
+
 }
 

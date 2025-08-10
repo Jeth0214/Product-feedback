@@ -14,6 +14,7 @@ import { NgClass } from '@angular/common';
 export class UpvoteButtonComponent {
 
   feedBackService = inject(FeedBackService);
+  isUpVotingFeedback = this.feedBackService.isUpVotingFeedback;
   upVoteIcon = faChevronUp;
   feedBack = input.required<IFeedBack>();
   buttonStyle = input.required<'inline' | 'stack'>();
