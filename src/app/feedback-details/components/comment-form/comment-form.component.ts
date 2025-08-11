@@ -15,7 +15,6 @@ private fb = inject(FormBuilder);
 private destroyRef$ = inject(DestroyRef);
   
 
- // properties
  maxCharacters = 250;
 remainingCharacters = this.maxCharacters;
   
@@ -24,24 +23,22 @@ remainingCharacters = this.maxCharacters;
  isCommenting = input.required<boolean>();
  buttonText = computed( () => { return this.isReply() ? 'Reply': 'Comment' }) 
  commentContent = output<string>()
-
   
  // form
  commentForm: FormGroup  = new FormGroup({});
 
 
  ngOnInit() {
-    // Initialize the commentForm with a form control named 'comment' that has required and maxLength validators
+
     this.commentForm = this.fb.group({
       comment: ['', [Validators.required, Validators.maxLength(this.maxCharacters)]]
     });
   
-    // Listen to user input and update remainingCharacters based on the length of the input
     this.commentForm.get('comment')?.valueChanges
-    .pipe(takeUntilDestroyed(this.destroyRef$))
-    .subscribe(value => {
-    const length = value?.length || 0;
-    this.remainingCharacters = Math.max(0, this.maxCharacters - length);
+      .pipe(takeUntilDestroyed(this.destroyRef$))
+      .subscribe(value => {
+        const length = value?.length || 0;
+        this.remainingCharacters = Math.max(0, this.maxCharacters - length);
     });
  }
 

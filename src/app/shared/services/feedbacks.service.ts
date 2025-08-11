@@ -4,6 +4,9 @@ import { finalize, Observable, tap } from 'rxjs';
 import { IFeedBack } from "../models/feedbacks.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { IUser } from "../models/user.model";
+import { IComment } from "../models/comment.model";
+import { IReplyInit } from "../models/replies.model";
+import { AuthService } from "./auth.service";
 
 
 @Injectable({
@@ -15,10 +18,11 @@ export class FeedBackService  {
 
   //core
   private readonly api: string = 'api/feedBacks';
-  private destroy$ = inject(DestroyRef)
- 
+  
   // Dependencies
   private readonly http = inject(HttpClient);
+  private destroy$ = inject(DestroyRef);
+  private authService = inject(AuthService)
 
   // signals
   private readonly feedBacks = signal<IFeedBack[]>([]);
@@ -93,6 +97,33 @@ export class FeedBackService  {
     };
     return this.updateFeedBack(updatedFeedback);
   }
+
+  addReplyToComment(feedBack: IFeedBack, replyData: IReplyInit, currentUser: IUser) {
+    const commentsCopy = [...feedBack.comments ?? []];
+    const targetComment = commentsCopy.find(comment => comment.id === replyData.commentId);
+    
+    const newReply = {
+      content: replyData.content, 
+      replyingTo: replyData.replyingTo,
+      user: currentUser
+    };
+
+    const updatedFeedback: IFeedBack = {
+      ...feedBack,
+      comments: commentsCopy.map(comment => 
+        comment.id === replyData.commentId 
+          ? { ...comment, replies: [...(comment.replies || []), newReply] }
+          : comment
+      )
+    }
+    return this.updateFeedBack(updatedFeedback);
+  }
+
+  saveFeedback(feedback: Partial<IFeedBack>, isUpdate: boolean) {
+  return isUpdate
+    ? this.updateFeedBack(feedback)
+    : this.addFeedBack(feedback);
+}
 
   upVoteFeedBack(upvotedFeedback: IFeedBack) {
     this.isUpVotingFeedback.set(true);

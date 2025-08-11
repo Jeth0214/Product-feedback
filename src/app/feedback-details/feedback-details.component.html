@@ -3,22 +3,20 @@
     <app-loading [fullScreen]="true" [isLoading]="isFetchingSelectedFeedBack()" />
   }
   @else {
-      <!-- Toolbar -->
-      <app-details-toolbar [feedBack]="feedBack()" [isDeleting]="isDeletingFeedBack()" (deleteFeedback)="onDeleteFeedBack()"/>
-      
-      
-      @if (feedBack()) {
+    @if (feedBack()) {
+        <!-- Toolbar -->
+        <app-details-toolbar [feedBack]="feedBack()" [isDeleting]="isDeletingFeedBack()" (deleteFeedback)="onDeleteFeedBack()"/>
         <!-- Feedback -->
         <app-feedback-card [feedBack]="feedBack()" />
 
         <!-- Comments Section -->
-         <app-comment-list [currentUser]="currentUser()"  [feedBack]="feedBack()" />
+         <app-comment-list [currentUser]="currentUser()!"  [feedBack]="feedBack()" />
     
         <!-- Comment Form -->
          <app-comment-form [isCommenting]="isAddingComment()" (commentContent)="onComment($any($event))" [isReply]="false" />
   
-      }
-      @else {
+    }
+    @else {
         <app-empty-card />
     }
 

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { initFlowbite } from 'flowbite';
+import { AuthService } from './shared/services/auth.service';
 
 
 @Component({
@@ -10,9 +10,11 @@ import { initFlowbite } from 'flowbite';
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
+  authService = inject(AuthService);
   title = 'Frontend Mentor';
 
   ngOnInit() { 
-    initFlowbite();
+    // Challenge has no login feture, so we will initialize the auth service here
+    this.authService.loadUserFromStorage();
   }
 }
