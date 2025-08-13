@@ -44,7 +44,7 @@ export class FeedbackFormComponent {
   feedBackform: FormGroup = new FormGroup({});
   categories = Object.keys(FeedbackCategory);
   statuses = ['Suggestion', 'Planned', 'In-Progress', 'Live'];;
-  selectedCategory = this.dropdownValueToTitleCase(this.categories[0]); // Default to first category
+  selectedCategory = this.dropdownValueToTitleCase(this.categories[0]);
   selectedStatus = '';
   
 
@@ -52,9 +52,9 @@ export class FeedbackFormComponent {
     // Initialize the component and set up the form
     this.activatedRoute.paramMap.subscribe(params => {
       const idParams = params.get('id');
-      this.id = idParams ? +idParams : 0; // Convert idParams to a number or set to 0 if not present
+      this.id = idParams ? +idParams : 0; 
       if (this.id) {
-        this.feedbackService.getFeedBackById(this.id); // Fetch feedback details if ID is present
+        this.feedbackService.getFeedBackById(this.id);
       } 
     });
 
@@ -65,7 +65,6 @@ export class FeedbackFormComponent {
   }
 
   private initializeFormEffect(feedBack: IFeedBack | null) { 
-     // If feedback is available and ID is provided, set up the form for editing
     if (feedBack && this.id) {
        this.setUpForm(feedBack);
       this.formIcon = 'assets/shared/icon-edit-feedback.svg';
@@ -75,7 +74,6 @@ export class FeedbackFormComponent {
       this.submitButtonText = 'Update Feedback';
     }  
     else {
-      // If no ID is provided, set up the form for creating a new feedback
       this.selectedCategory = this.dropdownValueToTitleCase(this.categories[0]); // Default to first category
       this.setUpForm();
     }
@@ -119,25 +117,25 @@ export class FeedbackFormComponent {
   
   // update feedback to server
   updateFeedBack(formData: Partial<IFeedBack>) {
-    this.isLoading = true; // Set loading state to true
-    this.submitButtonText = 'Updating...'; // Change button text to indicate update action
+    this.isLoading = true; 
+    this.submitButtonText = 'Updating...';
     const data: Partial <IFeedBack> = {
       ...this.selectedFeedBack(),
       ...formData,
-      category: this.selectedCategory.toLowerCase(), // Ensure category is in lowercase
-      status: this.selectedStatus.toLowerCase(), // Ensure status is in lowercase
+      category: this.selectedCategory.toLowerCase(),
+      status: this.selectedStatus.toLowerCase(),
   
     }
     this.feedbackService.updateFeedBack(data).pipe(
-      finalize(() => { this.isLoading = false; this.submitButtonText = 'Update Feedback' }), // Set loading state to false after the request completes
-      takeUntilDestroyed(this.destroyRef) // Automatically clean up subscriptions when the component is destroyed
+      finalize(() => { this.isLoading = false; this.submitButtonText = 'Update Feedback' }),
+      takeUntilDestroyed(this.destroyRef) 
     ).subscribe({
       next: () => {
-        this.toastrService.success('Feedback updated successfully', 'Success'); // Show success message
-        this.router.navigate(['/feedbacks']); // Navigate to the feedbacks list
+        this.toastrService.success('Feedback updated successfully', 'Success');
+        this.router.navigate(['/feedbacks']);
       },
       error: (error: HttpErrorResponse) => {
-        this.toastrService.error('Failed to Update feedback', `Status: ${error.status}`); // Show error message
+        this.toastrService.error('Failed to Update feedback', `Status: ${error.status}`);
       }
     })
   }
@@ -145,26 +143,26 @@ export class FeedbackFormComponent {
   // add new feedback to server
   addFeedBack(formData: Partial<IFeedBack>) {
     this.isLoading = true; // Set loading state to true
-    this.submitButtonText = 'Adding...'; // Change button text to indicate add action
+    this.submitButtonText = 'Adding...'; 
     const data: Partial<IFeedBack> = {
       ...formData,
-      category: this.selectedCategory.toLowerCase(), // Ensure category is in lowercase
-      status: this.selectedStatus.toLowerCase(), // Ensure status is in lowercase
-      upvotes: 0, // Default upvotes
-      comments: [] // Default empty comments array
+      category: this.selectedCategory.toLowerCase(),
+      status: this.selectedStatus.toLowerCase(),
+      upvotes: 0, 
+      comments: [] 
     };
     this.feedbackService.addFeedBack(data).pipe(
       finalize(() => {
-        this.isLoading = false // Set loading state to false after the request completes
-        this.submitButtonText = 'Add Feedback'; // Reset button text after submission
+        this.isLoading = false 
+        this.submitButtonText = 'Add Feedback';
       }),
       takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
         next: () => {
-          this.toastrService.success('Feedback added successfully', 'Success'); // Show success message
-          this.feedBackform.reset(); // Reset the form after submission
-          this.router.navigate(['/feedbacks']); // Navigate to the feedbacks list
+          this.toastrService.success('Feedback added successfully', 'Success');
+          this.feedBackform.reset();
+          this.router.navigate(['/feedbacks']);
       },
       error: (error: HttpErrorResponse) => {
         this.toastrService.error('Failed to add feedback', `Status: ${error.status}`);
@@ -174,21 +172,21 @@ export class FeedbackFormComponent {
   
   // Delete feedback from server
   deleteFeedBack() {
-    this.isLoading = true; // Set loading state to true
-    this.deleteButtonText = 'Deleting...'; // Change button text to indicate delete action
+    this.isLoading = true; 
+    this.deleteButtonText = 'Deleting...'; 
     this.feedbackService.deleteFeedBack(this.id).pipe(
       finalize(() => {
-        this.isLoading = false; // Set loading state to false after the request completes
-        this.deleteButtonText = 'Delete'; // Reset button text after deletion
+        this.isLoading = false;
+        this.deleteButtonText = 'Delete';
       }),
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: () => {
-        this.toastrService.success('Feedback deleted successfully', 'Success'); // Show success message
-        this.router.navigate(['/feedbacks']); // Navigate to the feedbacks list
+        this.toastrService.success('Feedback deleted successfully', 'Success'); 
+        this.router.navigate(['/feedbacks']); 
       },
       error: (error: HttpErrorResponse) => {
-        this.toastrService.error('Failed to delete feedback', `Status: ${error.status}`); // Show error message
+        this.toastrService.error('Failed to delete feedback', `Status: ${error.status}`);
       }
     });
   }
