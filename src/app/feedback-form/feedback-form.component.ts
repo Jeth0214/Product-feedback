@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, effect, inject, Input, OnInit } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, Input, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DropdownComponent } from '../shared/components/dropdown/dropdown.component';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -9,7 +9,7 @@ import { LoadingComponent } from '../shared/components/loading/loading.component
 import { finalize } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { HttpErrorResponse } from '@angular/common/http';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FeedbackCategory } from '../shared/Enums/category.enum';
 
 @Component({
@@ -28,106 +28,138 @@ export class FeedbackFormComponent {
   private destroyRef = inject(DestroyRef);
   private readonly location = inject(Location);
 
-  
+  //signals
   selectedFeedBack = this.feedbackService.selectedFeedBack; 
+  isFetchingFeedBack = this.feedbackService.isFetchingSelectedFeedBack;
+  isSaving = signal(false);
+  isDeleting = signal(false);
+  id = signal(0); 
   
-  // Component properties
-  formIcon = 'assets/shared/icon-new-feedback.svg';
-  title = 'Create New Feedback';
-  submitButtonText = 'Add Feedback';
-  deleteButtonText = 'Delete';
-  id = 0; 
-  isLoading = false;
-
-
-  // form properties
+  // Form and UI State
   feedBackform: FormGroup = new FormGroup({});
   categories = Object.keys(FeedbackCategory);
-  statuses = ['Suggestion', 'Planned', 'In-Progress', 'Live'];;
-  selectedCategory = this.dropdownValueToTitleCase(this.categories[0]);
-  selectedStatus = '';
+  statuses = ['Suggestion', 'Planned', 'In-Progress', 'Live'];
+
+  selectedCategory = signal(this.dropdownValueToTitleCase(this.categories[0]));
+  selectedStatus = signal('');
+
+  // Route parameter to get feedback ID
+  idParam = toSignal(this.activatedRoute.paramMap);
+
+  // Computed properties based on Action
+  deleteButtonText = computed(() => {
+    return this.isDeleting() ? 'Deleting...' : 'Delete';
+  });
+
+  saveButtonText = computed(() => {
+    return this.isSaving() ? 'Saving...' : (this.selectedFeedBack() ? ' Update Feedback' : 'Add Feedback');
+  });
+
+  title = computed(() => {
+    return this.selectedFeedBack() ? `Editing '${this.selectedFeedBack().title}'` : 'Create New Feedback';
+  });
+
+  formIcon = computed(() => {
+    return this.selectedFeedBack() ? 'assets/shared/icon-edit-feedback.svg' : 'assets/shared/icon-new-feedback.svg';
+  });
+
+
   
 
   constructor() {
-    // Initialize the component and set up the form
-    this.activatedRoute.paramMap.subscribe(params => {
-      const idParams = params.get('id');
-      this.id = idParams ? +idParams : 0; 
-      if (this.id) {
-        this.feedbackService.getFeedBackById(this.id);
-      } 
+    effect(() => {
+      const idParams = +(this.idParam()?.get('id') ?? 0);
+      if (idParams) {
+        this.id.set(idParams); // Set the id signal
+        this.feedbackService.getFeedBackById(this.id());
+      }
     });
 
     effect(() => {
       const feedback = this.selectedFeedBack();
-      this.initializeFormEffect(feedback);
+      this.initializeForm(feedback, this.id());
     })
   }
 
-  private initializeFormEffect(feedBack: IFeedBack | null) { 
-    if (feedBack && this.id) {
+   initializeForm(feedBack: IFeedBack | null, id: number) { 
+    if (feedBack && id) {
+      // Edit Mode
        this.setUpForm(feedBack);
-      this.formIcon = 'assets/shared/icon-edit-feedback.svg';
-      this.title = `Editing '${this.selectedFeedBack().title}'`;
-      this.selectedCategory = this.dropdownValueToTitleCase(feedBack.category);
-      this.selectedStatus = this.dropdownValueToTitleCase(feedBack.status);
-      this.submitButtonText = 'Update Feedback';
+      this.selectedCategory.set(this.dropdownValueToTitleCase(feedBack.category));
+      this.selectedStatus.set(this.dropdownValueToTitleCase(feedBack.status));
     }  
     else {
-      this.selectedCategory = this.dropdownValueToTitleCase(this.categories[0]); // Default to first category
+      // Create Mode
+      this.selectedCategory.set(this.dropdownValueToTitleCase(this.categories[0]));
       this.setUpForm();
     }
     
   }
-
-  
-  // helper method to check if a control has error
-  hasError(controlName: string): boolean {
-    const control = this.feedBackform.get(controlName);
-    return !!(control && control.invalid && control?.touched );
-  }
-
   setUpForm(feedback?: IFeedBack) {
     this.feedBackform = this.formBuilder.group({
       title: [feedback?.title ?? '', [Validators.required, Validators.minLength(5)]],
       description: [feedback?.description ?? '', [Validators.required, Validators.minLength(5)]],
     });
   }
+
+  
+  // helper method to check if a control has error
+  hasError(controlName: string): boolean {
+    const control = this.feedBackform.get(controlName);
+    return !!(control && control.invalid && control.touched );
+  }
+
   
 
   onSelectCategory(category: string) {
-    this.selectedCategory = category.toLowerCase();
+    this.selectedCategory.set(category.toLowerCase());
   }
 
   onSelectStatus(status: string) {
-    this.selectedStatus = status.toLowerCase();
+    this.selectedStatus.set(status.toLowerCase());
   }
 
   // onSubmit method to handle form submission
   onSubmit() {
     if (this.feedBackform.invalid) return;
+
     const formData = this.feedBackform.value;
-    if (this.selectedFeedBack() && this.id) {
+    const isUpdateMode = !!this.selectedFeedBack() && !!this.id();
+    const payload = this.setPayload(isUpdateMode);
+    if (isUpdateMode) {
       this.updateFeedBack(formData); 
     }
     else {
       this.addFeedBack(formData);
     }
   }  
+
+
+  setPayload(isUpdate: boolean): Partial<IFeedBack> {
+    const basePayLoad = isUpdate ? this.selectedFeedBack() : { upvotes: 0, comments: [] };
+    const formData = this.feedBackform.value;
+    
+    return {
+      ...basePayLoad,
+      ...formData,
+      category: this.selectedCategory().toLowerCase(),
+        ...(isUpdate ? { status: this.selectedStatus().toLowerCase() } : {})
+    };
+  }
   
   // update feedback to server
   updateFeedBack(formData: Partial<IFeedBack>) {
-    this.isLoading = true; 
-    this.submitButtonText = 'Updating...';
-    const data: Partial <IFeedBack> = {
-      ...this.selectedFeedBack(),
-      ...formData,
-      category: this.selectedCategory.toLowerCase(),
-      status: this.selectedStatus.toLowerCase(),
+
+    // const data: Partial <IFeedBack> = {
+    //   ...this.selectedFeedBack(),
+    //   ...formData,
+    //   category: this.selectedCategory.toLowerCase(),
+    //   status: this.selectedStatus.toLowerCase(),
   
-    }
-    this.feedbackService.updateFeedBack(data).pipe(
-      finalize(() => { this.isLoading = false; this.submitButtonText = 'Update Feedback' }),
+    // }
+    this.isSaving.set(true);
+    this.feedbackService.updateFeedBack(formData).pipe(
+      finalize(() => { this.isSaving.set(false); }),
       takeUntilDestroyed(this.destroyRef) 
     ).subscribe({
       next: () => {
@@ -142,19 +174,18 @@ export class FeedbackFormComponent {
   
   // add new feedback to server
   addFeedBack(formData: Partial<IFeedBack>) {
-    this.isLoading = true; // Set loading state to true
-    this.submitButtonText = 'Adding...'; 
+    this.isSaving.set(true);
     const data: Partial<IFeedBack> = {
       ...formData,
-      category: this.selectedCategory.toLowerCase(),
-      status: this.selectedStatus.toLowerCase(),
+      // category: this.selectedCategory.toLowerCase(),
+      // status: this.selectedStatus.toLowerCase(),
       upvotes: 0, 
       comments: [] 
     };
     this.feedbackService.addFeedBack(data).pipe(
       finalize(() => {
-        this.isLoading = false 
-        this.submitButtonText = 'Add Feedback';
+        this.isSaving.set(false);
+
       }),
       takeUntilDestroyed(this.destroyRef)
       )
@@ -172,12 +203,9 @@ export class FeedbackFormComponent {
   
   // Delete feedback from server
   deleteFeedBack() {
-    this.isLoading = true; 
-    this.deleteButtonText = 'Deleting...'; 
-    this.feedbackService.deleteFeedBack(this.id).pipe(
+    this.feedbackService.deleteFeedBack(this.id()).pipe(
       finalize(() => {
-        this.isLoading = false;
-        this.deleteButtonText = 'Delete';
+        this.isDeleting.set(false)
       }),
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
