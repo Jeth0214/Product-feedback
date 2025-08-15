@@ -8,24 +8,9 @@
 
   @if (feedBack() ) {
   <div>
-
-    <button 
-      type="button" 
-      (click)="onDeleteFeedBack()" 
-      [disabled]="isDeleting()"
-      aria-label="Delete Feedback"
-      class="bg-red text-white px-6 py-3 rounded-xl font-bold me-2  hover:bg-red-800 hover:text-light-500 transition ease-in-out"
-      >
-        {{ deleteButtonText() }} 
-        @if( !isDeleting() ) { 
-          <span class="hidden md:inline-block">Feedback</span>
-        }
-    </button>
-
     <button 
       type="button" 
       (click)="onEdit()" 
-      [disabled]="isDeleting()"
       aria-label="Go to edit feedback Page"
       class="bg-blue text-white px-6 py-3 rounded-xl font-bold   hover:bg-blue-800 hover:text-light-500 transition ease-in-out"
       >

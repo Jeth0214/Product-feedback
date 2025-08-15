@@ -43,7 +43,6 @@ export class FeedbackDetailsComponent {
   id: number = 0;
   feedBack = this.feedbackService.selectedFeedBack;
   isFetchingSelectedFeedBack = this.feedbackService.isFetchingSelectedFeedBack;
-  isDeletingFeedBack = signal(false);
   isAddingComment = signal(false);
   currentUser = this.authService.user;
 
@@ -86,27 +85,5 @@ export class FeedbackDetailsComponent {
       }
     });
   }
-
-
-  onDeleteFeedBack() {
-    let id = this.feedBack().id;
-    this.isDeletingFeedBack.set(true);
-    this.feedbackService.deleteFeedBack(id).pipe(
-      finalize(() => {
-        this.isDeletingFeedBack.set(false);
-      })
-    ).subscribe({
-      next: () => {
-        this.toastrService.success('Feedback deleted successfully.');
-        this.router.navigate(['/feedbacks']);
-      },
-      error: (error: HttpErrorResponse) => {
-        this.toastrService.error('Failed to delete Feedback. Please try again later.', `Status: ${error.status}`);
-      }
-    });
-  }
-
-
-
 }
 

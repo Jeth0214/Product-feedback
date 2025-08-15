@@ -1,28 +1,26 @@
 <section class="rounded overflow-hidden shadow-sm bg-white p-6 my-8">
-    @if( comments()) {
+  
+  
+  @for(comment of comments(); track comment?.id) {
+    <h2 class="font-bold text-lg text-dark-800 mb-8">{{ commentsCount() }} Comments</h2>
+    <app-comment [comment]="comment" (replyContent)="onAddingReply($event)" [commentId]="comment.id"   />
+      <!-- REPLIES -->
+      @if((comment?.replies?.length ?? 0) > 0) {
+      <div class="mt-8">
+          @for(reply of comment?.replies; track reply?.user) {
 
-      <h2 class="font-bold text-lg text-dark-800 mb-8">{{ commentsCount() }} Comments</h2>
-
-      @for(comment of comments(); track comment?.id) {
-
-        <app-comment [comment]="comment" (replyContent)="onAddingReply($event)" [commentId]="comment.id"   />
-          <!-- REPLIES -->
-          @if((comment?.replies?.length ?? 0) > 0) {
-          <div class="mt-8">
-              @for(reply of comment?.replies; track reply?.user) {
-
-                <div class="md:ms-6 ps-6">
-                  <app-comment [comment]="reply"  (replyContent)="onAddingReply($event)" [commentId]="comment.id" />
-                </div>
-              }
-          </div>
-        }
-      }
+            <div class="md:ms-6 ps-6">
+              <app-comment [comment]="reply"  (replyContent)="onAddingReply($event)" [commentId]="comment.id" />
+            </div>
+          }
+      </div>
     }
-    @else {
+  } 
+  @empty {
       <div class="my-10">
         <img class="mx-auto mb-6" src="./assets/suggestions/illustration-empty.svg" alt="Man with magnifying glass">
         <h3 class="font-bold text-3xl text-center">No Comment</h3>
       </div>
-    }
+  }
+    
 </section>

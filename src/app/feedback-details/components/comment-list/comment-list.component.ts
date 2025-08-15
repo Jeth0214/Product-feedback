@@ -8,11 +8,10 @@ import { finalize } from 'rxjs';
 import { IFeedBack } from '../../../shared/models/feedbacks.model';
 import { IReplyInit } from '../../../shared/models/replies.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { EmptyCardComponent } from "../../../shared/components/empty-card/empty-card.component";
 
 @Component({
   selector: 'app-comment-list',
-  imports: [CommentComponent, EmptyCardComponent],
+  imports: [CommentComponent],
   templateUrl: './comment-list.component.html',
   styleUrl: './comment-list.component.scss'
 })

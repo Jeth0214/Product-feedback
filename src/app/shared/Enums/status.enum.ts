@@ -1,6 +1,6 @@
-export enum FeedStatus {
-  Planned = 'Planned',
-  In-Progress = 'In-Progress',
-  Live = 'Live',
+export enum FeedBackStatus {
   Suggestion = 'Suggestion',
+  Planned = 'Planned',
+  InProgress = 'In-Progress',
+  Live = 'Live',
 }

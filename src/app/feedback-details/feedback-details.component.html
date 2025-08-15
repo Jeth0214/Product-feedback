@@ -5,7 +5,7 @@
   @else {
     @if (feedBack()) {
         <!-- Toolbar -->
-        <app-details-toolbar [feedBack]="feedBack()" [isDeleting]="isDeletingFeedBack()" (deleteFeedback)="onDeleteFeedBack()"/>
+        <app-details-toolbar [feedBack]="feedBack()"/>
         <!-- Feedback -->
         <app-feedback-card [feedBack]="feedBack()" />
 

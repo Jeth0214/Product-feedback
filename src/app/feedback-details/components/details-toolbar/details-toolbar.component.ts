@@ -14,13 +14,6 @@ export class DetailsToolbarComponent {
   private router = inject(Router);
 
   feedBack = input.required<IFeedBack>();
-  isDeleting = input.required<boolean>();
-  deleteFeedback = output();
-
-  deleteButtonText = computed(() => {
-    return this.isDeleting() ? 'Deleting...' : 'Delete';
-  });
-
 
   onEdit() {
     this.router.navigate(['/feedback-form', this.feedBack().id]);
@@ -34,7 +27,4 @@ export class DetailsToolbarComponent {
     }
   }
 
-  onDeleteFeedBack() {
-    this.deleteFeedback.emit();
-  }
 }

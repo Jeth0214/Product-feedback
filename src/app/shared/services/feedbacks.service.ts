@@ -1,12 +1,13 @@
 import { computed, DestroyRef, inject, Injectable, signal } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { finalize, Observable, tap } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { catchError, finalize, Observable, tap } from 'rxjs';
 import { IFeedBack } from "../models/feedbacks.model";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { IUser } from "../models/user.model";
-import { IComment } from "../models/comment.model";
 import { IReplyInit } from "../models/replies.model";
 import { AuthService } from "./auth.service";
+import { ToastrService } from "ngx-toastr";
+import { Router } from "@angular/router";
 
 
 @Injectable({
@@ -22,7 +23,8 @@ export class FeedBackService  {
   // Dependencies
   private readonly http = inject(HttpClient);
   private destroy$ = inject(DestroyRef);
-  private authService = inject(AuthService)
+  private readonly toastrService = inject(ToastrService);
+  private readonly router = inject(Router);
 
   // signals
   private readonly feedBacks = signal<IFeedBack[]>([]);
@@ -66,7 +68,13 @@ export class FeedBackService  {
     this.http.get<IFeedBack>(`${this.api}/${id}`).pipe(
       tap(( response ) => this.selectedFeedBack.set(response)),
       finalize(() => this.isFetchingSelectedFeedBack.set(false)),
-      takeUntilDestroyed(this.destroy$) 
+      catchError(
+        (error: HttpErrorResponse) => {
+          this.toastrService.error('Error Fetching Feedback', `Status: ${error.status}`);
+          this.router.navigate(['/']);
+          return [];
+        }
+      )
     ).subscribe();
   }
 
@@ -119,8 +127,7 @@ export class FeedBackService  {
     return this.updateFeedBack(updatedFeedback);
   }
 
-  saveFeedback(feedback: Partial<IFeedBack>, isUpdate: boolean) {
-
+  saveFeedBack(feedback: Partial<IFeedBack>, isUpdate: boolean) {
   return isUpdate
     ? this.updateFeedBack(feedback)
     : this.addFeedBack(feedback);
