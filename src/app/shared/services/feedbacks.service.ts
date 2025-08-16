@@ -57,6 +57,10 @@ export class FeedBackService  {
       .pipe(
         tap((response) => this.feedBacks.set(response)),
         finalize(() => this.isFetchingFeedBacks.set(false)),
+        catchError((error: HttpErrorResponse) => {
+          this.toastrService.error('Error Fetching Feedbacks', `Status: ${error.status}`);
+          return [];
+        }),
         takeUntilDestroyed(this.destroy$)
       ).subscribe();
     
@@ -74,7 +78,8 @@ export class FeedBackService  {
           this.router.navigate(['/']);
           return [];
         }
-      )
+      ),
+      takeUntilDestroyed(this.destroy$)
     ).subscribe();
   }
 
@@ -143,6 +148,10 @@ export class FeedBackService  {
           this.selectedFeedBack.set(upvotedFeedback);
       }),
       finalize(() => this.isUpVotingFeedback.set(false)),
+      catchError((error: HttpErrorResponse) => {
+        this.toastrService.error('Failed to upvote feedback', `Status: ${error.status}`);
+        return [];
+      }),
     ).subscribe();
   }
   

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, OnInit, signal } from '@angular/core';
 import { FeedBackService } from '../shared/services/feedbacks.service';
 import { CategoryComponent } from './components/category/category.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -29,22 +29,30 @@ export class FeedbacksComponent implements OnInit {
   isFeedbacksLoading = this.feedBackService.isFetchingFeedBacks;
   count = computed(() => this.feedBackService.filteredFeedBacks().length);
   category = this.feedBackService.categoryTerm;
+
+  // property to show hide roadmap and filter cards
+  isOpen = signal(false);
   
 
   ngOnInit() {
     this.feedBackService.getAllFeedBacks();
    }
 
-  // property to show hide roadmap and filter cards
-  isOpen = false;
-
+       // Always set the menu to its default state when resizing the screen width
+    @HostListener('window:resize', [])
+    onResize() { 
+      if (window.innerWidth <= 768) {
+        this.isOpen.set(false);
+        }
+    }
 
   // toggle the roadmap and filter cards
-  toggleRoadmapAndFilter(event: any) { 
-    this.isOpen = event;
+  toggleRoadmapAndFilter(isOpenState: boolean) { 
+    this.isOpen.set(!isOpenState);
   }
 
   onChooseCategory(category: string) {
+    this.isOpen.set(false);
     this.feedBackService.setCategoryTerm(category);
   }
   

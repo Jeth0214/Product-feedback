@@ -4,10 +4,11 @@
   @for( feedBack of feedBacks(); track feedBack.id) {
     <app-feedback-card [feedBack]="feedBack" />
   }
-  @empty {
-    <app-empty-card />
-  }
 }
+@else {
+  <app-empty-card />
+}
+
 
 
 

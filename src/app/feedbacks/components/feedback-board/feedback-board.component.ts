@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { Component, computed, EventEmitter, HostListener, input, output, Output } from '@angular/core';
 
 @Component({
   selector: 'app-feedback-board',
@@ -9,33 +9,16 @@ import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 export class FeedbackBoardComponent {
 
     title = 'Frontend Mentor';
-    isOpen = false;
-    menuIcon = './assets/shared/mobile/icon-hamburger.svg';
-    @Output()isMenuOpen =  new EventEmitter<boolean>();
+    isOpen = input(false);
+    toggleClick =  output<boolean>();
     
+  menuIcon = computed(() => {
+      console.log(this.isOpen());
+      return !this.isOpen() ? './assets/shared/mobile/icon-hamburger.svg' : './assets/shared/mobile/icon-close.svg';
+    });
   
-    toggleMenu() {
-    this.isOpen = !this.isOpen;
-      this.changeIcon();
-      this.emitMenuState();
+  toggleMenu() {
+      this.toggleClick.emit(this.isOpen());
     }
   
-    // Always set the menu to its default state when resizing the screen width
-    @HostListener('window:resize', [])
-    onResize() { 
-      if (window.innerWidth <= 768) {
-        this.isOpen = false;
-        this.changeIcon();
-        this.emitMenuState();
-        }
-    }
-  
-    changeIcon() {
-        this.menuIcon =  !this.isOpen ? './assets/shared/mobile/icon-hamburger.svg' : './assets/shared/mobile/icon-close.svg';
-    }
-  
-  emitMenuState() { 
-    this.isMenuOpen.emit(this.isOpen);
-  }
-
 }

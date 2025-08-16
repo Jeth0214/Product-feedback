@@ -38,7 +38,7 @@ export class FeedbackFormComponent {
   
   // Form and UI State
   feedBackform: FormGroup = new FormGroup({});
-  categories = Object.values(FeedbackCategory);
+  categories = Object.keys(FeedbackCategory);
   statuses = Object.values(FeedBackStatus);
 
   selectedCategory = signal(this.dropdownValueToTitleCase(this.categories[0]));

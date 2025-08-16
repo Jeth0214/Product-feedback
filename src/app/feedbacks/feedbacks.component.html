@@ -3,7 +3,7 @@
 
     <aside class="lg:basis-64 md:flex md:flex-row lg:flex-col md:justify-between lg:justify-start gap-8 ">
   
-      <app-feedback-board (isMenuOpen)="toggleRoadmapAndFilter($event)"></app-feedback-board>
+      <app-feedback-board (toggleClick)="toggleRoadmapAndFilter($event)" [isOpen]="isOpen()" ></app-feedback-board>
   
       <!-- show on medium devices -->
       <div class=" hidden md:block bg-white  rounded-lg shadow-md  p-6 flex-1 lg:flex-none">
@@ -20,9 +20,9 @@
     
       <!-- Show on mobile devices -->
       <div class="block md:hidden">
-        <div class="menu- show" [class.show]="isOpen"></div>
+        <div class="menu- show" [class.show]="isOpen()"></div>
 
-        <div class="menu-panel text-center" [class.show]="isOpen">
+        <div class="menu-panel text-center" [class.show]="isOpen()">
           <div class="bg-white  rounded-lg shadow-md  p-6">
             <app-category (emitCategory)="onChooseCategory($any($event))"  [isLoading]="isFeedbacksLoading()" [count]="count()"/>
           </div>
