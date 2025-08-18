@@ -38,7 +38,7 @@
     
       <app-toolbar [suggestionsCount]="count()" (emitSortValue)="onSortByValue($any($event))" [isLoading]="isFeedbacksLoading()" />
     
-      <app-feedback-list [feedBacks]="feedBacks()" [isLoading]="isFeedbacksLoading()" />
+      <app-feedback-list [feedBacks]="feedBacks()" [isLoading]="isFeedbacksLoading()" [category]="feedBackService.categoryTerm()" />
 
     </div>
   </main>

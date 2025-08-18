@@ -13,7 +13,6 @@ export class FeedbackBoardComponent {
     toggleClick =  output<boolean>();
     
   menuIcon = computed(() => {
-      console.log(this.isOpen());
       return !this.isOpen() ? './assets/shared/mobile/icon-hamburger.svg' : './assets/shared/mobile/icon-close.svg';
     });
   

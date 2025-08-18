@@ -32,8 +32,13 @@
   
       <button type="submit" [disabled]="isCommenting()"
         class="flex items-center gap-1  bg-purple rounded-10 font-bold text-sm text-light-500 py-3 px-6 hover:bg-purple-500 transition-colors ease-in-out">
-         <span class="hidden md:inline">Post</span> 
-         <span>{{ buttonText() }}</span>
+        @if(isCommenting()) { 
+          Posting...
+        } 
+        @else {
+          <span class="hidden md:inline">Post</span> 
+          <span>{{ buttonText() }}</span>
+        }
       </button>
     </div>
   </form>

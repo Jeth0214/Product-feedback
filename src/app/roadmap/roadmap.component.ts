@@ -37,9 +37,13 @@ export class RoadmapComponent implements OnInit {
   // signals
   feedBacks = this.feedBackService.filteredFeedBacks;
   isFetchingFeedBacks = this.feedBackService.isFetchingFeedBacks;
+  category = this.feedBackService.categoryTerm;
   planned = computed(() => { return this.feedBacks().filter(feedBack =>  feedBack.status === 'planned' ) });
   inProgress = computed(() => { return this.feedBacks().filter(feedBack => feedBack.status === 'in-progress') });
   live = computed(() => { return this.feedBacks().filter(feedBack => feedBack.status === 'live') });
+
+   emptyCardTitle = computed(() => this.category() === 'All' ? 'No feedbacks yet' : `No feedbacks in ${this.category()}` );
+  
   
 
   //isLargeScreen  detect if the screen is large, and it is updated on window resize.

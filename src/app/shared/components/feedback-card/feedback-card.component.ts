@@ -16,4 +16,10 @@ export class FeedbackCardComponent {
 
   commentsCount = computed(() => countComment(this.feedBack().comments));
 
+  transformCategory = computed(() => {
+   
+    return this.feedBack().category === 'ux' || this.feedBack().category === 'ui'
+      ? this.feedBack().category.toUpperCase()    
+      : this.feedBack().category.charAt(0).toUpperCase() + this.feedBack().category.slice(1); 
+  })
 }

@@ -13,13 +13,9 @@ export class EmptyCardComponent {
 
   plusIcon = faPlus;
 
-  // injects
-  _feedBackService = inject(FeedBackService);
-
-  // signals
-  category = this._feedBackService.categoryTerm;
-  message = computed(() => this.category() === 'All' ? 'No feedbacks yet' : `No feedbacks in ${this.category()}` );
-
+  title = input.required<string>();
+  showMessage = input(true);
+  showAddButton = input(true);
 
 
 }

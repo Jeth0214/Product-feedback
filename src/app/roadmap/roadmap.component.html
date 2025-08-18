@@ -62,7 +62,7 @@
       </div>
     }
     @else {
-      <app-empty-card /> 
+      <app-empty-card [title]="emptyCardTitle()" [showAddButton]="true" [showMessage]="true"/> 
     }
   }
 

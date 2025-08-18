@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPlus, faComment } from '@fortawesome/free-solid-svg-icons';
 import { EmptyCardComponent } from '../../../shared/components/empty-card/empty-card.component';
@@ -27,6 +27,8 @@ export class FeedbackListComponent {
   // signals
   feedBacks = input<IFeedBack[]>([]);
   isLoading = input<boolean>(false);
+  category = input<string>('All');
 
+  title = computed(() => this.category() === 'All' ? 'No feedbacks yet' : `No feedbacks in ${this.category()}` );
   
 }
