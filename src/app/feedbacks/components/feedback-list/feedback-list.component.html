@@ -1,18 +1,18 @@
 
-@if(!isLoading()) {
-  @for( feedBack of feedBacks(); track feedBack.id) {
-    <app-feedback-card [feedBack]="feedBack" />
-  }
-  @empty() {
-    <app-empty-card [title]="title()" [showAddButton]="true" [showMessage]="true" />
-  }
+<!-- @if(!isLoading()) {
   
 }
 @else {
   <app-loading [fullScreen]="true"  [isLoading]="isLoading()" />
+  
+} -->
 
+@for( feedBack of feedBacks(); track feedBack.id) {
+  <app-feedback-card [feedBack]="feedBack" />
 }
-
+<!-- @empty() {
+  <app-empty-card [title]="title()" [showAddButton]="true" [showMessage]="true" />
+} -->
 
 
 

@@ -131,7 +131,7 @@ export class FeedbackFormComponent {
 
 
   setPayload(): Partial<IFeedBack> {
-    const basePayLoad = this.isUpdateMode() ? this.selectedFeedBack() : { upvotes: 0, comments: [] };
+    const basePayLoad = this.isUpdateMode() ? this.selectedFeedBack() : { upvotes: 0 };
     const formData = this.feedBackform.value;
     
     return {

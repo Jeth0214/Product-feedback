@@ -1,24 +1,28 @@
 <div class="flex justify-between items-end">
   <h2 class="text-xl font-bold">{{title}}</h2>
-  @if(showButton()) {
+  <!-- @if(showButton()) {
     <a  routerLink="/roadmap" 
       class=" font-semibold underline text-blue cursor-pointer hover:text-dark-500 transition-colors">
       View
     </a>
-  }
+  } -->
+    <a  routerLink="/roadmap" 
+      class=" font-semibold underline text-blue cursor-pointer hover:text-dark-500 transition-colors">
+      View
+    </a>
 </div>
 
 <ul class="text-dark-500  mt-6">
   <li class="flex justify-between items-end capitalize">
     <div> <fa-icon class="text-planned text-sm me-4" [icon]="circleIcon"></fa-icon> Planned </div>
-    <div class="font-bold">{{ plannedCount() }}</div>
+    <div class="font-bold">{{ 2 }}</div>
   </li>
   <li class="flex justify-between items-end my-2 capitalize">
     <div> <fa-icon class="text-in-progress text-sm me-4 " [icon]="circleIcon"></fa-icon> In Progress </div>
-    <div class="font-bold">{{ inProgressCount() }}</div>
+    <div class="font-bold">{{ 3 }}</div>
   </li>
   <li class="flex justify-between items-end capitalize">
     <div> <fa-icon class="text-live text-sm me-4" [icon]="circleIcon"></fa-icon> Live </div>
-    <div class="font-bold">{{ liveCount() }}</div>
+    <div class="font-bold">{{ 1 }}</div>
   </li>
 </ul>
